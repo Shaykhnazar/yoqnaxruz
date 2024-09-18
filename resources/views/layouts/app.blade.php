@@ -43,23 +43,26 @@
         <nav class="nav-menu d-none d-lg-block">
             <ul>
                 <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="{{ url('/') }}">Home</a></li>
-
-                <!-- Check if user is logged in -->
                 @auth
-                    <li class="{{ Request::is('vehicle') ? 'active' : '' }}"><a href="{{ url('vehicle') }}">Vehicle</a></li>
-                    <li class="{{ Request::is('fuel_station') ? 'active' : '' }}"><a href="{{ url('fuel_station') }}">Fuel Station</a></li>
-                    <li class="{{ Request::is('feedback') ? 'active' : '' }}"><a href="{{ url('feedback') }}">Feedback</a></li>
-                    <li class="{{ Request::is('help_desk') ? 'active' : '' }}"><a href="{{ url('help_desk') }}">Help Desk</a></li>
-                    <li><a class="profile" href="{{ url('userprofile') }}">Dashboard</a></li>
-                    <li><a class="logout" href="#">Logout</a></li>
+                    <!-- Links for authenticated users -->
+                    <li><a href="{{ url('userprofile') }}">Dashboard</a></li>
+                    <li>
+                        <a href="#" class="logout">Logout</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </li>
                 @else
-                    <li class="{{ Request::is('login') || Request::is('register') ? 'active' : '' }}"><a href="{{ url('login') }}">Login/Register</a></li>
+                    <!-- Links for guests -->
+                    <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{ route('login') }}">Login</a></li>
+                    <li class="{{ Request::is('register') ? 'active' : '' }}"><a href="{{ route('register') }}">Register</a></li>
                 @endauth
-
+                <!-- Other links -->
                 <li><a href="#about">About Us</a></li>
                 <li><a href="#contact">Contact Us</a></li>
             </ul>
-        </nav><!-- .nav-menu -->
+        </nav>
+
 
     </div>
 </header><!-- End Header -->

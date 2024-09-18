@@ -10,6 +10,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Filament\Commands\MakeUserCommand as FilamentMakeUserCommand;
 
 class UsersTableSeeder extends Seeder
 {
@@ -46,7 +47,22 @@ class UsersTableSeeder extends Seeder
             ];
 
             // Insert or update the user record
-            User::query()->updateOrCreate(['user_id' => $data['user_id']], $data);
+            $user = User::query()->updateOrCreate(['user_id' => $data['user_id']], $data);
+            $user->assignRole($row['Category']);
         }
+
+        // Create super admin user
+        $filamentMakeUserCommand = new FilamentMakeUserCommand();
+        $reflector = new \ReflectionObject($filamentMakeUserCommand);
+
+        $getUserModel = $reflector->getMethod('getUserModel');
+        $getUserModel->setAccessible(true);
+        $superAdmin= $getUserModel->invoke($filamentMakeUserCommand)::create([
+            'name' => 'Super Admin',
+            'email' => 'test@example.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        $superAdmin->assignRole('Super Admin');
     }
 }

@@ -1,0 +1,153 @@
+Entry_No,User_ID,Date,Module/Screen,Action,Time
+1,user_5,2024-04-10 00:00:00,Complaint Table,Left a complaint,08:21:43
+2,user_2,2024-04-12 00:00:00,Complaint Table,Reviewed a complaint,09:05:06
+3,user_1,2024-04-12 00:00:00,Complaint Table,Approved a complaint review,09:45:06
+4,user_1,2024-04-13 00:00:00,Complaint Table,Left a complaint,10:25:06
+5,user_9,2024-04-23 00:00:00,Complaint Table,Left a complaint,17:59:02
+6,user_2,2024-04-24 00:00:00,Complaint Table,Reviewed a complaint,17:59:02
+7,user_1,2024-04-24 00:00:00,Complaint Table,Approved a complaint review,18:20:02
+8,user_15,2024-04-25 00:00:00,Complaint Table,Left a complaint,11:18:37
+9,user_2,2024-04-26 00:00:00,Complaint Table,Reviewed a complaint,13:10:02
+10,user_9,2024-04-26 00:00:00,Complaint Table,Left a complaint,14:10:02
+11,user_10,2024-05-04 00:00:00,Complaint Table,Left a complaint,01:32:18
+12,user_18,2024-05-07 00:00:00,Complaint Table,Left a complaint,06:17:54
+13,user_23,2024-05-11 00:00:00,Complaint Table,Left a complaint,15:25:06
+14,user_11,2024-05-18 00:00:00,Complaint Table,Left a complaint,10:04:57
+15,user_19,2024-05-21 00:00:00,Complaint Table,Left a complaint,20:36:48
+16,user_12,2024-06-01 00:00:00,Complaint Table,Left a complaint,22:13:09
+17,user_20,2024-06-04 00:00:00,Complaint Table,Left a complaint,18:01:00
+18,user_13,2024-06-15 00:00:00,Complaint Table,Left a complaint,14:48:25
+19,user_21,2024-06-19 00:00:00,Complaint Table,Left a complaint,09:32:51
+20,user_17,2024-06-25 00:00:00,Complaint Table,Left a complaint,12:00:00
+21,user_23,2024-06-28 00:00:00,Complaint Table,Left a complaint,07:43:21
+22,user_14,2024-06-29 00:00:00,Complaint Table,Left a complaint,05:00:00
+23,user_22,2024-07-02 00:00:00,Complaint Table,Left a complaint,16:50:23
+24,user_15,2024-07-03 00:00:00,Complaint Table,Left a complaint,19:27:31
+25,user_17,2024-07-08 00:00:00,Complaint Table,Left a complaint,00:08:17
+26,user_16,2024-07-10 00:00:00,Complaint Table,Left a complaint,03:54:12
+27,user_15,2024-07-12 00:00:00,Station Table,Added new station,08:30:00
+28,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+29,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+30,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+31,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+32,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+33,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+34,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+35,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+36,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+37,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+38,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+39,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+40,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+41,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+42,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+43,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+44,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+45,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+46,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+47,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+48,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+49,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+50,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+51,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+52,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+53,user_1,2024-07-12 00:00:00,Station Table,Added new station,09:00:10
+54,unregistered,2024-07-12 00:00:00,Prices Table,Entered fuel purchased,10:10:00
+55,unregistered,2024-07-12 00:00:00,Prices Table,Entered fuel purchased,10:10:00
+56,user_2,2024-07-12 00:00:00,User Table,Created New User,10:32:23
+57,user_2,2024-07-12 00:00:00,User Table,Created New User,10:37:37
+58,user_3,2024-07-12 00:00:00,User Table,Created New User,10:42:51
+59,user_4,2024-07-12 00:00:00,User Table,Created New User,10:48:05
+60,user_5,2024-07-12 00:00:00,User Table,Created New User,10:53:19
+61,user_2,2024-07-12 00:00:00,User Table,Created New User,10:58:33
+62,user_20,2024-07-12 00:00:00,User Table,Approved New User,11:00:12
+63,user_7,2024-07-12 00:00:00,User Table,Created New User,11:03:47
+64,user_8,2024-07-12 00:00:00,User Table,Created New User,11:09:01
+65,user_9,2024-07-12 00:00:00,User Table,Created New User,11:14:15
+66,user_17,2024-07-12 00:00:00,Station Table,Added new station,11:15:00
+67,user_10,2024-07-12 00:00:00,User Table,Created New User,11:19:29
+68,user_11,2024-07-12 00:00:00,User Table,Created New User,11:24:43
+69,user_12,2024-07-12 00:00:00,User Table,Created New User,11:29:57
+70,user_13,2024-07-12 00:00:00,User Table,Created New User,11:35:11
+71,user_14,2024-07-12 00:00:00,User Table,Created New User,11:40:25
+72,user_15,2024-07-12 00:00:00,User Table,Created New User,11:45:39
+73,user_16,2024-07-12 00:00:00,User Table,Created New User,11:50:53
+74,user_17,2024-07-12 00:00:00,User Table,Created New User,11:56:07
+75,user_18,2024-07-12 00:00:00,User Table,Created New User,12:01:21
+76,user_19,2024-07-12 00:00:00,User Table,Created New User,12:06:35
+77,user_20,2024-07-12 00:00:00,User Table,Created New User,12:11:49
+78,user_1,2024-07-12 00:00:00,User Table,Approved New User,12:11:49
+79,user_1,2024-07-12 00:00:00,User Table,Approved New User,12:11:49
+80,user_1,2024-07-12 00:00:00,User Table,Approved New User,12:11:49
+81,user_1,2024-07-12 00:00:00,User Table,Approved New User,12:11:49
+82,user_1,2024-07-12 00:00:00,User Table,Approved New User,12:11:49
+83,user_1,2024-07-12 00:00:00,User Table,Approved New User,12:11:49
+84,user_21,2024-07-12 00:00:00,User Table,Created New User,12:17:03
+85,user_22,2024-07-12 00:00:00,User Table,Created New User,12:22:17
+86,user_23,2024-07-12 00:00:00,User Table,Created New User,12:27:31
+87,user_24,2024-07-12 00:00:00,User Table,Created New User,12:32:45
+88,user_25,2024-07-12 00:00:00,User Table,Created New User,12:37:59
+89,user_16,2024-07-12 00:00:00,Station Table,Added new station,12:55:04
+90,unregistered,2024-07-12 00:00:00,Prices Table,Entered fuel purchased,13:05:00
+91,user_1,2024-07-12 00:00:00,User Table,Approved New User,13:11:49
+92,user_1,2024-07-12 00:00:00,User Table,Approved New User,13:11:49
+93,user_1,2024-07-12 00:00:00,User Table,Approved New User,14:11:49
+94,user_20,2024-07-12 00:00:00,User Table,Approved New User,14:11:49
+95,user_20,2024-07-12 00:00:00,User Table,Approved New User,14:11:49
+96,user_8,2024-07-12 00:00:00,Prices Table,Entered fuel purchased,22:15:10
+97,unregistered,2024-07-12 00:00:00,Prices Table,Entered fuel purchased,22:15:10
+98,unregistered,2024-07-12 00:00:00,Prices Table,Entered fuel purchased,22:15:10
+99,user_5,2024-07-12 00:00:00,Complaint Table,Left a complaint,23:59:59
+100,user_20,2024-07-13 00:00:00,User Table,Approved New User,09:00:12
+101,user_20,2024-07-13 00:00:00,User Table,Approved New User,10:00:12
+102,unregistered,2024-07-13 00:00:00,Prices Table,Entered fuel purchased,10:10:00
+103,unregistered,2024-07-13 00:00:00,Prices Table,Entered fuel purchased,10:10:00
+104,unregistered,2024-07-13 00:00:00,Prices Table,Entered fuel purchased,10:10:00
+105,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,10:10:00
+106,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,10:10:00
+107,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,10:10:00
+108,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,10:10:00
+109,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,10:10:00
+110,user_2,2024-07-13 00:00:00,Prices Table,Verified Enties in Price Table,11:29:57
+111,user_2,2024-07-13 00:00:00,Prices Table,Verified Enties in Price Table,11:29:57
+112,user_6,2024-07-13 00:00:00,Prices Table,Verified Enties in Price Table,11:29:57
+113,user_6,2024-07-13 00:00:00,Prices Table,Verified Enties in Price Table,11:29:57
+114,user_6,2024-07-13 00:00:00,Prices Table,Verified Enties in Price Table,11:29:57
+115,user_6,2024-07-13 00:00:00,Prices Table,Verified Enties in Price Table,11:29:57
+116,user_6,2024-07-13 00:00:00,Prices Table,Verified Enties in Price Table,11:29:57
+117,user_6,2024-07-13 00:00:00,Prices Table,Verified Enties in Price Table,11:29:57
+118,user_6,2024-07-13 00:00:00,Prices Table,Verified Enties in Price Table,11:29:57
+119,user_6,2024-07-13 00:00:00,Prices Table,Verified Enties in Price Table,11:29:57
+120,user_1,2024-07-13 00:00:00,User Table,Approved New User,12:11:49
+121,user_1,2024-07-13 00:00:00,User Table,Approved New User,12:11:49
+122,user_1,2024-07-13 00:00:00,User Table,Approved New User,12:11:49
+123,user_1,2024-07-13 00:00:00,User Table,Approved New User,12:11:49
+124,user_1,2024-07-13 00:00:00,User Table,Approved New User,12:11:49
+125,user_1,2024-07-13 00:00:00,User Table,Approved New User,12:11:49
+126,unregistered,2024-07-13 00:00:00,Prices Table,Entered fuel purchased,13:05:00
+127,unregistered,2024-07-13 00:00:00,Prices Table,Entered fuel purchased,13:05:00
+128,unregistered,2024-07-13 00:00:00,Prices Table,Entered fuel purchased,13:05:00
+129,unregistered,2024-07-13 00:00:00,Prices Table,Entered fuel purchased,13:05:00
+130,unregistered,2024-07-13 00:00:00,Prices Table,Entered fuel purchased,13:05:00
+131,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,13:05:00
+132,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,13:05:00
+133,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,13:05:00
+134,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,13:05:00
+135,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,13:05:00
+136,user_1,2024-07-13 00:00:00,User Table,Approved New User,13:11:49
+137,user_1,2024-07-13 00:00:00,User Table,Approved New User,14:11:49
+138,user_1,2024-07-13 00:00:00,User Table,Approved New User,14:11:49
+139,user_1,2024-07-13 00:00:00,User Table,Approved New User,14:11:49
+140,user_1,2024-07-13 00:00:00,User Table,Approved New User,14:11:49
+141,unregistered,2024-07-13 00:00:00,Prices Table,Entered fuel purchased,22:15:10
+142,unregistered,2024-07-13 00:00:00,Prices Table,Entered fuel purchased,22:15:10
+143,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,22:15:10
+144,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,22:15:10
+145,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,22:15:10
+146,Anonymous,2024-07-13 00:00:00,Feed Back Table,Left a feedback,22:15:10
+147,user_1,2024-07-14 00:00:00,Prices Table,Approved Enties in Price Table,22:15:10
+148,user_1,2024-07-14 00:00:00,Prices Table,Approved Enties in Price Table,22:15:10
+149,user_1,2024-07-14 00:00:00,Prices Table,Approved Enties in Price Table,22:15:10
+150,user_1,2024-07-14 00:00:00,Prices Table,Approved Enties in Price Table,22:15:10
+151,user_1,2024-07-14 00:00:00,Prices Table,Approved Enties in Price Table,22:15:10
+152,user_1,2024-07-14 00:00:00,Prices Table,Approved Enties in Price Table,22:15:10
