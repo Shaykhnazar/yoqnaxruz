@@ -24,7 +24,7 @@
     <link href="{{ asset('/assets/vendor/owl.carousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/assets/vendor/venobox/venobox.css') }}" rel="stylesheet">
     <link href="{{ asset('/assets/vendor/aos/aos.css') }}" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Template Main CSS File -->
@@ -140,20 +140,21 @@
 <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
 <!-- Vendor JS Files -->
-<script src="/assets/vendor/jquery/jquery.min.js"></script>
-<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
-<script src="/assets/vendor/php-email-form/validate.js"></script>
-<script src="/assets/vendor/owl.carousel/owl.carousel.min.js"></script>
-<script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-<script src="/assets/vendor/venobox/venobox.min.js"></script>
-<script src="/assets/vendor/aos/aos.js"></script>
+<script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/jquery.easing/jquery.easing.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+<script src="{{ asset('assets/vendor/owl.carousel/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/venobox/venobox.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
 
 <!-- Template Main JS File -->
-<script src="/assets/js/main.js"></script>
+<script src="{{ asset('assets/js/main.js') }}"></script>
 
 
-@yield('script')
+@stack('scripts')
+
 <script>
     $(document).ready(function () {
         $(".logout").click(function () {
@@ -167,57 +168,34 @@
             });
         });
     });
+</script>
 
-    var placeSearch, autocomplete,autocompleted;
-    var componentForm = {
-        street_number: 'short_name',
-        route: 'long_name',
-        locality: 'long_name',
-        administrative_area_level_1: 'short_name',
-        country: 'long_name',
-        postal_code: 'short_name'
-    };
+<!-- Google Maps and Places API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initAutocomplete" async defer></script>
+
+<script>
+    var autocomplete;
 
     function initAutocomplete() {
-        // Create the autocomplete object, restricting the search to geographical
-        // location types.
+        // Initialize autocomplete for the address input
         autocomplete = new google.maps.places.Autocomplete(
-            /** @type {!HTMLInputElement} */(document.getElementById('search_google')),
-            {types: ['geocode']});
-        autocompleted = new google.maps.places.Autocomplete(
-            /* * @type {!HTMLInputElement} */(document.getElementById('search_google2')),
-            {types: ['geocode']});
-        // When the user selects an address from the dropdown, populate the address
-        // fields in the form.
+            document.getElementById('search_google'),
+            { types: ['geocode'] }
+        );
+
         autocomplete.addListener('place_changed', fillInAddress);
-        autocompleted.addListener('place_changed', fillInAddress);
     }
 
     function fillInAddress() {
-// Get the place details from the autocomplete object.
+        // Get the place details from the autocomplete object
         var place = autocomplete.getPlace();
-
-        for (var component in componentForm) {
-            document.getElementById(component).value = '';
-            document.getElementById(component).disabled = false;
-        }
-
-        // Get each component of the address from the place details
-        // and fill the corresponding field on the form.
-        for (var i = 0; i < place.address_components.length; i++) {
-            var addressType = place.address_components[i].types[0];
-            if (componentForm[addressType]) {
-                var val = place.address_components[i][componentForm[addressType]];
-                document.getElementById(addressType).value = val;
-            }
-        }
+        // You can process the place details here if needed
     }
 
-    // Bias the autocomplete object to the user's geographical location,
-    // as supplied by the browser's 'navigator.geolocation' object.
+    // Bias the autocomplete object to the user's geographical location
     function geolocate() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
+            navigator.geolocation.getCurrentPosition(function (position) {
                 var geolocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
@@ -231,8 +209,6 @@
         }
     }
 </script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
-
 </body>
 
 </html>

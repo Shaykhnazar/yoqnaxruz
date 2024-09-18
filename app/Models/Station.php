@@ -32,4 +32,22 @@ class Station extends Model
         'comment',               // Comments about the station
     ];
 
+
+    public function getLatitudeAttribute($value)
+    {
+        if ($this->geolocation) {
+            $coords = explode(',', $this->geolocation);
+            return isset($coords[0]) ? (float) $coords[0] : null;
+        }
+        return null;
+    }
+
+    public function getLongitudeAttribute($value)
+    {
+        if ($this->geolocation) {
+            $coords = explode(',', $this->geolocation);
+            return isset($coords[1]) ? (float) $coords[1] : null;
+        }
+        return null;
+    }
 }
