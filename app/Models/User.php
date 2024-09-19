@@ -63,4 +63,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function complaintReplies()
+    {
+        return $this->hasMany(ComplaintReply::class);
+    }
+
 }

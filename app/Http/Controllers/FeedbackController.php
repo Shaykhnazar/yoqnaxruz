@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Station;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class FeedbackController extends Controller
 {
+    public function create()
+    {
+        // Fetch the list of stations to populate the dropdown
+        $stations = Station::get();
+
+        return view('feedback.create', compact('stations'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -25,7 +35,7 @@ class FeedbackController extends Controller
 
         Feedback::create([
             'station_id' => $request->station,
-            'user_id' => Session::get('user_id'),
+            'user_id' => Auth::user()->user_id ?? 'Anonymous',
             'title' => $request->title,
             'comment' => $request->comment,
             'user_rating' => $request->rating,

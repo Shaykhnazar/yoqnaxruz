@@ -1,14 +1,21 @@
 <?php
 
+use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\FuelPriceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
+
+// Fuel Price Routes
+Route::post('/fuel-prices', [FuelPriceController::class, 'store'])->name('fuel_prices.store');
+Route::post('/fuel-prices/results', [FuelPriceController::class, 'fetchResults'])->name('fuel_prices.results');
+
 
 // Login Routes
 Route::get('/login', function () {
@@ -31,21 +38,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/userprofile', [UserController::class, 'showProfile'])->name('user.profile');
     Route::post('/userprofile/update', [UserController::class, 'updateProfile'])->name('user.updateProfile');
     Route::post('/userprofile/reset-password', [UserController::class, 'resetPassword'])->name('user.resetPassword');
+
+    Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
+    Route::get('/complaints/create', [ComplaintController::class, 'create'])->name('complaints.create');
+    Route::post('/complaints/store', [ComplaintController::class, 'store'])->name('complaints.store');
+    Route::post('/complaints/{complaint}/reply', [ComplaintController::class, 'reply'])->name('complaints.reply');
 });
 
 // Routes accessible only by Users
 Route::group(['middleware' => ['role:User']], function () {
-    Route::get('/user/vehicles', [VehicleController::class, 'index'])->name('user.vehicles');
-    // Other user routes...
+    Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle.index');
+    Route::get('/vehicle/create', [VehicleController::class, 'create'])->name('vehicle.create');
+    Route::post('/vehicle/store', [VehicleController::class, 'store'])->name('vehicle.store');
+
+    Route::get('/feedback/create', [FeedbackController::class, 'create'])->name('feedback.create');
+    Route::post('/feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
 });
 
 // Routes accessible only by Station Managers
 Route::group(['middleware' => ['role:Station Manager']], function () {
-    Route::get('/station-manager/stations', [StationController::class, 'index'])->name('station-manager.stations');
-    // Other station manager routes...
-});
+    // View all stations managed by the station manager
+//    Route::get('/stations', [StationController::class, 'index'])->name('stations');
+    // Show the form to create a new station
+    Route::get('/stations/create', [StationController::class, 'create'])->name('stations.create');
+    // Store a new station
+    Route::post('/stations', [StationController::class, 'store'])->name('stations.store');
 
-Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
-Route::post('/stations', [StationController::class, 'store'])->name('stations.store');
-Route::post('/fuel-prices', [FuelPriceController::class, 'store'])->name('fuel_prices.store');
-Route::post('/fuel-prices/results', [FuelPriceController::class, 'fetchResults'])->name('fuel_prices.results');
+});

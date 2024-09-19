@@ -23,7 +23,7 @@ class UserController extends Controller
         // Validation rules
         $rules = [
             'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
+            'surname'  => 'required|string|max:255',
             'email'      => 'required|email|unique:users,email,' . $user->id,
             'photo'      => 'nullable|image|max:2048', // Max 2MB
         ];
@@ -41,7 +41,7 @@ class UserController extends Controller
 
         // Update user data
         $user->first_name = $request->first_name;
-        $user->last_name  = $request->last_name;
+        $user->surname  = $request->surname;
         $user->email      = $request->email;
 
         // Handle photo upload

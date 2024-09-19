@@ -49,11 +49,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="role_id">Role<span class="required">*</span></label>
-                            <select class="form-control" id="role_id" name="role_id">
+                            <label for="role">Role<span class="required">*</span></label>
+                            <select class="form-control" id="role" name="role">
                                 <option value="">Select a role</option>
-                                <option value="3">User</option>
-                                <option value="4">Station Manager</option>
+                                <option value="User">User</option>
+                                <option value="Station Manager">Station Manager</option>
                             </select>
                             <small id="roleError" class="form-text text-danger"></small>
                         </div>
@@ -147,7 +147,7 @@
                 }
 
                 // Role validation
-                const role = $('#role_id').val().trim();
+                const role = $('#role').val().trim();
                 if (role === '') {
                     $('#roleError').text('Role is required');
                     valid = false;

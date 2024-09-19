@@ -20,27 +20,27 @@
 @if ($user)
     {{-- User Role --}}
     @role('User')
-        <li class="{{ Request::is('vehicles') ? 'active' : '' }}">
-            <a href="{{ route('user.vehicles') }}">My Vehicles</a>
+        <li class="{{ Request::is('vehicle') ? 'active' : '' }}">
+            <a href="{{ route('vehicle.index') }}">Vehicle</a>
         </li>
         <li class="{{ Request::is('feedback') ? 'active' : '' }}">
-            <a href="{{ route('user.feedback') }}">Feedback</a>
-        </li>
-        <li class="{{ Request::is('prices') ? 'active' : '' }}">
-            <a href="{{ route('user.prices') }}">Add Prices</a>
+            <a href="{{ route('feedback.create') }}">Feedback</a>
         </li>
         <li class="{{ Request::is('tickets*') ? 'active' : '' }}">
-            <a href="{{ route('user.tickets') }}">Help Desk</a>
+            <a href="{{ route('complaints.create') }}">Help Desk</a>
             <ul>
-                <li class="{{ Request::is('tickets') ? 'active' : '' }}">
-                    <a href="{{ route('user.tickets') }}">
+                <li class="{{ Request::is('complaints') ? 'active' : '' }}">
+                    <a href="{{ route('complaints.index') }}">
                         Help Desk Tickets
-                        <span class="btn btn-primary position-relative notifications">
-                                {{ $totalNotifications ?? 0 }}
+                        @if(!empty($totalNotifications))
+                            <span class="btn btn-primary position-relative notifications">
+                                {{ $totalNotifications }}
                             </span>
+                        @endif
                     </a>
                 </li>
             </ul>
+
         </li>
         <li class="{{ Request::is('userprofile') ? 'active' : '' }}">
             <a href="{{ route('user.profile') }}">Profile</a>
@@ -49,14 +49,21 @@
 
     {{-- Station Manager Role --}}
     @role('Station Manager')
-        <li class="{{ Request::is('stations') ? 'active' : '' }}">
-            <a href="{{ route('station-manager.stations') }}">My Stations</a>
+        <li class="{{ Request::is('fuel_station') ? 'active' : '' }}">
+            <a href="{{ route('stations.create') }}">Fuel Station</a>
         </li>
-        <li class="{{ Request::is('tickets*') ? 'active' : '' }}">
-            <a href="{{ route('station-manager.tickets') }}">Help Desk</a>
+        <li class="{{ Request::is('complaints*') ? 'active' : '' }}">
+            <a href="{{ route('complaints.create') }}">Help Desk</a>
             <ul>
-                <li class="{{ Request::is('tickets') ? 'active' : '' }}">
-                    <a href="{{ route('station-manager.tickets') }}">Help Desk Tickets</a>
+                <li class="{{ Request::is('complaints') ? 'active' : '' }}">
+                    <a href="{{ route('complaints.index') }}">
+                        Help Desk Tickets
+                        @if(!empty($totalNotifications))
+                            <span class="btn btn-primary position-relative notifications">
+                                {{ $totalNotifications }}
+                            </span>
+                        @endif
+                    </a>
                 </li>
             </ul>
         </li>

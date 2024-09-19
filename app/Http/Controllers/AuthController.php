@@ -50,7 +50,7 @@ class AuthController extends Controller
     {
         // Validation rules
         $rules = [
-            'role_id' => 'required|in:3,4', // Adjust based on your valid role IDs
+            'role'       => 'required|in:User,Station Manager',
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
             'email'      => 'required|email|unique:users,email',
@@ -79,10 +79,14 @@ class AuthController extends Controller
             'password'   => Hash::make($request->password), // Use Laravel's Hash for security
             'title_id'   => 0,    // As per your code, title_id is set to '0'
             'dob'        => null, // As per your code, dob is set to null
-            'category'    => $request->role_id,
+            'category'    => $request->role,
             // Add other fields as necessary
             'name' => $request->first_name . ' ' . $request->last_name
         ]);
+
+        $roleName = $request->role ?? 'User'; // Default to 'User'
+        // Assign the selected role to the user
+        $user->assignRole($roleName);
 
         return response()->json(['status' => 1, 'message' => 'Register successfully.']);
     }

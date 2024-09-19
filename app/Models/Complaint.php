@@ -21,4 +21,8 @@ class Complaint extends Model
         'attachments',    // Attachments related to the complaint
     ];
 
+    public function replies()
+    {
+        return $this->hasMany(ComplaintReply::class);
+    }
 }

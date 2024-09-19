@@ -45,10 +45,10 @@
 
                                         <!-- Last Name -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="last_name">Last Name <span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="surname">Last Name <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" name="last_name" value="{{ Auth::user()->last_name }}" required="required" class="form-control" placeholder="Enter Last Name">
-                                                <small id="last_nameError" class="form-text text-danger"></small>
+                                                <input type="text" name="surname" value="{{ Auth::user()->surname }}" required="required" class="form-control" placeholder="Enter Last Name">
+                                                <small id="surnameError" class="form-text text-danger"></small>
                                             </div>
                                         </div>
 
@@ -146,7 +146,7 @@
 
                 // Clear previous errors
                 $('#first_nameError').text('');
-                $('#last_nameError').text('');
+                $('#surnameError').text('');
                 $('#emailError').text('');
                 $('#photoError').text('');
 
