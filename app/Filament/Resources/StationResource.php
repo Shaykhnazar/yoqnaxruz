@@ -21,6 +21,9 @@ class StationResource extends Resource
 
     protected static ?string $navigationGroup = 'Review Tasks';
 
+    protected static ?int $navigationSort = 3;
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -128,6 +131,7 @@ class StationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -148,6 +152,7 @@ class StationResource extends Resource
         return [
             'index' => Pages\ListStations::route('/'),
             'create' => Pages\CreateStation::route('/create'),
+            'view' => Pages\ViewStation::route('/{record}'),
             'edit' => Pages\EditStation::route('/{record}/edit'),
         ];
     }

@@ -21,6 +21,9 @@ class PriceResource extends Resource
 
     protected static ?string $navigationGroup = 'Review Tasks';
 
+    protected static ?int $navigationSort = 2;
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -111,6 +114,7 @@ class PriceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -131,6 +135,7 @@ class PriceResource extends Resource
         return [
             'index' => Pages\ListPrices::route('/'),
             'create' => Pages\CreatePrice::route('/create'),
+            'view' => Pages\ViewPrice::route('/{record}'),
             'edit' => Pages\EditPrice::route('/{record}/edit'),
         ];
     }

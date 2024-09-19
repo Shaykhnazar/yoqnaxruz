@@ -50,7 +50,7 @@
     {{-- Station Manager Role --}}
     @role('Station Manager')
         <li class="{{ Request::is('fuel_station') ? 'active' : '' }}">
-            <a href="{{ route('stations.create') }}">Fuel Station</a>
+            <a href="{{ route('stations') }}">Fuel Station</a>
         </li>
         <li class="{{ Request::is('complaints*') ? 'active' : '' }}">
             <a href="{{ route('complaints.create') }}">Help Desk</a>

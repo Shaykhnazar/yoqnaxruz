@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     // Show User Profile
+    public function dashboard()
+    {
+        return view('dashboard');
+    }
+
     public function showProfile()
     {
         return view('userprofile');

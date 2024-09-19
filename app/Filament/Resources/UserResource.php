@@ -21,6 +21,9 @@ class UserResource extends Resource
 
     protected static ?string $navigationGroup = 'Review Tasks';
 
+    protected static ?int $navigationSort = 1;
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -160,6 +163,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -180,6 +184,7 @@ class UserResource extends Resource
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
+            'view' => Pages\ViewUser::route('/{record}'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }

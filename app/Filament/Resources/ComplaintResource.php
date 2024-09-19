@@ -21,6 +21,8 @@ class ComplaintResource extends Resource
 
     protected static ?string $navigationGroup = 'Review Tasks';
 
+    protected static ?int $navigationSort = 5;
+
 
     public static function form(Form $form): Form
     {
@@ -81,6 +83,7 @@ class ComplaintResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -101,6 +104,7 @@ class ComplaintResource extends Resource
         return [
             'index' => Pages\ListComplaints::route('/'),
             'create' => Pages\CreateComplaint::route('/create'),
+            'view' => Pages\ViewComplaint::route('/{record}'),
             'edit' => Pages\EditComplaint::route('/{record}/edit'),
         ];
     }

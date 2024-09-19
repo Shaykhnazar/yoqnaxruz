@@ -35,6 +35,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.su
 // Protected Route Example
 // User Profile Routes
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('/userprofile', [UserController::class, 'showProfile'])->name('user.profile');
     Route::post('/userprofile/update', [UserController::class, 'updateProfile'])->name('user.updateProfile');
     Route::post('/userprofile/reset-password', [UserController::class, 'resetPassword'])->name('user.resetPassword');
@@ -58,7 +59,7 @@ Route::group(['middleware' => ['role:User']], function () {
 // Routes accessible only by Station Managers
 Route::group(['middleware' => ['role:Station Manager']], function () {
     // View all stations managed by the station manager
-//    Route::get('/stations', [StationController::class, 'index'])->name('stations');
+    Route::get('/stations', [StationController::class, 'index'])->name('stations');
     // Show the form to create a new station
     Route::get('/stations/create', [StationController::class, 'create'])->name('stations.create');
     // Store a new station

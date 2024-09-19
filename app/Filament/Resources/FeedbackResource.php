@@ -21,6 +21,9 @@ class FeedbackResource extends Resource
 
     protected static ?string $navigationGroup = 'Review Tasks';
 
+    protected static ?int $navigationSort = 4;
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -72,6 +75,7 @@ class FeedbackResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -92,6 +96,7 @@ class FeedbackResource extends Resource
         return [
             'index' => Pages\ListFeedback::route('/'),
             'create' => Pages\CreateFeedback::route('/create'),
+            'view' => Pages\ViewFeedback::route('/{record}'),
             'edit' => Pages\EditFeedback::route('/{record}/edit'),
         ];
     }

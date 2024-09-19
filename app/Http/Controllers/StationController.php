@@ -12,7 +12,7 @@ class StationController extends Controller
     public function index()
     {
         // Fetch stations created by the current station manager
-        $stations = Station::where('created_by', Auth::id())->get();
+        $stations = Station::where('added_by', Auth::id())->get();
 
         return view('stations.index', compact('stations'));
     }

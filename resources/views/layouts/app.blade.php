@@ -45,7 +45,7 @@
                 <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="{{ url('/') }}">Home</a></li>
                 @auth
                     <!-- Links for authenticated users -->
-                    <li><a href="{{ url('userprofile') }}">Dashboard</a></li>
+                    <li><a href="{{ url('dashboard') }}">Dashboard</a></li>
                     <li>
                         <a href="#" class="logout">Logout</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
