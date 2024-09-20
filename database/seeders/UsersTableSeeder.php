@@ -59,10 +59,19 @@ class UsersTableSeeder extends Seeder
         $getUserModel->setAccessible(true);
         $superAdmin= $getUserModel->invoke($filamentMakeUserCommand)::create([
             'name' => 'Super Admin',
-            'email' => 'test@example.com',
-            'password' => Hash::make('password'),
+            'email' => 'super@admin.com',
+            'password' => Hash::make('secret'),
         ]);
 
         $superAdmin->assignRole('Super Admin');
+
+        // Create admin user
+        $superAdmin= $getUserModel->invoke($filamentMakeUserCommand)::create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('secret'),
+        ]);
+
+        $superAdmin->assignRole('Admin');
     }
 }

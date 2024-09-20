@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('stations', function (Blueprint $table) {
             $table->id();
-            $table->string('station_id')->unique();
-            $table->string('station_name');
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
+            $table->string('station_id')->index()->unique();
+            $table->string('station_name')->index();
+            $table->string('city')->index()->nullable();
+            $table->string('state')->index()->nullable();
             $table->string('zip_code')->nullable();
             $table->string('country')->nullable();
-            $table->string('station_manager_id')->nullable();
+            $table->string('station_manager_id')->index()->nullable();
             $table->string('station_phone1')->nullable();
             $table->string('station_phone2')->nullable();
             $table->string('street_address')->nullable();
@@ -29,9 +29,9 @@ return new class extends Migration
             $table->timestamp('date_created')->nullable();
             $table->timestamp('date_verified')->nullable();
             $table->timestamp('date_approved')->nullable();
-            $table->string('added_by')->nullable();
-            $table->string('verifier')->nullable();
-            $table->string('approver')->nullable();
+            $table->string('added_by')->index()->nullable()->default('Unregistered');
+            $table->string('verifier')->index()->nullable()->default('Pending');
+            $table->string('approver')->index()->nullable()->default('Pending');
             $table->text('comment')->nullable();
             $table->timestamps();
         });

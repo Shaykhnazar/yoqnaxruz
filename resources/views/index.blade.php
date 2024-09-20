@@ -17,7 +17,7 @@
 
     <div id="showresults"></div>
 
-    @include('partials.add_modal', ['stations' => $stations])
+    @include('partials.add_modal')
 
 @endsection
 

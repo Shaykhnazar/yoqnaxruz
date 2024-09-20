@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('user_id')->nullable()->after('id'); // Title (Mr, Ms, etc.)
-            $table->string('title')->nullable()->after('user_id'); // Title (Mr, Ms, etc.)
+            $table->string('user_id')->unique()->nullable()->after('id'); // Title (Mr, Ms, etc.)
+            $table->string('title')->index()->nullable()->after('user_id'); // Title (Mr, Ms, etc.)
             $table->string('first_name')->nullable()->after('title'); // First name
             $table->string('middle_name')->nullable()->after('first_name'); // Middle name
             $table->string('surname')->nullable()->after('middle_name'); // Surname/Last name
-            $table->string('category')->nullable()->after('surname'); // Category (Admin, User type, etc.)
+            $table->string('category')->index()->nullable()->after('surname'); // Category (Admin, User type, etc.)
             $table->date('date_of_birth')->nullable()->after('category'); // Date of birth
             $table->string('phone1')->nullable()->after('date_of_birth'); // Primary phone number
             $table->string('phone2')->nullable()->after('phone1'); // Secondary phone number

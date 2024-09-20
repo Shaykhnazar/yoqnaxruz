@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +27,4 @@ class Price extends Model
         'photo',            // Photo attachment related to the price
         'comment',          // Additional comments
     ];
-
-
 }

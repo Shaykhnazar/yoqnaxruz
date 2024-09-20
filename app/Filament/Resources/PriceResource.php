@@ -7,6 +7,7 @@ use App\Filament\Resources\PriceResource\RelationManagers;
 use App\Models\Price;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -56,9 +57,11 @@ class PriceResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('verified_by')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(), // Disable direct editing
                 Forms\Components\TextInput::make('approved_by')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(), // Disable direct editing
                 Forms\Components\TextInput::make('photo')
                     ->maxLength(255),
                 Forms\Components\Textarea::make('comment')
@@ -69,6 +72,18 @@ class PriceResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = auth()->user();
+
+                if ($user->hasRole('Super Admin')) {
+                    // Super Admin sees only approved by Admin
+                    $query->whereNotNull('approved_by')
+                        ->whereNotIn('approved_by', ['Rejected', 'Pending']);
+                }
+                // Admins see all records
+                // You can add additional role-based queries here if needed
+                return $query;
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('fuel_type')
                     ->searchable(),
@@ -77,9 +92,10 @@ class PriceResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('system_time'),
                 Tables\Columns\TextColumn::make('purchase_date')
-                    ->dateTime()
+                    ->date('j, F, Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('purchase_time'),
+                Tables\Columns\TextColumn::make('purchase_time')
+                    ->time('H:i A'),
                 Tables\Columns\TextColumn::make('user_geolocation')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('litres')
@@ -95,9 +111,17 @@ class PriceResource extends Resource
                 Tables\Columns\TextColumn::make('station_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('verified_by')
-                    ->searchable(),
+                    ->color(fn (string $state): string => match ($state) {
+                        'Pending' => 'gray',
+                        'Rejected' => 'warning',
+                        default => 'success',
+                    }),
                 Tables\Columns\TextColumn::make('approved_by')
-                    ->searchable(),
+                    ->color(fn (string $state): string => match ($state) {
+                        'Pending' => 'gray',
+                        'Rejected' => 'warning',
+                        default => 'success',
+                    }),
                 Tables\Columns\TextColumn::make('photo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -113,8 +137,65 @@ class PriceResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-o-check-circle')
+                    ->requiresConfirmation()
+                    ->action(function (Price $record, $data) {
+                        $user = auth()->user();
+
+                        $status = $data['status'];
+                        $record->approved_by = $status === 'Approved' ? $user->name : 'Rejected';
+                        $record->save();
+
+                        Notification::make()
+                            ->title('Success')
+                            ->success()
+                            ->body("Price has been $status Successfully")
+                            ->send();
+                    })
+                    ->form([
+                        Forms\Components\Radio::make('status')
+                            ->label('Approval Status')
+                            ->options([
+                                'Approved' => 'Approved',
+                                'Rejected' => 'Rejected',
+                            ])
+                            ->default('Approved')
+                            ->required(),
+                    ])
+                    ->visible(fn (Price $record) => auth()->user()->hasRole('Admin')), // Only for Admins
+                Tables\Actions\Action::make('verify')
+                    ->label('Verify')
+                    ->icon('heroicon-o-check')
+                    ->requiresConfirmation()
+                    ->action(function (Price $record, $data) {
+                        $user = auth()->user();
+
+                        $status = $data['status'];
+                        $record->verified_by = $status === 'Approved' ? $user->name : 'Rejected';
+                        $record->save();
+
+                        Notification::make()
+                            ->title('Success')
+                            ->success()
+                            ->body("Price has been $status Successfully")
+                            ->send();
+                    })
+                    ->form([
+                        Forms\Components\Radio::make('status')
+                            ->label('Verification Status')
+                            ->options([
+                                'Approved' => 'Approved',
+                                'Rejected' => 'Rejected',
+                            ])
+                            ->default('Approved')
+                            ->required(),
+                    ])
+                    ->visible(fn (Price $record) => auth()->user()->hasRole('Super Admin')  && $record->approved_by !== null && $record->approved_by !== 'Rejected'), // Only for Super Admins if approved
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

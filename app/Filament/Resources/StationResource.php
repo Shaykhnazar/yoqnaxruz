@@ -7,6 +7,7 @@ use App\Filament\Resources\StationResource\RelationManagers;
 use App\Models\Station;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -57,15 +58,22 @@ class StationResource extends Resource
                 Forms\Components\TextInput::make('closing_time')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('geolocation')
+                    ->disabled()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('date_created'),
-                Forms\Components\DateTimePicker::make('date_verified'),
-                Forms\Components\DateTimePicker::make('date_approved'),
+                Forms\Components\DateTimePicker::make('date_created')
+                    ->disabled(),
+                Forms\Components\DateTimePicker::make('date_verified')
+                    ->disabled(),
+                Forms\Components\DateTimePicker::make('date_approved')
+                    ->disabled(),
                 Forms\Components\TextInput::make('added_by')
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->disabled(), // Disable direct editing
                 Forms\Components\TextInput::make('verifier')
+                    ->disabled()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('approver')
+                    ->disabled()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('comment')
                     ->columnSpanFull(),
@@ -75,6 +83,18 @@ class StationResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = auth()->user();
+
+                if ($user->hasRole('Super Admin')) {
+                    // Super Admin sees only approved by Admin and not rejected
+                    $query->whereNotNull('approver')
+                        ->whereNotIn('approver', ['Rejected', 'Pending']);
+                }
+                // Admins see all records
+                // You can add additional role-based queries here if needed
+                return $query;
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('station_id')
                     ->searchable(),
@@ -114,9 +134,17 @@ class StationResource extends Resource
                 Tables\Columns\TextColumn::make('added_by')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('verifier')
-                    ->searchable(),
+                    ->color(fn (string $state): string => match ($state) {
+                        'Pending' => 'gray',
+                        'Rejected' => 'warning',
+                        default => 'success',
+                    }),
                 Tables\Columns\TextColumn::make('approver')
-                    ->searchable(),
+                    ->color(fn (string $state): string => match ($state) {
+                        'Pending' => 'gray',
+                        'Rejected' => 'warning',
+                        default => 'success',
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -130,8 +158,67 @@ class StationResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-o-check-circle')
+                    ->requiresConfirmation()
+                    ->action(function (Station $record, $data) {
+                        $user = auth()->user();
+
+                        $status = $data['status'];
+                        $record->approver = $status === 'Approved' ? $user->name : 'Rejected';
+                        $record->date_approved = now();
+                        $record->save();
+
+                        Notification::make()
+                            ->title('Success')
+                            ->success()
+                            ->body("Station has been $status Successfully")
+                            ->send();
+                    })
+                    ->form([
+                        Forms\Components\Radio::make('status')
+                            ->label('Approval Status')
+                            ->options([
+                                'Approved' => 'Approved',
+                                'Rejected' => 'Rejected',
+                            ])
+                            ->default('Approved')
+                            ->required(),
+                    ])
+                    ->visible(fn (Station $record) => auth()->user()->hasRole('Admin')), // Only for Admins
+                Tables\Actions\Action::make('verify')
+                    ->label('Verify')
+                    ->icon('heroicon-o-check')
+                    ->requiresConfirmation()
+                    ->action(function (Station $record, $data) {
+                        $user = auth()->user();
+
+                        $status = $data['status'];
+                        $record->verifier = $status === 'Approved' ? $user->name : 'Rejected';
+                        $record->date_verified = now();
+                        $record->save();
+
+                        Notification::make()
+                            ->title('Success')
+                            ->success()
+                            ->body("Station has been $status Successfully")
+                            ->send();
+                    })
+                    ->form([
+                        Forms\Components\Radio::make('status')
+                            ->label('Verification Status')
+                            ->options([
+                                'Approved' => 'Approved',
+                                'Rejected' => 'Rejected',
+                            ])
+                            ->default('Approved')
+                            ->required(),
+                    ])
+                    ->visible(fn (Station $record) => auth()->user()->hasRole('Super Admin')  && $record->approver !== null && $record->approver !== 'Rejected'), // Only for Super Admins if approved
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

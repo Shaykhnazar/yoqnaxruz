@@ -48,15 +48,32 @@
                             <small id="confirmPasswordError" class="form-text text-danger"></small>
                         </div>
 
+{{--                        <div class="form-group">--}}
+{{--                            <label for="role">Role<span class="required">*</span></label>--}}
+{{--                            <select class="form-control" id="role" name="role">--}}
+{{--                                <option value="">Select a role</option>--}}
+{{--                                <option value="User">User</option>--}}
+{{--                                <option value="Station Manager">Station Manager</option>--}}
+{{--                            </select>--}}
+{{--                            <small id="roleError" class="form-text text-danger"></small>--}}
+{{--                        </div>--}}
                         <div class="form-group">
-                            <label for="role">Role<span class="required">*</span></label>
-                            <select class="form-control" id="role" name="role">
-                                <option value="">Select a role</option>
-                                <option value="User">User</option>
-                                <option value="Station Manager">Station Manager</option>
-                            </select>
-                            <small id="roleError" class="form-text text-danger"></small>
+                            <label>Role<span class="required">*</span></label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="role" id="roleUser" value="User" checked {{ old('role') == 'User' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="roleUser">User</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="role" id="roleStationManager" value="Station Manager" {{ old('role') == 'Station Manager' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="roleStationManager">Station Manager</label>
+                                </div>
+                            </div>
+                            <small id="roleError" class="form-text text-danger">
+                                @error('role') {{ $message }} @enderror
+                            </small>
                         </div>
+
 
                         {{-- Uncomment and include additional fields if needed --}}
                         {{--
@@ -147,10 +164,13 @@
                 }
 
                 // Role validation
-                const role = $('#role').val().trim();
-                if (role === '') {
+                const role = $('input[name="role"]:checked').val();
+
+                if (!role) {
                     $('#roleError').text('Role is required');
                     valid = false;
+                } else {
+                    $('#roleError').text(''); // Clear any previous error messages
                 }
 
                 if (valid) {

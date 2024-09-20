@@ -24,6 +24,7 @@
     <link href="{{ asset('/assets/vendor/owl.carousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/assets/vendor/venobox/venobox.css') }}" rel="stylesheet">
     <link href="{{ asset('/assets/vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ asset('/assets/vendor/select2-4.0.13/dist/css/select2.min.css') }}" rel="stylesheet">
 {{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -151,6 +152,7 @@
 <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/venobox/venobox.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+<script src="{{ asset('assets/vendor/select2-4.0.13/dist/js/select2.min.js') }}"></script>
 
 <!-- Template Main JS File -->
 <script src="{{ asset('assets/js/main.js') }}"></script>

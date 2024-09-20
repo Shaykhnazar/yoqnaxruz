@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
-            $table->string('station_id')->nullable();
+            $table->string('station_id')->index()->nullable();
             $table->timestamp('date')->nullable();
             $table->time('time')->nullable();
-            $table->string('user_id')->nullable();
+            $table->string('user_id')->index()->nullable();
             $table->text('comment');
             $table->integer('user_rating')->nullable();
             $table->string('attachments')->nullable();

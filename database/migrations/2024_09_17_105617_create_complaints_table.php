@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('complaint_id')->nullable();
             $table->timestamp('date_logged')->nullable();
             $table->time('time')->nullable();
-            $table->string('user_id')->nullable();
-            $table->string('station_id')->nullable();
+            $table->string('user_id')->index()->nullable();
+            $table->string('station_id')->index()->nullable();
             $table->text('complainant');
             $table->string('status')->nullable();
             $table->string('display')->default('Yes')->nullable();

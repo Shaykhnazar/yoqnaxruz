@@ -76,7 +76,7 @@
                         },
                         success: function(response) {
                             if (response.status) {
-                                window.location.href = '{{ url('userprofile') }}';
+                                window.location.href = '{{ url('dashboard') }}';
                             } else {
                                 $('#loginError').text(response.message);
                             }

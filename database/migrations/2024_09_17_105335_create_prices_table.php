@@ -22,10 +22,10 @@ return new class extends Migration
             $table->decimal('litres', 8, 2);
             $table->decimal('price', 8, 2);
             $table->string('phone_no')->nullable();
-            $table->string('user_id')->nullable();
-            $table->string('station_id');
-            $table->string('verified_by')->nullable();
-            $table->string('approved_by')->nullable();
+            $table->string('user_id')->index()->nullable();
+            $table->string('station_id')->index();
+            $table->string('verified_by')->index()->nullable()->default('Pending');
+            $table->string('approved_by')->index()->nullable()->default('Pending');
             $table->string('photo')->nullable();
             $table->text('comment')->nullable();
 
