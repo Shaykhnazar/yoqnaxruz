@@ -16,6 +16,10 @@
                         <h1 class="pb-3" style="font-size:24px;">Add Fuel Station</h1>
                         <form method="POST" action="{{ route('stations.store') }}" enctype="multipart/form-data">
                             @csrf
+                            <!-- Hidden fields to store latitude and longitude -->
+                            <input type="hidden" name="latitude" id="latitude">
+                            <input type="hidden" name="longitude" id="longitude">
+
                             <!-- Station Name -->
                             <div class="form-group">
                                 <label for="station_name">Station Name<span class="required">*</span></label>
@@ -40,20 +44,35 @@
                                 <input type="text" class="form-control" id="state" name="state" value="{{ old('state') }}" required>
                                 @error('state') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
+                            <!-- Zip Code -->
+                            <div class="form-group">
+                                <label for="zip_code">Zip Code</label>
+                                <input type="text" class="form-control" id="zip_code" name="zip_code" value="{{ old('zip_code') }}">
+                                @error('zip_code') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+
                             <!-- Country -->
                             <div class="form-group">
                                 <label for="country">Country<span class="required">*</span></label>
                                 <input type="text" class="form-control" id="country" name="country" value="Nigeria" readonly>
                             </div>
-                            <!-- Phone -->
+                            <!-- Phone 1 -->
                             <div class="form-group">
-                                <label for="station_phone">Station Phone</label>
-                                <input type="text" class="form-control" id="station_phone" name="station_phone" value="{{ old('station_phone') }}">
+                                <label for="station_phone1">Station Phone 1</label>
+                                <input type="text" class="form-control" id="station_phone1" name="station_phone1" value="{{ old('station_phone1') }}">
+                                @error('station_phone1') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+
+                            <!-- Phone 2 -->
+                            <div class="form-group">
+                                <label for="station_phone2">Station Phone 2</label>
+                                <input type="text" class="form-control" id="station_phone2" name="station_phone2" value="{{ old('station_phone2') }}">
+                                @error('station_phone2') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
                             <!-- Opening Time -->
                             <div class="form-group">
-                                <label for="opening_time">Opening Time</label>
-                                <input type="time" class="form-control" id="opening_time" name="opening_time" value="{{ old('opening_time') }}">
+                                <label for="opening_hours">Opening Time</label>
+                                <input type="time" class="form-control" id="opening_hours" name="opening_hours" value="{{ old('opening_hours') }}">
                             </div>
                             <!-- Closing Time -->
                             <div class="form-group">
@@ -82,3 +101,26 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the Geolocation API is supported by the browser
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        // Success callback: store latitude and longitude in hidden fields
+                        document.getElementById('latitude').value = position.coords.latitude;
+                        document.getElementById('longitude').value = position.coords.longitude;
+                    },
+                    function (error) {
+                        // Error callback: handle errors if user denies or there are issues
+                        console.error("Error getting geolocation: ", error.message);
+                    }
+                );
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+            }
+        });
+    </script>
+@endpush

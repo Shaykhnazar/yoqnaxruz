@@ -44,6 +44,8 @@
         <nav class="nav-menu d-none d-lg-block">
             <ul>
                 <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="{{ url('/') }}">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact Us</a></li>
                 @auth
                     <!-- Links for authenticated users -->
                     <li><a href="{{ url('dashboard') }}">Dashboard</a></li>
@@ -59,8 +61,6 @@
                     <li class="{{ Request::is('register') ? 'active' : '' }}"><a href="{{ route('register') }}">Register</a></li>
                 @endauth
                 <!-- Other links -->
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#contact">Contact Us</a></li>
             </ul>
         </nav>
 

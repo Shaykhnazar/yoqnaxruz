@@ -72,9 +72,12 @@ class AuthController extends Controller
             ], 422);
         }
 
+        // here I need to choose prefix of if field according to a user role
+        $prefix = $request->role === 'User' ? 'US-' : 'SM-';
+
         // Create the user
         $user = User::create([
-            'user_id'    => IDGeneratorService::generateId(User::max('id')),
+            'user_id'    => IDGeneratorService::generateId(User::max('id'), $prefix),
             'first_name' => $request->first_name,
             'surname'  => $request->surname,
             'email'      => $request->email,

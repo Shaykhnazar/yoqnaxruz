@@ -112,7 +112,7 @@ class FuelPriceController extends Controller
                 'phone_no' => $request->phone_no,
                 'station_id' => $stationId,
                 'photo' => $attachmentPath,
-                'user_geolocation' => $request->latitude?? '0' . ',' . $request->longitude?? '0',
+                'user_geolocation' => $request->latitude && $request->longitude ? $request->latitude . ',' . $request->longitude : null,
                 'entry_date' => now(),
                 'system_date' => now(),
                 'system_time' => now(),

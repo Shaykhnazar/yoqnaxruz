@@ -13,7 +13,7 @@ class StationController extends Controller
     public function index()
     {
         // Fetch stations created by the current station manager
-        $stations = Station::where('added_by', Auth::user()->user_id)->get();
+        $stations = Station::where('station_manager_id', Auth::user()->user_id)->get();
 
         return view('stations.index', compact('stations'));
     }
@@ -33,11 +33,11 @@ class StationController extends Controller
             'station_name.string' => 'Station name must be a valid string.',
             'station_name.max' => 'Station name cannot exceed 255 characters.',
 
-            'station_manager.string' => 'Station manager name must be a valid string.',
-            'station_manager.max' => 'Station manager name cannot exceed 255 characters.',
+            'station_phone1.string' => 'Station phone 1 must be a valid string.',
+            'station_phone1.max' => 'Station phone 1 cannot exceed 20 characters.',
 
-            'station_phone.string' => 'Station phone must be a valid string.',
-            'station_phone.max' => 'Station phone cannot exceed 20 characters.',
+            'station_phone2.string' => 'Station phone 2 must be a valid string.',
+            'station_phone2.max' => 'Station phone 2 cannot exceed 20 characters.',
 
             'street_address.required' => 'Street address is required.',
             'street_address.string' => 'Street address must be a valid string.',
@@ -54,15 +54,15 @@ class StationController extends Controller
             'state.string' => 'State must be a valid string.',
             'state.max' => 'State cannot exceed 255 characters.',
 
-            'zipcode.string' => 'Zipcode must be a valid string.',
-            'zipcode.max' => 'Zipcode cannot exceed 20 characters.',
+            'zip_code.string' => 'Zipcode must be a valid string.',
+            'zip_code.max' => 'Zipcode cannot exceed 20 characters.',
 
             'country.required' => 'Country is required.',
             'country.string' => 'Country must be a valid string.',
             'country.max' => 'Country cannot exceed 255 characters.',
 
-            'opening_time.string' => 'Opening time must be a valid string.',
-            'opening_time.max' => 'Opening time cannot exceed 10 characters.',
+            'opening_hours.string' => 'Opening time must be a valid string.',
+            'opening_hours.max' => 'Opening time cannot exceed 10 characters.',
 
             'closing_time.string' => 'Closing time must be a valid string.',
             'closing_time.max' => 'Closing time cannot exceed 10 characters.',
@@ -77,14 +77,14 @@ class StationController extends Controller
         $request->validate([
             'station_name' => 'required|string|max:255',
             'station_manager' => 'nullable|string|max:255',
-            'station_phone' => 'nullable|string|max:20',
+            'station_phone1' => 'nullable|string|max:20',
+            'station_phone2' => 'nullable|string|max:20',
             'street_address' => 'required|string|max:255',
-            'street_address_2' => 'nullable|string|max:255',
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
-            'zipcode' => 'nullable|string|max:20',
+            'zip_code' => 'nullable|string|max:20',
             'country' => 'required|string|max:255',
-            'opening_time' => 'nullable|string|max:10',
+            'opening_hours' => 'nullable|string|max:10',
             'closing_time' => 'nullable|string|max:10',
             'comment' => 'nullable|string',
             'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
@@ -97,20 +97,21 @@ class StationController extends Controller
         Station::create([
             'station_id' => IDGeneratorService::generateId(Station::max('id'), 'ST-'),
             'station_name' => $request->station_name,
-            'station_manager' => $request->station_manager,
-            'station_phone' => $request->station_phone,
+            'station_manager_id' => Auth::user()->user_id,
+            'station_phone1' => $request->station_phone1,
+            'station_phone2' => $request->station_phone2,
             'street_address' => $request->street_address,
-            'street_address_2' => $request->street_address_2,
             'city' => $request->city,
             'state' => $request->state,
-            'zipcode' => $request->zipcode,
+            'zip_code' => $request->zip_code,
             'country' => $request->country,
-            'opening_time' => $request->opening_time,
+            'opening_hours' => $request->opening_hours,
             'closing_time' => $request->closing_time,
+            'date_created' => date('Y-m-d H:i:s'),
             'comments' => $request->comment,
             'added_by' => Auth::user()->user_id,
             'attachment' => $attachmentPath,
-            'status' => 0,
+            'geolocation' => $request->latitude && $request->longitude ? $request->latitude . ',' . $request->longitude : null,
         ]);
 
         return redirect()->route('stations')->with('success', 'Station added successfully.');

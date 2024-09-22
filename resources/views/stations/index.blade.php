@@ -65,7 +65,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-6">
                                                                     <p><strong>Station Name: </strong>{{ $station->station_name }}</p>
-                                                                    <p><strong>Station Manager: </strong>{{ $station->station_manager_id ?? 'N/A' }}</p>
+                                                                    <p><strong>Station Manager ID: </strong>{{ $station->station_manager_id ?? 'N/A' }}</p>
                                                                     <p><strong>Phone 1: </strong>{{ $station->station_phone1 ?? 'N/A' }}</p>
                                                                     <p><strong>Phone 2: </strong>{{ $station->station_phone2 ?? 'N/A' }}</p>
                                                                     <p><strong>Address: </strong>{{ $station->street_address }}</p>
