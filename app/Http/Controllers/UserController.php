@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function showProfile()
     {
-        return view('userprofile');
+        return view('userprofile', ['authUser' => Auth::user()]);
     }
 
     // Update User Profile
@@ -30,11 +30,44 @@ class UserController extends Controller
             'first_name' => 'required|string|max:255',
             'surname'  => 'required|string|max:255',
             'email'      => 'required|email|unique:users,email,' . $user->id,
+            'date_of_birth' => 'nullable|date',
+            'phone1' => 'nullable|string|max:20',
+            'phone2' => 'nullable|string|max:20',
+            'street_address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'state' => 'nullable|string|max:255',
+            'country' => 'nullable|string|max:255',
+            'zip' => 'nullable|string|max:10',
             'photo'      => 'nullable|image|max:2048', // Max 2MB
+            'make' => 'nullable|string|max:255',
+            'model' => 'nullable|string|max:255',
+            'rego' => 'nullable|string|max:255',
+            'year' => 'nullable|string|max:255',
         ];
 
-        // Validate the request
-        $validator = Validator::make($request->all(), $rules);
+        // Define custom validation messages
+        $messages = [
+            'role.required' => 'Role is required.',
+            'role.in' => 'Invalid role selected.',
+            'first_name.required' => 'First name is required.',
+            'surname.required' => 'Surname is required.',
+            'email.required' => 'Email address is required.',
+            'email.email' => 'Please provide a valid email address.',
+            'email.unique' => 'This email address is already taken.',
+            'photo.image' => 'Profile photo must be an image.',
+            'photo.mimes' => 'Profile photo must be a file of type: jpg, jpeg, png.',
+            'photo.max' => 'Profile photo may not be greater than 2MB.',
+            'station_id.required' => 'Station ID is required for Station Managers.',
+            'station_id.string' => 'Station ID must be a string.',
+            'station_id.max' => 'Station ID cannot exceed 255 characters.',
+            'station_name.required' => 'Station Name is required for Station Managers.',
+            'station_name.string' => 'Station Name must be a string.',
+            'station_name.max' => 'Station Name cannot exceed 255 characters.',
+        ];
+
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), $rules, $messages);
+
 
         // If validation fails, return errors
         if ($validator->fails()) {
@@ -44,19 +77,14 @@ class UserController extends Controller
             ], 422);
         }
 
-        // Update user data
-        $user->first_name = $request->first_name;
-        $user->surname  = $request->surname;
-        $user->email      = $request->email;
+        $user->update($request->except('photo'));
 
         // Handle photo upload
         if ($request->hasFile('photo')) {
             $photo = $request->file('photo');
             $photoPath = $photo->store('uploads/user', 'public');
-            $user->photo = $photoPath;
+            $user->update(['photo' => $photoPath]);
         }
-
-        $user->save();
 
         return response()->json(['status' => 1, 'message' => 'Profile updated successfully.']);
     }

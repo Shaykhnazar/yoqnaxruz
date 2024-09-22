@@ -24,8 +24,8 @@
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="last_name">Last Name<span class="required">*</span></label>
-                                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name">
+                                <label for="surname">Last Name<span class="required">*</span></label>
+                                <input type="text" class="form-control" id="surname" name="surname" placeholder="Last Name">
                                 <small id="lastNameError" class="form-text text-danger"></small>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                 }
 
                 // Last Name validation
-                const lastName = $('#last_name').val().trim();
+                const lastName = $('#surname').val().trim();
                 if (lastName === '') {
                     $('#lastNameError').text('Last Name is required');
                     valid = false;

@@ -39,6 +39,9 @@ class User extends Authenticatable
         'password',       // Password for authentication
         'status',         // User status (active, inactive)
         'name',           // Full name or combined name field
+        'phone1',         // Primary phone number
+        'phone2',         // Secondary phone number
+        'street_address', // Street address
     ];
 
     /**
@@ -63,10 +66,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function complaintReplies()
-    {
-        return $this->hasMany(ComplaintReply::class);
-    }
-
 }

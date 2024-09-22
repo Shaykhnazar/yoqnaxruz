@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\IDGeneratorService;
 use Illuminate\Http\Request;
 use App\Models\Station;
 use Illuminate\Support\Facades\Auth;
@@ -46,11 +47,8 @@ class StationController extends Controller
         if ($request->hasFile('attachment')) {
             $attachmentPath = $request->file('attachment')->store('uploads/station', 'public');
         }
-        // Generate a unique complaint ID
-        $stationID = 'ST-' . random_int(100000, 999999);
-
         Station::create([
-            'station_id' => $stationID,
+            'station_id' => IDGeneratorService::generateId(Station::max('id'), 'ST-'),
             'station_name' => $request->station_name,
             'station_manager' => $request->station_manager,
             'station_phone' => $request->station_phone,

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class VehicleController extends Controller
 {
@@ -13,7 +12,7 @@ class VehicleController extends Controller
     public function index()
     {
         // Get vehicles for the currently logged-in user
-        $vehicles = Vehicle::where('user_id', Auth::id())->get();
+        $vehicles = Vehicle::where('user_id', Auth::user()->user_id)->get();
 
         // Pass the vehicle data to the view
         return view('vehicle.index', compact('vehicles'));
@@ -56,7 +55,7 @@ class VehicleController extends Controller
 
         // Create the vehicle record
         Vehicle::create([
-            'user_id' => Auth::id(),
+            'user_id' => Auth::user()->user_id,
             'title' => $request->title,
             'first_name' => $request->first_name,
             'middle_name' => $request->middle_name,

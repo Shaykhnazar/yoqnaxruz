@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\IDGeneratorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -52,7 +53,7 @@ class AuthController extends Controller
         $rules = [
             'role'       => 'required|in:User,Station Manager',
             'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
+            'surname'  => 'required|string|max:255',
             'email'      => 'required|email|unique:users,email',
             'password'   => 'required|string|min:6|confirmed',
             // 'title_id' => 'nullable|integer', // Uncomment if needed
@@ -73,15 +74,16 @@ class AuthController extends Controller
 
         // Create the user
         $user = User::create([
+            'user_id'    => IDGeneratorService::generateId(User::max('id')),
             'first_name' => $request->first_name,
-            'last_name'  => $request->last_name,
+            'surname'  => $request->surname,
             'email'      => $request->email,
             'password'   => Hash::make($request->password), // Use Laravel's Hash for security
             'title_id'   => 0,    // As per your code, title_id is set to '0'
             'dob'        => null, // As per your code, dob is set to null
             'category'    => $request->role,
             // Add other fields as necessary
-            'name' => $request->first_name . ' ' . $request->last_name
+            'name' => $request->first_name . ' ' . $request->surname
         ]);
 
         $roleName = $request->role ?? 'User'; // Default to 'User'

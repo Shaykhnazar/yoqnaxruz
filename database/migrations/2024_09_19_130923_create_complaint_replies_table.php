@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('complaint_replies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('complaint_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('complaint_id')->index();
+            $table->string('user_id')->index();
             $table->text('comment');
             $table->timestamp('date')->nullable();
             $table->string('reply_by'); // 'User' or 'Admin'

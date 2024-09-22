@@ -21,19 +21,4 @@ class ComplaintReply extends Model
         'reply_by',
     ];
 
-    /**
-     * Get the complaint that owns the reply.
-     */
-    public function complaint()
-    {
-        return $this->belongsTo(Complaint::class);
-    }
-
-    /**
-     * Get the user who made the reply.
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\UserRatingEnum;
 use App\Filament\Resources\FeedbackResource\Pages;
 use App\Filament\Resources\FeedbackResource\RelationManagers;
 use App\Models\Feedback;
@@ -31,16 +32,30 @@ class FeedbackResource extends Resource
                 Forms\Components\TextInput::make('station_id')
                     ->maxLength(255),
                 Forms\Components\DateTimePicker::make('date'),
-                Forms\Components\TextInput::make('time'),
+                Forms\Components\TimePicker::make('time'),
                 Forms\Components\TextInput::make('user_id')
                     ->maxLength(255),
                 Forms\Components\Textarea::make('comment')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('user_rating')
-                    ->numeric(),
-                Forms\Components\TextInput::make('attachments')
-                    ->maxLength(255),
+                // Use a select field for user rating using enum values
+                Forms\Components\Select::make('user_rating')
+                    ->label('Rating')
+                    ->required()
+                    ->options([
+                        UserRatingEnum::Poor->value => 'Poor',
+                        UserRatingEnum::Fair->value => 'Fair',
+                        UserRatingEnum::Good->value => 'Good',
+                        UserRatingEnum::Great->value => 'Great',
+                        UserRatingEnum::Excellent->value => 'Excellent',
+                    ]),
+
+                // Use FileUpload for attachment input
+                Forms\Components\FileUpload::make('attachments')
+                    ->label('Attachment')
+                    ->directory('uploads/feedback')
+                    ->image()
+                    ->required(),
             ]);
     }
 
@@ -57,9 +72,8 @@ class FeedbackResource extends Resource
                 Tables\Columns\TextColumn::make('user_id')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user_rating')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('attachments')
+                    ->formatStateUsing(fn ($state) => UserRatingEnum::tryFrom($state)?->label() ?? 'Unknown'),
+                Tables\Columns\ImageColumn::make('attachments')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -74,7 +88,7 @@ class FeedbackResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+//                Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -96,9 +110,14 @@ class FeedbackResource extends Resource
     {
         return [
             'index' => Pages\ListFeedback::route('/'),
-            'create' => Pages\CreateFeedback::route('/create'),
+//            'create' => Pages\CreateFeedback::route('/create'),
             'view' => Pages\ViewFeedback::route('/{record}'),
-            'edit' => Pages\EditFeedback::route('/{record}/edit'),
+//            'edit' => Pages\EditFeedback::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }

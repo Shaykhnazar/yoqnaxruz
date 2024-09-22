@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key to users table
+            $table->string('user_id')->index()->nullable();
             $table->string('title'); // Title of the vehicle owner (e.g., Mr., Ms.)
             $table->string('first_name'); // Owner's first name
             $table->string('middle_name')->nullable(); // Owner's middle name

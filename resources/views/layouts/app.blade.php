@@ -174,9 +174,14 @@
         });
     });
 </script>
+<!-- Assuming you have this in a Blade template -->
+@php
+    $GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY');
+@endphp
 
-<!-- Google Maps and Places API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initAutocomplete" async defer></script>
+    <!-- Google Maps and Places API -->
+{{--<script src="https://maps.googleapis.com/maps/api/js?key={{ $GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initAutocomplete" async defer></script>--}}
+<script src="https://maps.gomaps.pro/maps/api/js?key={{ $GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initAutocomplete" async defer></script>
 
 <script>
     var autocomplete;

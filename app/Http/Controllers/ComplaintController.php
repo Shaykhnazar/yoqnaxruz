@@ -14,7 +14,7 @@ class ComplaintController extends Controller
     // List complaints made by the current user
     public function index()
     {
-        $complaints = Complaint::where('user_id', Auth::id())->get();
+        $complaints = Complaint::where('user_id', Auth::user()->user_id)->get();
         return view('complaints.index', compact('complaints'));
     }
 

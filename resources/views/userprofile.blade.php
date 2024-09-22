@@ -22,7 +22,7 @@
                         <div class="right_col" role="main">
                             <div class="clearfix"></div>
                             <div class="sidehead">
-                                <h1 class="pb-3" style="font-size:24px;">Welcome, {{ Auth::user()->role->name ?? 'User' }}</h1>
+                                <h1 class="pb-3" style="font-size:24px;">Welcome, {{ $authUser->role->name ?? 'User' }}</h1>
                             </div>
 
                             <div class="row">
@@ -31,14 +31,14 @@
                                     <form method="POST" enctype="multipart/form-data" class="form-horizontal form-label-left" id="updateProfileForm">
                                         @csrf
                                         <div class="form-group">
-                                            <input type="hidden" name="uid" value="{{ Auth::user()->id }}">
+                                            <input type="hidden" name="uid" value="{{ $authUser->id }}">
                                         </div>
 
                                         <!-- First Name -->
                                         <div class="item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="first_name">First Name <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" name="first_name" value="{{ Auth::user()->first_name }}" required="required" class="form-control" placeholder="Enter First Name">
+                                                <input type="text" name="first_name" value="{{ $authUser->first_name }}" required="required" class="form-control" placeholder="Enter First Name">
                                                 <small id="first_nameError" class="form-text text-danger"></small>
                                             </div>
                                         </div>
@@ -47,7 +47,7 @@
                                         <div class="item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="surname">Last Name <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="text" name="surname" value="{{ Auth::user()->surname }}" required="required" class="form-control" placeholder="Enter Last Name">
+                                                <input type="text" name="surname" value="{{ $authUser->surname }}" required="required" class="form-control" placeholder="Enter Last Name">
                                                 <small id="surnameError" class="form-text text-danger"></small>
                                             </div>
                                         </div>
@@ -56,8 +56,80 @@
                                         <div class="item form-group">
                                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Email Address <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="email" name="email" value="{{ Auth::user()->email }}" required="required" class="form-control" placeholder="Enter Email Address">
+                                                <input type="email" name="email" value="{{ $authUser->email }}" required="required" class="form-control" placeholder="Enter Email Address">
                                                 <small id="emailError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Date of Birth -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="date_of_birth">Date of Birth</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="date" name="date_of_birth" value="{{ $authUser->date_of_birth }}" class="form-control">
+                                                <small id="dobError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Phone 1 -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="phone1">Phone Number 1</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="phone1" value="{{ $authUser->phone1 }}" class="form-control">
+                                                <small id="phone1Error" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Phone 2 -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="phone2">Phone Number 2</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="phone2" value="{{ $authUser->phone2 }}" class="form-control">
+                                                <small id="phone2Error" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Street Address -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="street_address">Street Address</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="street_address" value="{{ $authUser->street_address }}" class="form-control">
+                                                <small id="street_addressError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- City -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="city">City</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="city" value="{{ $authUser->city }}" class="form-control">
+                                                <small id="cityError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- State -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="state">State</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="state" value="{{ $authUser->state }}" class="form-control">
+                                                <small id="stateError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Country -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="country">Country</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="country" value="{{ $authUser->country }}" class="form-control">
+                                                <small id="countryError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Zip Code -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="zip">Zip Code</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="zip" value="{{ $authUser->zip }}" class="form-control">
+                                                <small id="zipError" class="form-text text-danger"></small>
                                             </div>
                                         </div>
 
@@ -66,10 +138,46 @@
                                             <label class="col-form-label col-md-3 col-sm-3 label-align" for="photo">Profile Photo</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="file" name="photo" class="form-control">
-                                                @if (!empty(Auth::user()->photo))
-                                                    <img src="{{ asset(Auth::user()->photo) }}" alt="Profile Photo" style="max-width: 100px; margin-top: 10px;">
+                                                @if (!empty($authUser->photo))
+                                                    <img src="{{ asset($authUser->photo) }}" alt="Profile Photo" style="max-width: 100px; margin-top: 10px;">
                                                 @endif
                                                 <small id="photoError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Model -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="model">Vehicle Model</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="model" value="{{ $authUser->model }}" class="form-control">
+                                                <small id="modelError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Registration -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="rego">Registration Number</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="rego" value="{{ $authUser->rego }}" class="form-control">
+                                                <small id="regoError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Make -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="make">Make</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="make" value="{{ $authUser->make }}" class="form-control">
+                                                <small id="makeError" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+
+                                        <!-- Year -->
+                                        <div class="item form-group">
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="year">Year</label>
+                                            <div class="col-md-6 col-sm-6">
+                                                <input type="text" name="year" value="{{ $authUser->year }}" class="form-control">
+                                                <small id="yearError" class="form-text text-danger"></small>
                                             </div>
                                         </div>
 
