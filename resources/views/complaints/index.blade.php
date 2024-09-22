@@ -62,7 +62,7 @@
                                                     <div class="row mb-4">
                                                         <div class="col-lg-12">
                                                             @if($complaint->attachments)
-                                                                <img src="{{ asset('storage/'.$complaint->attachments) }}" width="auto" />
+                                                                <img src="{{ asset('storage/'.$complaint->attachments) }}"  width="400px" />
                                                             @endif
                                                         </div>
                                                     </div>
