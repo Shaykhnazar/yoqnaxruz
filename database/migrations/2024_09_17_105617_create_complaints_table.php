@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('station_id')->index()->nullable();
             $table->text('complainant');
             $table->string('status')->nullable();
-            $table->string('display')->default('Yes')->nullable();
+            $table->boolean('display')->default(true)->nullable();
             $table->string('attachments')->nullable();
             $table->timestamps();
         });

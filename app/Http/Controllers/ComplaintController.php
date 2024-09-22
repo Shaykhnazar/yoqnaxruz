@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ComplaintReply;
 use App\Models\Station;
+use App\Services\IDGeneratorService;
 use Illuminate\Http\Request;
 use App\Models\Complaint;
 use Illuminate\Support\Facades\Auth;
@@ -14,15 +15,14 @@ class ComplaintController extends Controller
     // List complaints made by the current user
     public function index()
     {
-        $complaints = Complaint::where('user_id', Auth::user()->user_id)->get();
+        $complaints = Complaint::with('replies', 'user')->where('user_id', Auth::user()->user_id)->get();
         return view('complaints.index', compact('complaints'));
     }
 
     // Display form to create a new complaint
     public function create()
     {
-        $stations = Station::get(); // Assuming you have a Station model
-        return view('complaints.create', compact('stations'));
+        return view('complaints.create');
     }
 
     // Store a newly created complaint in the database
@@ -32,7 +32,7 @@ class ComplaintController extends Controller
             'title' => 'required|string|max:255',
             'comment' => 'required|string',
             'status' => 'nullable|string',
-            'station' => 'required|exists:stations,id',
+            'station_id' => 'required|string|max:255',
             'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', // Max 2MB
         ]);
 
@@ -41,18 +41,15 @@ class ComplaintController extends Controller
             $attachmentPath = $request->file('attachment')->store('uploads/complaints', 'public');
         }
 
-        // Generate a unique complaint ID
-        $complaintId = 'CMP-' . time();
-
         Complaint::create([
-            'complaint_id' => $complaintId,
+            'complaint_id' => IDGeneratorService::generateId(Complaint::max('id'), 'COMP_'),
             'date_logged' => now(),
             'time' => now()->format('H:i:s'),
-            'user_id' => Auth::id(),
-            'station_id' => $request->station,
+            'user_id' => Auth::user()->user_id,
+            'station_id' => $request->station_id,
             'complainant' => $request->comment,
             'status' => $request->status ?? 'pending',
-            'display' => 'Yes',
+            'display' => true,
             'attachments' => $attachmentPath,
         ]);
 
@@ -69,8 +66,8 @@ class ComplaintController extends Controller
         $complaint = Complaint::findOrFail($id);
 
         ComplaintReply::create([
-            'complaint_id' => $complaint->id,
-            'user_id' => Auth::id(),
+            'complaint_id' => $complaint->complaint_id,
+            'user_id' => Auth::user()->user_id,
             'comment' => $request->input('comment'),
             'date' => now(),
             'reply_by' => 'User', // Adjust based on the role

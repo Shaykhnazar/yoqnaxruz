@@ -17,14 +17,16 @@
                             <h1 class="pb-3" style="font-size:24px;">Tickets</h1>
                         </div>
                         @if($complaints->isNotEmpty())
-                            <table class="table table-striped table-bordered tablewhite" style="width:100%">
+                            <table class="table table-responsive table-striped table-bordered tablewhite" style="max-height: 400px; overflow-y: auto;">
                                 <thead>
                                 <tr>
                                     <th>Sr.</th>
-                                    <th>Image</th>
-                                    <th>Title</th>
+                                    <th>Complaint ID</th>
+                                    <th>Station ID</th>
                                     <th>Description</th>
                                     <th>Date Logged</th>
+                                    <th>Time</th>
+                                    <th>Image</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -32,6 +34,11 @@
                                 @foreach($complaints as $index => $complaint)
                                     <tr data-toggle="modal" data-target=".complaint-modal-{{ $complaint->id }}" style="cursor:pointer">
                                         <td>{{ $index + 1 }}</td>
+                                        <td>{{ $complaint->complaint_id }}</td>
+                                        <td>{{ $complaint->station_id }}</td>
+                                        <td>{{ $complaint->complainant }}</td>
+                                        <td>{{ $complaint->date_logged }}</td>
+                                        <td>{{ $complaint->time }}</td>
                                         <td>
                                             @if($complaint->attachments)
                                                 <img src="{{ asset('storage/'.$complaint->attachments) }}" width="100px" />
@@ -39,9 +46,6 @@
                                                 N/A
                                             @endif
                                         </td>
-                                        <td>{{ $complaint->title }}</td>
-                                        <td>{{ $complaint->complainant }}</td>
-                                        <td>{{ $complaint->date_logged }}</td>
                                         <td><span class="badge badge-primary">View</span></td>
                                     </tr>
 

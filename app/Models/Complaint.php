@@ -23,6 +23,12 @@ class Complaint extends Model
 
     public function replies()
     {
-        return $this->hasMany(ComplaintReply::class);
+        return $this->hasMany(ComplaintReply::class, 'complaint_id', 'complaint_id');
+    }
+
+    // Relationship with User who made the complaint
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

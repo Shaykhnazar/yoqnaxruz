@@ -20,13 +20,10 @@
                             @csrf
                             <div class="form-group">
                                 <label for="station_id">Select Station</label>
-                                <select class="form-control" id="station" name="station" required>
-                                    <option value="">Select Station</option>
-                                    @foreach($stations as $station)
-                                        <option value="{{ $station->id }}">{{ $station->station_name }} - {{ $station->city }}</option>
-                                    @endforeach
+                                <select class="form-control" id="station_id" name="station_id" style="width: 100%;">
+                                    <!-- Options will be loaded via AJAX -->
                                 </select>
-                                <small id="stationError" class="form-text text-danger"></small>
+                                <small id="station_idError" class="form-text text-danger"></small>
                             </div>
 
                             <div class="form-group">
@@ -58,3 +55,35 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+
+        $(document).ready(function() {
+            // Initialize Select2 on the station select element
+            $('#station_id').select2({
+                placeholder: 'Choose station...',
+                minimumInputLength: 2,
+                ajax: {
+                    url: '{{ route('stations.find') }}',
+                    dataType: 'json',
+                    delay: 250,  // Wait 250ms before triggering the request
+                    data: function (params) {
+                        return {
+                            q: params.term,  // Search term
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data,  // Return the data as results
+                        };
+                    },
+                    cache: true,
+                },
+                // Optional: Set initial value if editing a record
+                // templateResult: formatStation,
+                // templateSelection: formatStationSelection,
+            });
+        });
+    </script>
+@endpush

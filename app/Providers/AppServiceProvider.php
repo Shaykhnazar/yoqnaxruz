@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Complaint;
+use App\Models\ComplaintReply;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
                 // Calculate total notifications
                 $total = 0;
                 foreach ($helpDeskTickets as $ticket) {
-                    $repliesCount = Complaint::where('complaint_id', $ticket->complaint_id)
+                    $repliesCount = ComplaintReply::where('complaint_id', $ticket->complaint_id)
                         ->where('reply_by', 'Admin')
                         ->count();
                     $total += $repliesCount;

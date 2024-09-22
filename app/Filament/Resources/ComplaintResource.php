@@ -42,10 +42,13 @@ class ComplaintResource extends Resource
                 Forms\Components\TextInput::make('status')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('display')
-                    ->maxLength(255)
-                    ->default('Yes'),
-                Forms\Components\TextInput::make('attachments')
-                    ->maxLength(255),
+                    ->formatStateUsing(fn ($state) => $state ? 'Yes' : 'No'),
+
+                // Use FileUpload for attachment input
+                Forms\Components\FileUpload::make('attachments')
+                    ->label('Attachment')
+                    ->directory('uploads/feedback')
+                    ->image(),
             ]);
     }
 
@@ -65,10 +68,14 @@ class ComplaintResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('display')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('attachments')
-                    ->searchable(),
+                Tables\Columns\BooleanColumn::make('display')
+                    ->label('Display') // Optional label customization
+                    ->trueIcon('heroicon-o-check-circle') // Optional icon for true state
+                    ->falseIcon('heroicon-o-x-circle') // Optional icon for false state
+                    ->trueColor('success') // Optional color for true state
+                    ->falseColor('danger') // Optional color for false state
+                    ->sortable(),
+                Tables\Columns\ImageColumn::make('attachments'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -82,7 +89,7 @@ class ComplaintResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+//                Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -104,9 +111,15 @@ class ComplaintResource extends Resource
     {
         return [
             'index' => Pages\ListComplaints::route('/'),
-            'create' => Pages\CreateComplaint::route('/create'),
+//            'create' => Pages\CreateComplaint::route('/create'),
             'view' => Pages\ViewComplaint::route('/{record}'),
-            'edit' => Pages\EditComplaint::route('/{record}/edit'),
+//            'edit' => Pages\EditComplaint::route('/{record}/edit'),
         ];
     }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
 }

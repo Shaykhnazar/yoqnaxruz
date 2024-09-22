@@ -54,8 +54,7 @@ class FeedbackResource extends Resource
                 Forms\Components\FileUpload::make('attachments')
                     ->label('Attachment')
                     ->directory('uploads/feedback')
-                    ->image()
-                    ->required(),
+                    ->image(),
             ]);
     }
 
@@ -73,8 +72,7 @@ class FeedbackResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user_rating')
                     ->formatStateUsing(fn ($state) => UserRatingEnum::tryFrom($state)?->label() ?? 'Unknown'),
-                Tables\Columns\ImageColumn::make('attachments')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('attachments'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
