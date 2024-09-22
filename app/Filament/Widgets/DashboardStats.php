@@ -26,6 +26,6 @@ class DashboardStats extends Widget
         $this->complaintCount = Complaint::where('status', 'pending')->count();
         $this->feedbackCount = Feedback::count();
         $this->fuelPriceCount = Price::where(['verified_by' => 'Pending', 'approved_by' => 'Pending'])->count();
-        $this->stationCount = Station::count();
+        $this->stationCount = Station::where(['verifier' => 'Pending', 'approver' => 'Pending'])->count();
     }
 }

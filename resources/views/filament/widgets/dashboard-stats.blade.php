@@ -42,7 +42,7 @@
         </div>
         <div>
             <div class="text-lg font-semibold">{{ $stationCount }}</div>
-            <div class="text-sm text-gray-500">Stations Registered</div>
+            <div class="text-sm text-gray-500">Stations Registered and Awaiting Review</div>
             <a href="{{ route('filament.admin.resources.stations.index') }}" class="text-blue-500 hover:underline">View Stations</a>
         </div>
     </div>
