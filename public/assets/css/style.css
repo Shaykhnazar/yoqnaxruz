@@ -89,7 +89,6 @@ h1, h2, h3, h4, h5, h6 {
   max-height: 40px;
 }
 .container.searchbar {
-    
     padding: 19px 0px;
     margin-top: 80px;
     border-top: solid thin #eaeaea;
@@ -98,7 +97,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .sidebarUSER2 {
     border: solid thin #ccc;
-    
 }
 
 
@@ -119,17 +117,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .sideINNER li a {
-     
     color: #fff;
-    
+
 }
 .rightUSER {
-    
+
         border-top: solid thin #d0cfcf;
 }
 
 .pb-3, .py-3 {
-    
     padding-bottom: 1rem !important;
     padding: 20px 0px;
     border-bottom: solid thin #ccc;
@@ -138,9 +134,9 @@ h1, h2, h3, h4, h5, h6 {
 .rem {
     display: -ms-flexbox !important;
     display: flex !important;
-   
+
     padding: 19px 10px;
-    
+
 }
 
 
@@ -158,239 +154,240 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /*--------------------------------------------------------------
-# Navigation Menu
+# Navigation Menu - Fixed
 --------------------------------------------------------------*/
 /* Desktop Navigation */
 .nav-menu, .nav-menu * {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .nav-menu > ul > li {
-  position: relative;
-  white-space: nowrap;
-  float: left;
+    position: relative;
+    white-space: nowrap;
+    float: left;
 }
 
 .nav-menu a {
-  display: block;
-  position: relative;
-  color: black;
-  padding: 8px 0 12px 0;
-  transition: 0.3s;
-  font-size: 14px;
-  font-family: "Open Sans", sans-serif;
+    display: block;
+    position: relative;
+    color: black;
+    padding: 8px 0 12px 0;
+    transition: 0.3s;
+    font-size: 14px;
+    font-family: "Open Sans", sans-serif;
 }
 
 .nav-menu > ul > li + li {
-  margin-left: 30px;
+    margin-left: 30px;
 }
 
 .nav-menu > ul > li > a:before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 3px;
-  left: 0;
-  background-color: #1bac91;
-  visibility: hidden;
-  width: 0px;
-  transition: all 0.3s ease-in-out 0s;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 3px;
+    left: 0;
+    background-color: #1bac91;
+    visibility: hidden;
+    width: 0px;
+    transition: all 0.3s ease-in-out 0s;
 }
 
 .nav-menu a:hover:before, .nav-menu li:hover > a:before, .nav-menu .active > a:before {
-  visibility: visible;
-  width: 100%;
+    visibility: visible;
+    width: 100%;
 }
 
 .nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {
-  color: black;
+    color: black;
 }
 
 .nav-menu .drop-down ul {
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 100%;
-  z-index: 99;
-  opacity: 0;
-  visibility: hidden;
-  padding: 10px 0;
-  background: #fff;
-  box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
-  transition: ease all 0.3s;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    padding: 10px 0;
+    background: #fff;
+    box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+    transition: ease all 0.3s;
 }
 
 .nav-menu .drop-down:hover > ul {
-  opacity: 1;
-  visibility: visible;
+    opacity: 1;
+    visibility: visible;
 }
 
 .nav-menu .drop-down li {
-  min-width: 180px;
-  position: relative;
+    min-width: 180px;
+    position: relative;
 }
 
 .nav-menu .drop-down ul a {
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  text-transform: none;
-  color: #062822;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: none;
+    color: #062822;
 }
 
 .nav-menu .drop-down ul a:hover, .nav-menu .drop-down ul .active > a, .nav-menu .drop-down ul li:hover > a {
-  color: #1bac91;
+    color: #1bac91;
 }
 
 .nav-menu .drop-down > a:after {
-  content: "\ea99";
-  font-family: IcoFont;
-  padding-left: 5px;
+    content: "\ea99";
+    font-family: IcoFont;
+    padding-left: 5px;
 }
 
 .nav-menu .drop-down .drop-down ul {
-  top: 0;
-  left: calc(100% - 30px);
+    top: 0;
+    left: calc(100% - 30px);
 }
 
 .nav-menu .drop-down .drop-down:hover > ul {
-  opacity: 1;
-  top: 0;
-  left: 100%;
+    opacity: 1;
+    top: 0;
+    left: 100%;
 }
 
 .nav-menu .drop-down .drop-down > a {
-  padding-right: 35px;
+    padding-right: 35px;
 }
 
 .nav-menu .drop-down .drop-down > a:after {
-  content: "\eaa0";
-  font-family: IcoFont;
-  position: absolute;
-  right: 15px;
+    content: "\eaa0";
+    font-family: IcoFont;
+    position: absolute;
+    right: 15px;
 }
 
 @media (max-width: 1366px) {
-  .nav-menu .drop-down .drop-down ul {
-    left: -90%;
-  }
-  .nav-menu .drop-down .drop-down:hover > ul {
-    left: -100%;
-  }
-  .nav-menu .drop-down .drop-down > a:after {
-    content: "\ea9d";
-  }
+    .nav-menu .drop-down .drop-down ul {
+        left: -90%;
+    }
+    .nav-menu .drop-down .drop-down:hover > ul {
+        left: -100%;
+    }
+    .nav-menu .drop-down .drop-down > a:after {
+        content: "\ea9d";
+    }
 }
 
 /* Mobile Navigation */
 .mobile-nav-toggle {
-  position: fixed;
-  right: 15px;
-  top: 15px;
-  z-index: 9998;
-  border: 0;
-  background: none;
-  font-size: 24px;
-  transition: all 0.4s;
-  outline: none !important;
-  line-height: 1;
-  cursor: pointer;
-  text-align: right;
+    position: fixed;
+    right: 15px;
+    top: 15px;
+    z-index: 9998;
+    border: 0;
+    background: none;
+    font-size: 24px;
+    transition: all 0.4s;
+    outline: none !important;
+    line-height: 1;
+    cursor: pointer;
+    text-align: right;
 }
 
 .mobile-nav-toggle i {
-  color: #fff;
+    color: black; /* Changed color to black for visibility */
 }
 
 .mobile-nav {
-  position: fixed;
-  top: 55px;
-  right: 15px;
-  bottom: 15px;
-  left: 15px;
-  z-index: 9999;
-  overflow-y: auto;
-  background: #fff;
-  transition: ease-in-out 0.2s;
-  opacity: 0;
-  visibility: hidden;
-  border-radius: 10px;
-  padding: 10px 0;
+    position: fixed;
+    top: 55px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    z-index: 9999;
+    overflow-y: auto;
+    background: #1bac91; /* Updated background color to a darker color for better visibility */
+    transition: ease-in-out 0.2s;
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 10px;
+    padding: 10px 0;
 }
 
 .mobile-nav * {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .mobile-nav a {
-  display: block;
-  position: relative;
-  color: #21413c;
-  padding: 10px 20px;
-  font-weight: 500;
-  outline: none;
+    display: block;
+    position: relative;
+    color: white; /* Changed color to white for better contrast */
+    padding: 10px 20px;
+    font-weight: 500;
+    outline: none;
 }
 
 .mobile-nav a:hover, .mobile-nav .active > a, .mobile-nav li:hover > a {
-  color: #1bac91;
-  text-decoration: none;
+    color: #ffeb3b; /* Changed hover color for better visibility */
+    text-decoration: none;
 }
 
 .mobile-nav .drop-down > a:after {
-  content: "\ea99";
-  font-family: IcoFont;
-  padding-left: 10px;
-  position: absolute;
-  right: 15px;
+    content: "\ea99";
+    font-family: IcoFont;
+    padding-left: 10px;
+    position: absolute;
+    right: 15px;
 }
 
 .mobile-nav .active.drop-down > a:after {
-  content: "\eaa1";
+    content: "\eaa1";
 }
 
 .mobile-nav .drop-down > a {
-  padding-right: 35px;
+    padding-right: 35px;
 }
 
 .mobile-nav .drop-down ul {
-  display: none;
-  overflow: hidden;
+    display: none;
+    overflow: hidden;
 }
 
 .mobile-nav .drop-down li {
-  padding-left: 20px;
+    padding-left: 20px;
 }
 
 .mobile-nav-overly {
-  width: 100%;
-  height: 100%;
-  z-index: 9997;
-  top: 0;
-  left: 0;
-  position: fixed;
-  background: rgba(16, 31, 29, 0.6);
-  overflow: hidden;
-  display: none;
-  transition: ease-in-out 0.2s;
+    width: 100%;
+    height: 100%;
+    z-index: 9997;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.6); /* Changed background for better contrast */
+    overflow: hidden;
+    display: none;
+    transition: ease-in-out 0.2s;
 }
 
 .mobile-nav-active {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .mobile-nav-active .mobile-nav {
-  opacity: 1;
-  visibility: visible;
+    opacity: 1;
+    visibility: visible;
 }
 
 .mobile-nav-active .mobile-nav-toggle i {
-  color: #fff;
+    color: black; /* Keep black for good contrast */
 }
+
 
 /*--------------------------------------------------------------
 # Hero Section

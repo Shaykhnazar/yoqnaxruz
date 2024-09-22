@@ -16,10 +16,40 @@ class FuelPriceController extends Controller
     {
         // Define custom validation messages (optional)
         $messages = [
+            'purchase_date.required' => 'Purchase date is required.',
+            'purchase_date.date' => 'Purchase date must be a valid date.',
+            'purchase_date.before_or_equal' => 'Purchase date cannot be in the future.',
+
+            'purchase_time.required' => 'Purchase time is required.',
+            'purchase_time.date_format' => 'Purchase time must be in the format HH:MM.',
+
+            'litres.required' => 'Litres is required.',
+            'litres.numeric' => 'Litres must be a numeric value.',
+            'litres.min' => 'Litres cannot be negative.',
+
+            'price.required' => 'Price is required.',
+            'price.numeric' => 'Price must be a numeric value between 0 and 99999.99.',
+            'price.min' => 'Price must be at least 0.',
+            'price.max' => 'Price cannot exceed 99999.99.',
+
+            'phone_no.required' => 'Phone number is required.',
+            'phone_no.string' => 'Phone number must be a valid string.',
+            'phone_no.max' => 'Phone number cannot exceed 15 characters.',
+
             'station_id.required' => 'Station ID is required.',
-            'station_id.string' => 'Station ID must be a string.',
+            'station_id.string' => 'Station ID must be a valid string.',
             'station_id.max' => 'Station ID cannot exceed 255 characters.',
-            // Add other custom messages as needed
+
+            'attachment.file' => 'The attachment must be a file.',
+            'attachment.mimes' => 'The attachment must be a file of type: jpg, jpeg, png, pdf.',
+            'attachment.max' => 'The attachment cannot exceed 2MB.',
+
+            'comment.string' => 'Comment must be a valid string.',
+            'comment.max' => 'Comment cannot exceed 255 characters.',
+
+            'fuel_type.required' => 'Fuel type is required.',
+            'fuel_type.string' => 'Fuel type must be a valid string.',
+            'fuel_type.max' => 'Fuel type cannot exceed 255 characters.',
         ];
 
         // Validate the incoming request data
@@ -27,10 +57,12 @@ class FuelPriceController extends Controller
             'purchase_date' => 'required|date|before_or_equal:today',
             'purchase_time' => 'required|date_format:H:i',
             'litres' => 'required|numeric|min:0',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0|max:99999.99',
             'phone_no' => 'required|string|max:15',
             'station_id' => 'required|string|max:255',
             'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'comment' => 'nullable|string|max:255',
+            'fuel_type' => 'required|string|max:255',
         ], $messages);
 
         if ($validator->fails()) {
@@ -74,13 +106,13 @@ class FuelPriceController extends Controller
                 'user_id' => Auth::id()->user_id ?? 'unregistered',
                 'purchase_date' => $request->purchase_date,
                 'purchase_time' => $request->purchase_time,
+                'fuel_type' => $request->fuel_type,
                 'litres' => $request->litres,
                 'price' => $request->price,
                 'phone_no' => $request->phone_no,
                 'station_id' => $stationId,
-                'attachment' => $attachmentPath,
-                'latitude' => 0, // Placeholder
-                'longitude' => 0, // Placeholder
+                'photo' => $attachmentPath,
+                'user_geolocation' => $request->latitude?? '0' . ',' . $request->longitude?? '0',
                 'entry_date' => now(),
                 'system_date' => now(),
                 'system_time' => now(),

@@ -62,8 +62,11 @@ class PriceResource extends Resource
                 Forms\Components\TextInput::make('approved_by')
                     ->maxLength(255)
                     ->disabled(), // Disable direct editing
-                Forms\Components\TextInput::make('photo')
-                    ->maxLength(255),
+                // Use FileUpload for attachment input
+                Forms\Components\FileUpload::make('photo')
+                    ->label('Photo')
+                    ->directory('uploads/prices')
+                    ->image(),
                 Forms\Components\Textarea::make('comment')
                     ->columnSpanFull(),
             ]);

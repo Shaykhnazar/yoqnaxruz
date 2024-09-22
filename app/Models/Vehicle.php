@@ -72,4 +72,8 @@ class Vehicle extends Model
         'FCT' => 'Federal Capital Territory',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 }

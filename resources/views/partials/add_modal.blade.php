@@ -11,6 +11,10 @@
             <form method="POST" enctype="multipart/form-data" id="addFuelPrice" class="form-horizontal form-label-left">
                 <div class="modal-body">
                     @csrf
+                    <!-- Hidden fields to store latitude and longitude -->
+                    <input type="hidden" name="latitude" id="latitude">
+                    <input type="hidden" name="longitude" id="longitude">
+
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="purchase_date">Purchase Date</label>
@@ -107,6 +111,23 @@
 
             // Listen for changes on the date input
             dateInput.addEventListener('change', updateTimeMax);
+
+            // Check if the Geolocation API is supported by the browser
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        // Success callback: store latitude and longitude in hidden fields
+                        document.getElementById('latitude').value = position.coords.latitude;
+                        document.getElementById('longitude').value = position.coords.longitude;
+                    },
+                    function (error) {
+                        // Error callback: handle errors if user denies or there are issues
+                        console.error("Error getting geolocation: ", error.message);
+                    }
+                );
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+            }
         });
 
         $(document).ready(function() {

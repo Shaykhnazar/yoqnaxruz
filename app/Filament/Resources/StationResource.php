@@ -53,10 +53,8 @@ class StationResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('street_address')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('opening_hours')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('closing_time')
-                    ->maxLength(255),
+                Forms\Components\TimePicker::make('opening_hours'),
+                Forms\Components\TimePicker::make('closing_time'),
                 Forms\Components\TextInput::make('geolocation')
                     ->disabled()
                     ->maxLength(255),
