@@ -131,26 +131,58 @@ class FuelPriceController extends Controller
         return response()->json(['message' => 'Price added successfully.']);
     }
 
+//    public function fetchResults(Request $request)
+//    {
+//        $searchAddress = $request->input('searchadd');
+//
+//        // Fetch prices and join with stations table manually
+//        $pricesQuery = DB::table('prices')
+//            ->join('stations', 'prices.station_id', '=', 'stations.station_id')
+//            ->select('prices.*', 'stations.station_name', 'stations.street_address', 'stations.geolocation');
+//
+//        if ($searchAddress) {
+//            $pricesQuery->where('stations.street_address', 'LIKE', '%' . $searchAddress . '%');
+//        }
+//
+//        $prices = $pricesQuery->whereNotIn('verified_by', ['Pending', 'Rejected'])->get();
+//
+//        return view('partials.showresults', compact('prices'))->render();
+//    }
+
     public function fetchResults(Request $request)
     {
         $searchAddress = $request->input('searchadd');
 
-        // Fetch prices and join with stations table manually
-        $pricesQuery = DB::table('prices')
-            ->join('stations', 'prices.station_id', '=', 'stations.station_id')
-            ->select('prices.*', 'stations.station_name', 'stations.street_address', 'stations.geolocation');
+        // Eager load station relationship
+        $pricesQuery = Price::with('station')
+            ->whereNotIn('verified_by', ['Pending', 'Rejected']);
 
         if ($searchAddress) {
-            $pricesQuery->where('stations.street_address', 'LIKE', '%' . $searchAddress . '%');
+            $pricesQuery->whereHas('station', function ($query) use ($searchAddress) {
+                $query->where('street_address', 'LIKE', '%' . $searchAddress . '%');
+            });
         }
 
-        $prices = $pricesQuery->whereNotIn('verified_by', ['Pending', 'Rejected'])->get();
+        // Exclude prices with specific verification statuses
+        $prices = $pricesQuery->get();
 
-        if ($prices->isEmpty()) {
-            return response()->json(['message' => 'No Data Found'], 404);
-        }
+        // Transform the data as needed
+        $data = $prices->map(function ($price) {
+            return [
+                'id' => $price->id,
+                'before6amprice' => $price->before6amprice,
+                'after6amprice' => $price->after6amprice,
+                'fuel_type' => $price->fuel_type,
+                'station_name' => $price->station->station_name,
+                'street_address' => $price->station->street_address,
+                'geolocation' => $price->station->geolocation,
+                'phone_no' => $price->phone_no,
+                // Add other fields as necessary
+            ];
+        });
 
-        return view('partials.showresults', compact('prices'))->render();
+        return response()->json(['prices' => $data]);
     }
+
 }
 

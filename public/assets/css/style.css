@@ -1425,3 +1425,45 @@ section {
   font-size: 13px;
   color: #fff;
 }
+
+
+#map {
+    height: 600px;
+    width: 100%;
+}
+.pumpbefore6am{
+    font-size: .875rem;
+    color: white;
+    padding: 6px;
+    font-weight:900;
+    text-align: center;
+    background: #007f84;
+}
+.pumpafter6am{
+    font-size: .875rem;
+    color: white;
+    font-weight:900;
+    padding: 5px;
+    text-align: center;
+    background: #e10004;
+}
+.pumpname{
+    width: 65px;
+    font-size: 8px;
+    color: brown;
+    padding: 8px;
+    text-align: center;
+    font-weight:900;
+}
+.pumpgetdirections{
+    font-size: 10px;
+}
+.gm-style .gm-style-iw-c {
+    padding: 0px;
+}
+.gm-style .gm-style-iw-d {
+    display: contents;
+}
+button.gm-ui-hover-effect {
+    display: none !important;
+}

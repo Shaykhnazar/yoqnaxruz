@@ -27,4 +27,24 @@ class Price extends Model
         'photo',            // Photo attachment related to the price
         'comment',          // Additional comments
     ];
+
+    // Define relationship to Station
+    public function station()
+    {
+        return $this->belongsTo(Station::class, 'station_id', 'station_id');
+    }
+
+    public function before6amprice(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->price,
+        );
+    }
+
+    public function after6amprice(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->price,
+        );
+    }
 }

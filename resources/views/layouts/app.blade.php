@@ -26,8 +26,7 @@
     <link href="{{ asset('/assets/vendor/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('/assets/vendor/select2-4.0.13/dist/css/select2.min.css') }}" rel="stylesheet">
 {{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--}}
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Template Main CSS File -->
     <link href="{{ asset('/assets/css/style.css') }}" rel="stylesheet">
 </head>
@@ -173,51 +172,6 @@
             });
         });
     });
-</script>
-<!-- Assuming you have this in a Blade template -->
-@php
-    $GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY');
-@endphp
-
-    <!-- Google Maps and Places API -->
-{{--<script src="https://maps.googleapis.com/maps/api/js?key={{ $GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initAutocomplete" async defer></script>--}}
-<script src="https://maps.gomaps.pro/maps/api/js?key={{ $GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initAutocomplete" async defer></script>
-
-<script>
-    var autocomplete;
-
-    function initAutocomplete() {
-        // Initialize autocomplete for the address input
-        autocomplete = new google.maps.places.Autocomplete(
-            document.getElementById('search_google'),
-            { types: ['geocode'] }
-        );
-
-        autocomplete.addListener('place_changed', fillInAddress);
-    }
-
-    function fillInAddress() {
-        // Get the place details from the autocomplete object
-        var place = autocomplete.getPlace();
-        // You can process the place details here if needed
-    }
-
-    // Bias the autocomplete object to the user's geographical location
-    function geolocate() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var geolocation = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-                var circle = new google.maps.Circle({
-                    center: geolocation,
-                    radius: position.coords.accuracy
-                });
-                autocomplete.setBounds(circle.getBounds());
-            });
-        }
-    }
 </script>
 </body>
 
