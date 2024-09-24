@@ -15,9 +15,32 @@
         </div>
     </div>
 
-    <div id="showresults">
-    </div>
+    <div class="containercc">
+        <div class="row">
+            <div class="col-md-3 cl-xs-12 sidebarUSER2">
+                <div class="mb-3 mb-lg-0" style="overflow-y: scroll; height: 616px;">
+                    <ul class="nav nav-tabs flex-column" id="showresults">
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-9 cl-xs-12 rightUSER">
+                <div class=" ml-auto" data-aos="fade-left"  >
+                    <div class="tab-content">
+                        <div class="tab-pane active show" id="">
+                            <figure>
+                                <div id="map">
 
+                                </div>
+                            </figure>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- End Features Section -->
     @include('partials.add_modal')
 
 @endsection
@@ -72,8 +95,12 @@
                     maxWidth: 200
                 });
 
+                // marker.set('infowindow', infowindow);
+                infowindow.open(marker.get('map'), marker);
+                InforObj[0] = infowindow;
+
                 marker.addListener('click', function () {
-                    closeOtherInfo();
+                    // closeOtherInfo();
                     infowindow.open(map, marker);
                     InforObj[0] = infowindow;
                 });
@@ -152,7 +179,7 @@
 
         // Render prices in the sidebar and set markers
         function renderPrices(prices) {
-            var html = '<div class="containercc"><div class="row"><div class="col-md-3 cl-xs-12 sidebarUSER2"><div class="mb-3 mb-lg-0" style="overflow-y: scroll; height: 616px;"><ul class="nav nav-tabs flex-column">';
+            var html = '';
             markersOnMap = []; // Reset markers
 
             prices.forEach(function(price) {
@@ -162,7 +189,7 @@
 
                 // Add to markersOnMap array
                 markersOnMap.push({
-                    placeName: `<div class='fuelprice'>${price.before6amprice}</div><div class='fueltype'>${price.after6amprice}</div><div class='stationname'>${price.station_name}</div>`,
+                    placeName: `<div class='pumpbefore6am'>${price.before6amprice}</div><div class='pumpafter6am'>${price.after6amprice}</div><div class='pumpname'>${price.station_name}</div>`,
                     LatLng: { lat: lat, lng: lng },
                     idofmap: price.id
                 });
@@ -231,9 +258,6 @@
                     </div>
                 `;
             });
-
-            html += '</ul></div></div><div class="col-md-9 cl-xs-12 rightUSER"><div class="ml-auto"><div class="tab-content"><div class="tab-pane active show" id=""><figure><div id="map"></div></figure></div></div></div></div></div>';
-
             // Inject HTML
             $('#showresults').html(html);
 
@@ -251,7 +275,9 @@
                 var stationId = $(this).attr('class').match(/sidebar(\d+)/)[1];
 
                 // Hide all .nav-item elements (sidebar list items)
-                $('.nav-item').hide();
+                // $('.nav-item').hide();
+
+                $(".sidebara").hide();
 
                 // Hide all .sidebarcontents elements (detailed content)
                 $('.sidebarcontents').hide();
@@ -264,9 +290,10 @@
             $(document).on('click', '.backbtn', function() {
                 // Hide all .sidebarcontents elements
                 $('.sidebarcontents').hide();
+                $(".sidebara").show();
 
                 // Show all .nav-item elements (restore the sidebar list)
-                $('.nav-item').show();
+                // $('.nav-item').show();
             });
 
             // Handle marker content clicks
@@ -274,7 +301,9 @@
                 var id = $(this).attr('id').replace('content', '');
 
                 // Hide all .nav-item elements (sidebar list items)
-                $('.nav-item').hide();
+                // $('.nav-item').hide();
+
+                $(".sidebara").hide();
 
                 // Hide all .sidebarcontents elements
                 $('.sidebarcontents').hide();
