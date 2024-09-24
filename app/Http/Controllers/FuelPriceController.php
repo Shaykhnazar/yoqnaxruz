@@ -173,6 +173,7 @@ class FuelPriceController extends Controller
                 'before6amprice' => $price->before6amprice,
                 'after6amprice' => $price->after6amprice,
                 'fuel_type' => $price->fuel_type,
+                'station_id' => $price->station->station_id,
                 'station_name' => $price->station->station_name,
                 'street_address' => $price->station->street_address,
                 'geolocation' => $price->station->geolocation,

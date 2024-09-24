@@ -52,6 +52,7 @@
         var map;
         var InforObj = [];
         var markersOnMap = [];
+        let selectedMarker = null; // Store the currently selected marker
 
         // Initialize the map
         window.initMap = function() {
@@ -87,7 +88,8 @@
 
                 var marker = new google.maps.Marker({
                     position: markerData.LatLng,
-                    map: map
+                    map: map,
+                    icon: null,
                 });
 
                 var infowindow = new google.maps.InfoWindow({
@@ -105,13 +107,13 @@
                     InforObj[0] = infowindow;
                 });
 
-                marker.addListener('mouseover', function () {
-                    updatePriceListByVisibleMarkers();
-
-                });
-                marker.addListener('mouseout', function () {
-                    updatePriceListByVisibleMarkers();
-                });
+                // marker.addListener('mouseover', function () {
+                //     updatePriceListByVisibleMarkers();
+                //
+                // });
+                // marker.addListener('mouseout', function () {
+                //     updatePriceListByVisibleMarkers();
+                // });
 
                 // You can also listen for zoom or drag events on the map to update the price list
                 google.maps.event.addListener(map, 'bounds_changed', function() {
@@ -166,19 +168,19 @@
         }
 
 
-        // function myFunction(p1){
-        //     // alert(p1);
-        //     //jQuery(".sidebarcontents").hide();
-        //     //document.getElementsByClassName("sidebarcontents").style.visibility = 'hidden';
-        //     /*var y =document.getElementsByClassName("sidebarcontents");
-        //     x.style.display = "none";*/
-        //     for (var h = 0; h < markersOnMap.length; h++) {
-        //         document.getElementsByClassName('sidebarcontents')[h].style.display = 'none';
-        //         document.getElementsByClassName('sidebara')[h].style.display = 'none';
-        //     }
-        //     var x = document.getElementsByClassName("sidebarcontent"+p1)[0];
-        //     x.style.display = "block";
-        // }
+        function myFunction(p1){
+            // alert(p1);
+            //jQuery(".sidebarcontents").hide();
+            //document.getElementsByClassName("sidebarcontents").style.visibility = 'hidden';
+            /*var y =document.getElementsByClassName("sidebarcontents");
+            x.style.display = "none";*/
+            for (var h = 0; h < markersOnMap.length; h++) {
+                document.getElementsByClassName('sidebarcontents')[h].style.display = 'none';
+                document.getElementsByClassName('sidebara')[h].style.display = 'none';
+            }
+            var x = document.getElementsByClassName("sidebarcontent"+p1)[0];
+            x.style.display = "block";
+        }
         // Close any open InfoWindow
         function closeOtherInfo() {
             if (InforObj.length > 0) {
@@ -193,25 +195,25 @@
 
 
         // Initialize Autocomplete
-        window.initAutocomplete = function() {
-            var autocomplete = new google.maps.places.Autocomplete(
-                document.getElementById('searchadd'),
-                { types: ['geocode'] }
-            );
-
-            autocomplete.addListener('place_changed', function () {
-                var place = autocomplete.getPlace();
-                if (!place.geometry) {
-                    alert("No details available for input: '" + place.name + "'");
-                    return;
-                }
-
-                map.setCenter(place.geometry.location);
-                map.setZoom(17);
-
-
-            });
-        }
+        // window.initAutocomplete = function() {
+        //     var autocomplete = new google.maps.places.Autocomplete(
+        //         document.getElementById('searchadd'),
+        //         { types: ['geocode'] }
+        //     );
+        //
+        //     autocomplete.addListener('place_changed', function () {
+        //         var place = autocomplete.getPlace();
+        //         if (!place.geometry) {
+        //             alert("No details available for input: '" + place.name + "'");
+        //             return;
+        //         }
+        //
+        //         map.setCenter(place.geometry.location);
+        //         map.setZoom(17);
+        //
+        //
+        //     });
+        // }
 
         // Fetch and render prices
         function fetchPrices(searchadd = '') {
@@ -248,7 +250,7 @@
 
                 // Add to markersOnMap array
                 markersOnMap.push({
-                    placeName: `<div class='pumpbefore6am'>${price.before6amprice}</div><div class='pumpafter6am'>${price.after6amprice}</div><div class='pumpname'>${price.station_name}</div>`,
+                    placeName: `<div id='markerDiv${price.id}'><div class='pumpbefore6am'>${price.before6amprice}</div><div class='pumpafter6am'>${price.after6amprice}</div><div class='pumpname'>${price.station_name}</div></div>`,
                     LatLng: { lat: lat, lng: lng },
                     idofmap: price.id
                 });
@@ -335,7 +337,7 @@
         function attachEventListeners() {
             // Handle sidebar item clicks
             $(document).on('click', '.sidebara', function() {
-                var stationId = $(this).attr('class').match(/sidebar(\d+)/)[1];
+                var id = $(this).attr('class').match(/sidebar(\d+)/)[1];
 
                 // Hide all .nav-item elements (sidebar list items)
                 // $('.nav-item').hide();
@@ -346,7 +348,11 @@
                 $('.sidebarcontents').hide();
 
                 // Show the specific sidebarcontent for the clicked station
-                $('.sidebarcontent' + stationId).show();
+                $('.sidebarcontent' + id).show();
+
+                // here I need to add border as actual selected into marker item on map
+                // Add a border to the corresponding marker on the map
+                highlightMarker(id);
             });
 
             // Handle back button clicks using delegation
@@ -355,6 +361,11 @@
                 $('.sidebarcontents').hide();
 
                 // $(".sidebara").show();
+                // Remove the highlighted border from the selected marker
+                if (selectedMarker) {
+                    resetMarkerStyle(selectedMarker);
+                    selectedMarker = null; // Reset the selected marker
+                }
 
                 updatePriceListByVisibleMarkers();
 
@@ -376,7 +387,46 @@
 
                 // Show the specific sidebarcontent for the clicked marker
                 $('.sidebarcontent' + id).show();
+
+                // Add a border to the corresponding marker on the map
+                highlightMarker(id);
             });
+        }
+
+
+        // Function to add a highlight (border) to the selected marker
+        function highlightMarker(id) {
+            if (selectedMarker) {
+                resetMarkerStyle(selectedMarker); // Reset the previously selected marker
+            }
+
+            // Find the marker corresponding to the stationId
+            let marker = markersOnMap.find(function(markerData) {
+                return markerData.idofmap == id;
+            });
+
+            // console.log(marker)
+
+            if (marker) {
+                // Highlight the sidebar element for the marker
+                var markerDiv = document.getElementById('markerDiv' + id);
+                if (markerDiv) {
+                    markerDiv.style.border = "2px solid red";  // Set border to highlight
+                }
+
+                selectedMarker = marker; // Store the selected marker
+            }
+        }
+
+        // Function to reset the marker style to its default
+        function resetMarkerStyle(markerData) {
+            if (markerData) {
+                // Reset the border of the corresponding markerDiv
+                var markerDiv = document.getElementById('markerDiv' + markerData.idofmap);
+                if (markerDiv) {
+                    markerDiv.style.border = "none";  // Remove border to reset
+                }
+            }
         }
 
         window.onload = function() {
