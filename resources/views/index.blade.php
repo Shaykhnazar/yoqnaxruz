@@ -245,7 +245,7 @@
                         </div>
                         <div class="row" style="padding-top:30px;padding-bottom:30px;border-top:1px solid lightgrey;border-bottom:1px solid lightgrey;">
                             <div class="col-sm-12">
-                                <a class='btn btn-danger' style="background: rebeccapurple;width: 100%;" target="_blank" href='https://maps.google.com/?q=${encodeURIComponent(price.street_address)}'>
+                                <a class='btn btn-danger' style="background: rebeccapurple;width: 100%;" target="_blank" href='https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(price.geolocation)}'>
                                     Get Directions
                                 </a>
                             </div>
