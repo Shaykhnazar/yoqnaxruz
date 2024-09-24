@@ -103,7 +103,7 @@ class ComplaintResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\RepliesRelationManager::class,
         ];
     }
 

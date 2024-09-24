@@ -61,6 +61,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'super@admin.com',
             'password' => Hash::make('secret'),
+            'user_id' => 'admin',
         ]);
 
         $superAdmin->assignRole('Super Admin');
@@ -70,6 +71,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('secret'),
+            'user_id' => 'super_admin',
         ]);
 
         $superAdmin->assignRole('Admin');
