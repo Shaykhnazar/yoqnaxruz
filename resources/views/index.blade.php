@@ -16,17 +16,6 @@
     </div>
 
     <div id="showresults">
-        <div class="col-md-9 cl-xs-12 rightUSER">
-            <div class="ml-auto">
-                <div class="tab-content">
-                    <div class="tab-pane active show" id="">
-                        <figure>
-                            <div id="map"></div>
-                        </figure>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     @include('partials.add_modal')
@@ -42,14 +31,21 @@
         var markersOnMap = [];
 
         // Initialize the map
-        function initMap() {
+        window.initMap = function() {
+            // Ensure the #map element exists before initializing the map
+            var mapElement = document.getElementById('map');
+            if (!mapElement) {
+                console.log('Map element not found');
+                return;
+            }
+
             var centerCords = { lat: 0, lng: 0 }; // Default center
 
             if (markersOnMap.length > 0) {
                 centerCords = markersOnMap[0].LatLng; // Center on first marker
             }
 
-            map = new google.maps.Map(document.getElementById('map'), {
+            map = new google.maps.Map(mapElement, {
                 zoom: 17,
                 center: centerCords
             });
@@ -84,8 +80,34 @@
             });
         }
 
+        function myFunction(p1){
+            // alert(p1);
+            //jQuery(".sidebarcontents").hide();
+            //document.getElementsByClassName("sidebarcontents").style.visibility = 'hidden';
+            /*var y =document.getElementsByClassName("sidebarcontents");
+            x.style.display = "none";*/
+            for (var h = 0; h < markersOnMap.length; h++) {
+                document.getElementsByClassName('sidebarcontents')[h].style.display = 'none';
+                document.getElementsByClassName('sidebara')[h].style.display = 'none';
+            }
+            var x = document.getElementsByClassName("sidebarcontent"+p1)[0];
+            x.style.display = "block";
+        }
+        // Close any open InfoWindow
+        function closeOtherInfo() {
+            if (InforObj.length > 0) {
+                /* detach the info-window from the marker ... undocumented in the API docs */
+                InforObj[0].set("marker", null);
+                /* and close it */
+                InforObj[0].close();
+                /* blank the array */
+                InforObj.length = 0;
+            }
+        }
+
+
         // Initialize Autocomplete
-        function initAutocomplete() {
+        window.initAutocomplete = function() {
             var autocomplete = new google.maps.places.Autocomplete(
                 document.getElementById('searchadd'),
                 { types: ['geocode'] }
@@ -101,11 +123,7 @@
                 map.setCenter(place.geometry.location);
                 map.setZoom(17);
 
-                // Optionally, add a marker for the selected place
-                var marker = new google.maps.Marker({
-                    map: map,
-                    position: place.geometry.location
-                });
+
             });
         }
 
@@ -119,7 +137,6 @@
                     // console.log(response.prices);
                     if (response.prices.length > 0) {
                         renderPrices(response.prices);
-                        renderMap();
                     } else {
                         $('#showresults').html('<p style="text-align:center;margin-top:200px;color:red;font-weight:900">No Data Found</p>');
                         if (map) {
@@ -145,14 +162,14 @@
 
                 // Add to markersOnMap array
                 markersOnMap.push({
-                    placeName: `<div class='fuelprice'>${price.price}</div><div class='fueltype'>${price.fuel_type}</div><div class='stationname'>${price.station_name}</div>`,
+                    placeName: `<div class='fuelprice'>${price.before6amprice}</div><div class='fueltype'>${price.after6amprice}</div><div class='stationname'>${price.station_name}</div>`,
                     LatLng: { lat: lat, lng: lng },
                     idofmap: price.id
                 });
 
                 // Sidebar content
                 html += `
-                    <li class="nav-item">
+                    <li class="nav-item${price.id}">
                         <a class="nav-link active show sidebara sidebar${price.id}" data-toggle="tab" href="#tab-${price.id}">
                         <h4 style="    margin-bottom: 0px;">${price.before6amprice}</h4>
                         <small>Before 6am</small>
@@ -205,6 +222,11 @@
                                     Get Directions
                                 </a>
                             </div>
+                            <div class="col-sm-12 mt-2">
+                                <a class='btn btn-danger' style="background: #299ef4;width: 100%;" href='#'>
+                                    Update Prices
+                                </a>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -212,38 +234,58 @@
 
             html += '</ul></div></div><div class="col-md-9 cl-xs-12 rightUSER"><div class="ml-auto"><div class="tab-content"><div class="tab-pane active show" id=""><figure><div id="map"></div></figure></div></div></div></div></div>';
 
+            // Inject HTML
             $('#showresults').html(html);
+
+            // Now that the map container (#map) is in the DOM, initialize the map
+            initMap();
 
             // Attach event listeners
             attachEventListeners();
         }
 
-        // Attach event listeners for sidebar navigation
+        // Attach event listeners for sidebar navigation using event delegation
         function attachEventListeners() {
-            $('.sidebara').click(function(){
+            // Handle sidebar item clicks
+            $(document).on('click', '.sidebara', function() {
                 var stationId = $(this).attr('class').match(/sidebar(\d+)/)[1];
+
+                // Hide all .nav-item elements (sidebar list items)
+                $('.nav-item').hide();
+
+                // Hide all .sidebarcontents elements (detailed content)
                 $('.sidebarcontents').hide();
+
+                // Show the specific sidebarcontent for the clicked station
                 $('.sidebarcontent' + stationId).show();
             });
 
-            $('.backbtn').click(function(){
+            // Handle back button clicks using delegation
+            $(document).on('click', '.backbtn', function() {
+                // Hide all .sidebarcontents elements
                 $('.sidebarcontents').hide();
-                $('.sidebara').show();
+
+                // Show all .nav-item elements (restore the sidebar list)
+                $('.nav-item').show();
             });
 
-            $('.contentmarker').click(function(){
+            // Handle marker content clicks
+            $(document).on('click', '.contentmarker', function() {
                 var id = $(this).attr('id').replace('content', '');
+
+                // Hide all .nav-item elements (sidebar list items)
+                $('.nav-item').hide();
+
+                // Hide all .sidebarcontents elements
                 $('.sidebarcontents').hide();
+
+                // Show the specific sidebarcontent for the clicked marker
                 $('.sidebarcontent' + id).show();
             });
         }
 
-        // Render the map after prices are loaded
-        function renderMap() {
-            if (typeof initMap === 'function') {
-                initMap();
-                initAutocomplete();
-            }
+        window.onload = function() {
+            fetchPrices();
         }
 
         $(document).ready(function(){
@@ -252,186 +294,11 @@
                 var searchadd = $("#searchadd").val();
                 fetchPrices(searchadd);
             });
-
-            // Handle form submission
-            $('#addFuelPrice').on('submit', function(event) {
-                event.preventDefault(); // Prevent default form submission
-
-                let formData = new FormData(this);
-
-                $.ajax({
-                    url: "{{ route('fuel_prices.store') }}",
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        $('#addFuelPrice')[0].reset();
-                        $('#fuelPriceModal').modal('hide');
-                        alert(response.message);
-                    },
-                    error: function(jqXHR) {
-                        if(jqXHR.status === 422) {
-                            let errors = jqXHR.responseJSON.errors;
-                            $.each(errors, function(key, value) {
-                                $('#' + key + 'Error').text(value[0]);
-                            });
-                        } else {
-                            alert('An error occurred. Please try again.');
-                        }
-                    }
-                });
-            });
         });
-
-        window.onload = function () {
-            // Initial load
-            fetchPrices();
-        }
     </script>
-    <script>
-{{--        @php--}}
-{{--            // Extract latitude and longitude from the first price's geolocation if available--}}
-{{--            $firstPrice = $prices->first();--}}
-{{--            if ($firstPrice && $firstPrice->geolocation) {--}}
-{{--                $coords = explode(',', $firstPrice->geolocation);--}}
-{{--                $centerLat = isset($coords[0]) ? floatval($coords[0]) : 0;--}}
-{{--                $centerLng = isset($coords[1]) ? floatval($coords[1]) : 0;--}}
-{{--            }--}}
-{{--        @endphp--}}
-
-{{--        var map;--}}
-{{--        var InforObj = [];--}}
-{{--        var centerCords = {--}}
-{{--            lat: {{ $centerLat }},--}}
-{{--            lng: {{ $centerLng }}--}}
-{{--        };--}}
-{{--        var markersOnMap = [--}}
-{{--            @foreach($prices as $price)--}}
-{{--                @php--}}
-{{--                    if ($price->geolocation) {--}}
-{{--                        $coords = explode(',', $price->geolocation);--}}
-{{--                        $lat = isset($coords[0]) ? floatval($coords[0]) : 0;--}}
-{{--                        $lng = isset($coords[1]) ? floatval($coords[1]) : 0;--}}
-{{--                    } else {--}}
-{{--                        $lat = 0;--}}
-{{--                        $lng = 0;--}}
-{{--                    }--}}
-{{--                @endphp--}}
-{{--            {--}}
-{{--                placeName: "<div class='fuelprice'>{{ $price->price }}</div><div class='fueltype'>{{ $price->fuel_type }}</div><div class='stationname'>{{ $price->station_name }}</div>",--}}
-{{--                LatLng: [{--}}
-{{--                    lat: {{ $lat }},--}}
-{{--                    lng: {{ $lng }}--}}
-{{--                }],--}}
-{{--                idofmap: {{ $price->id }}--}}
-{{--            },--}}
-{{--            @endforeach--}}
-{{--        ];--}}
-
-{{--        function initMap() {--}}
-{{--            // Initialize the map only if the #map div exists--}}
-{{--            if (document.getElementById('map')) {--}}
-{{--                map = new google.maps.Map(document.getElementById('map'), {--}}
-{{--                    zoom: 17,--}}
-{{--                    center: centerCords--}}
-{{--                });--}}
-{{--                addMarkerInfo();--}}
-{{--                // initAutocomplete();--}}
-{{--            }--}}
-{{--        }--}}
-
-{{--        window.onload = function () {--}}
-{{--            initMap();--}}
-{{--        };--}}
-
-{{--        function addMarkerInfo(map) {--}}
-{{--            markersOnMap.forEach(function(markerData) {--}}
-{{--                var contentString = `--}}
-{{--                <div style="cursor: pointer;" class="contentmarker" onclick="myFunction(${markerData.idofmap})" id="content${markerData.idofmap}">--}}
-{{--                    ${markerData.placeName}--}}
-{{--                </div>--}}
-{{--            `;--}}
-
-{{--                var marker = new google.maps.Marker({--}}
-{{--                    position: markerData.LatLng[0],--}}
-{{--                    map: map--}}
-{{--                });--}}
-
-{{--                var infowindow = new google.maps.InfoWindow({--}}
-{{--                    content: contentString,--}}
-{{--                    maxWidth: 200--}}
-{{--                });--}}
-
-{{--                marker.addListener('click', function () {--}}
-{{--                    closeOtherInfo();--}}
-{{--                    infowindow.open(map, marker);--}}
-{{--                    InforObj[0] = infowindow;--}}
-{{--                });--}}
-{{--            });--}}
-{{--        }--}}
-
-
-{{--        function myFunction(id){--}}
-{{--            $('.sidebarcontents').hide();--}}
-{{--            $('.sidebarcontent' + id).show();--}}
-{{--        }--}}
-
-{{--        $(document).on('click', '.backbtn', function(){--}}
-{{--            $('.sidebarcontents').hide();--}}
-{{--            $('.sidebara').show();--}}
-{{--        });--}}
-
-{{--        $(document).on('click', '.contentmarker', function(){--}}
-{{--            var id = $(this).attr('id').replace('content', '');--}}
-{{--            $('.sidebarcontents').hide();--}}
-{{--            $('.sidebarcontent' + id).show();--}}
-{{--        });--}}
-
-{{--        function closeOtherInfo() {--}}
-{{--            if (InforObj.length > 0) {--}}
-{{--                /* detach the info-window from the marker ... undocumented in the API docs */--}}
-{{--                InforObj[0].set("marker", null);--}}
-{{--                /* and close it */--}}
-{{--                InforObj[0].close();--}}
-{{--                /* blank the array */--}}
-{{--                InforObj.length = 0;--}}
-{{--            }--}}
-{{--        }--}}
-
-{{--        function initAutocomplete() {--}}
-{{--            // Initialize autocomplete for the address input--}}
-{{--            var autocomplete = new google.maps.places.Autocomplete(--}}
-{{--                document.getElementById('search_google'),--}}
-{{--                { types: ['geocode'] }--}}
-{{--            );--}}
-
-{{--            autocomplete.addListener('place_changed', function () {--}}
-{{--                var place = autocomplete.getPlace();--}}
-{{--                if (!place.geometry) {--}}
-{{--                    alert("No details available for input: '" + place.name + "'");--}}
-{{--                    return;--}}
-{{--                }--}}
-
-{{--                map.setCenter(place.geometry.location);--}}
-{{--                map.setZoom(17);--}}
-
-{{--                // Optionally, add a marker for the selected place--}}
-{{--                var marker = new google.maps.Marker({--}}
-{{--                    map: map,--}}
-{{--                    position: place.geometry.location--}}
-{{--                });--}}
-{{--            });--}}
-{{--        }--}}
-    </script>
-
-    @php
-        $GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY');
-    @endphp
-
         <!-- Google Maps and Places API -->
     {{--<script src="https://maps.googleapis.com/maps/api/js?key={{ $GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initAutocomplete" async defer></script>--}}
-    <script src="https://maps.gomaps.pro/maps/api/js?key={{ $GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initMap" async defer onerror="handleMapError()"></script>
+    <script src="https://maps.gomaps.pro/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap" async defer onerror="handleMapError()"></script>
 
     <script>
         function handleMapError() {

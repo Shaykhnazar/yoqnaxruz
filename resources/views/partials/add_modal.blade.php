@@ -131,6 +131,36 @@
         });
 
         $(document).ready(function() {
+            // Handle form submission
+            $('#addFuelPrice').on('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                let formData = new FormData(this);
+
+                $.ajax({
+                    url: "{{ route('fuel_prices.store') }}",
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#addFuelPrice')[0].reset();
+                        $('#fuelPriceModal').modal('hide');
+                        alert(response.message);
+                    },
+                    error: function(jqXHR) {
+                        if(jqXHR.status === 422) {
+                            let errors = jqXHR.responseJSON.errors;
+                            $.each(errors, function(key, value) {
+                                $('#' + key + 'Error').text(value[0]);
+                            });
+                        } else {
+                            alert('An error occurred. Please try again.');
+                        }
+                    }
+                });
+            });
+
             // Initialize Select2 on the station select element
             $('#station_id').select2({
                 tags: true,
