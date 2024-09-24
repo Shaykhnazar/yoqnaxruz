@@ -139,15 +139,15 @@
 
         // Function to render only the visible prices
         function makeVisiblePricesUpdate(visibleMarkers) {
-            // Get all sidebar items
-            var allSidebarItems = document.querySelectorAll('.sidebara');
-
             // Create a Set of visible marker IDs for easy lookup
             var visibleMarkerIds = new Set(visibleMarkers.map(function(marker) {
                 return marker.idofmap;
             }));
 
-            // Loop through all sidebar items
+            // Get all sidebar items
+            var allSidebarItems = document.querySelectorAll('.sidebara');
+
+            // // Loop through all sidebar items
             allSidebarItems.forEach(function(sidebarItem) {
                 // Extract the station ID from the sidebar item's class name
                 var stationId = sidebarItem.className.match(/sidebar(\d+)/)[1];
@@ -155,28 +155,30 @@
                 // Check if the station ID exists in the visible markers set
                 if (visibleMarkerIds.has(parseInt(stationId))) {
                     // If the station ID is in the visible markers, show the item
-                    sidebarItem.parentElement.style.display = 'block';
+                    // sidebarItem.parentElement.style.display = 'block';
+                    sidebarItem.style.display = 'block';
                 } else {
                     // If the station ID is not in the visible markers, hide the item
-                    sidebarItem.parentElement.style.display = 'none';
+                    // sidebarItem.parentElement.style.display = 'none';
+                    sidebarItem.style.display = 'none';
                 }
             });
         }
 
 
-        function myFunction(p1){
-            // alert(p1);
-            //jQuery(".sidebarcontents").hide();
-            //document.getElementsByClassName("sidebarcontents").style.visibility = 'hidden';
-            /*var y =document.getElementsByClassName("sidebarcontents");
-            x.style.display = "none";*/
-            for (var h = 0; h < markersOnMap.length; h++) {
-                document.getElementsByClassName('sidebarcontents')[h].style.display = 'none';
-                document.getElementsByClassName('sidebara')[h].style.display = 'none';
-            }
-            var x = document.getElementsByClassName("sidebarcontent"+p1)[0];
-            x.style.display = "block";
-        }
+        // function myFunction(p1){
+        //     // alert(p1);
+        //     //jQuery(".sidebarcontents").hide();
+        //     //document.getElementsByClassName("sidebarcontents").style.visibility = 'hidden';
+        //     /*var y =document.getElementsByClassName("sidebarcontents");
+        //     x.style.display = "none";*/
+        //     for (var h = 0; h < markersOnMap.length; h++) {
+        //         document.getElementsByClassName('sidebarcontents')[h].style.display = 'none';
+        //         document.getElementsByClassName('sidebara')[h].style.display = 'none';
+        //     }
+        //     var x = document.getElementsByClassName("sidebarcontent"+p1)[0];
+        //     x.style.display = "block";
+        // }
         // Close any open InfoWindow
         function closeOtherInfo() {
             if (InforObj.length > 0) {
@@ -351,7 +353,10 @@
             $(document).on('click', '.backbtn', function() {
                 // Hide all .sidebarcontents elements
                 $('.sidebarcontents').hide();
-                $(".sidebara").show();
+
+                // $(".sidebara").show();
+
+                updatePriceListByVisibleMarkers();
 
                 // Show all .nav-item elements (restore the sidebar list)
                 // $('.nav-item').show();
