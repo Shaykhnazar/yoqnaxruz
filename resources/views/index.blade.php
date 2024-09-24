@@ -104,8 +104,65 @@
                     infowindow.open(map, marker);
                     InforObj[0] = infowindow;
                 });
+
+                marker.addListener('mouseover', function () {
+                    updatePriceListByVisibleMarkers();
+
+                });
+                marker.addListener('mouseout', function () {
+                    updatePriceListByVisibleMarkers();
+                });
+
+                // You can also listen for zoom or drag events on the map to update the price list
+                google.maps.event.addListener(map, 'bounds_changed', function() {
+                    updatePriceListByVisibleMarkers();
+                });
             });
         }
+
+
+        // Function to update the price list based on visible markers
+        function updatePriceListByVisibleMarkers() {
+            // Get current map bounds (visible area)
+            var bounds = map.getBounds();
+
+            // Filter markers that are within the current bounds
+            var visibleMarkers = markersOnMap.filter(function(markerData) {
+                var position = new google.maps.LatLng(markerData.LatLng.lat, markerData.LatLng.lng);
+                return bounds.contains(position);
+            });
+
+            // Render the visible markers' prices in the sidebar
+            makeVisiblePricesUpdate(visibleMarkers);
+        }
+
+
+        // Function to render only the visible prices
+        function makeVisiblePricesUpdate(visibleMarkers) {
+            // Get all sidebar items
+            var allSidebarItems = document.querySelectorAll('.sidebara');
+
+            // Create a Set of visible marker IDs for easy lookup
+            var visibleMarkerIds = new Set(visibleMarkers.map(function(marker) {
+                return marker.idofmap;
+            }));
+
+            // Loop through all sidebar items
+            allSidebarItems.forEach(function(sidebarItem) {
+                // Extract the station ID from the sidebar item's class name
+                var stationId = sidebarItem.className.match(/sidebar(\d+)/)[1];
+
+                // Check if the station ID exists in the visible markers set
+                if (visibleMarkerIds.has(parseInt(stationId))) {
+                    // If the station ID is in the visible markers, show the item
+                    sidebarItem.parentElement.style.display = 'block';
+                } else {
+                    // If the station ID is not in the visible markers, hide the item
+                    sidebarItem.parentElement.style.display = 'none';
+                }
+            });
+        }
+
 
         function myFunction(p1){
             // alert(p1);
@@ -195,7 +252,20 @@
                 });
 
                 // Sidebar content
-                html += `
+                html += makePriceItem(price);
+            });
+            // Inject HTML
+            $('#showresults').html(html);
+
+            // Now that the map container (#map) is in the DOM, initialize the map
+            initMap();
+
+            // Attach event listeners
+            attachEventListeners();
+        }
+
+        function makePriceItem(price) {
+            return `
                     <li class="nav-item${price.id}">
                         <a class="nav-link active show sidebara sidebar${price.id}" data-toggle="tab" href="#tab-${price.id}">
                         <h4 style="    margin-bottom: 0px;">${price.before6amprice}</h4>
@@ -256,16 +326,7 @@
                             </div>
                         </div>
                     </div>
-                `;
-            });
-            // Inject HTML
-            $('#showresults').html(html);
-
-            // Now that the map container (#map) is in the DOM, initialize the map
-            initMap();
-
-            // Attach event listeners
-            attachEventListeners();
+            `
         }
 
         // Attach event listeners for sidebar navigation using event delegation
