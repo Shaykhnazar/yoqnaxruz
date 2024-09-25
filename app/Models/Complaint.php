@@ -31,4 +31,10 @@ class Complaint extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
+
+    // Relationship with the Station which was associated with the complaint
+    public function station()
+    {
+        return $this->belongsTo(Station::class, 'station_id', 'station_id');
+    }
 }

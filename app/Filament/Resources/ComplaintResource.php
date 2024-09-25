@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ComplaintResource extends Resource
 {
@@ -32,10 +30,33 @@ class ComplaintResource extends Resource
                     ->maxLength(255),
                 Forms\Components\DateTimePicker::make('date_logged'),
                 Forms\Components\TextInput::make('time'),
-                Forms\Components\TextInput::make('user_id')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('station_id')
-                    ->maxLength(255),
+                // User relationship as Select
+                Forms\Components\Select::make('user_id')
+                    ->label('User')
+                    ->relationship('user', 'name') // Use 'user' relationship and display 'name'
+                    ->searchable()
+                    ->required()
+                    ->suffixAction(
+                        fn ($record) => $record && $record->user_id
+                            ? Forms\Components\Actions\Action::make('View User')
+                                ->url(route('filament.admin.resources.users.view', $record->user->id)) // Link to User detail page
+                                ->icon('heroicon-s-eye')
+                                ->openUrlInNewTab() // Open link in a new tab
+                            : null
+                    ),
+                Forms\Components\Select::make('station_id')
+                    ->label('Station')
+                    ->relationship('station', 'name') // Use 'station' relationship and display 'name'
+                    ->searchable()
+                    ->required()
+                    ->suffixAction(
+                        fn ($record) => $record && $record->station_id
+                            ? Forms\Components\Actions\Action::make('View Station')
+                                ->url(route('filament.admin.resources.stations.view', $record->station->id)) // Link to Station detail page
+                                ->icon('heroicon-s-eye')
+                                ->openUrlInNewTab() // Open link in a new tab
+                            : null
+                    ),
                 Forms\Components\Textarea::make('complainant')
                     ->required()
                     ->columnSpanFull(),
@@ -62,9 +83,18 @@ class ComplaintResource extends Resource
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('time'),
-                Tables\Columns\TextColumn::make('user_id')
+                // User relation column
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('User')
+                    ->url(fn ($record) => route('filament.admin.resources.users.view', $record->user->id)) // Link to UserResource view
+                    ->openUrlInNewTab()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('station_id')
+
+                // Station relation column
+                Tables\Columns\TextColumn::make('station.station_name')
+                    ->label('Station')
+                    ->url(fn ($record) => route('filament.admin.resources.stations.view', $record->station->id)) // Link to StationResource view
+                    ->openUrlInNewTab()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
