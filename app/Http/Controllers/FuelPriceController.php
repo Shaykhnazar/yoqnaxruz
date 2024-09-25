@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Price;
 use App\Models\Station;
+use App\Services\IDGeneratorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -88,7 +89,7 @@ class FuelPriceController extends Controller
             // However, since station_id is provided, ensure it's unique.
             try {
                 Station::create([
-                    'station_id' => $stationId,
+                    'station_id' => IDGeneratorService::generateId(Station::max('id'), 'ST-'),
                     'station_name' => $stationId, // As per your requirement
                     'date_created' => now(),
                     'added_by' => Auth::check() ? Auth::user()->user_id ?? 'unregistered' : 'unregistered',
@@ -135,54 +136,81 @@ class FuelPriceController extends Controller
 //    {
 //        $searchAddress = $request->input('searchadd');
 //
-//        // Fetch prices and join with stations table manually
-//        $pricesQuery = DB::table('prices')
-//            ->join('stations', 'prices.station_id', '=', 'stations.station_id')
-//            ->select('prices.*', 'stations.station_name', 'stations.street_address', 'stations.geolocation');
+//        // Query Stations with their latest approved price
+//        $stationsQuery = Station::with(['prices' => function ($query) {
+//            $query->whereNotIn('verified_by', ['Pending', 'Rejected'])
+//                ->whereNotIn('approved_by', ['Pending', 'Rejected'])
+//                ->latest('system_date');
+//        }]);
 //
 //        if ($searchAddress) {
-//            $pricesQuery->where('stations.street_address', 'LIKE', '%' . $searchAddress . '%');
+//            $stationsQuery->where('street_address', 'LIKE', '%' . $searchAddress . '%');
 //        }
 //
-//        $prices = $pricesQuery->whereNotIn('verified_by', ['Pending', 'Rejected'])->get();
+//        // Get the stations with their latest price
+//        $stations = $stationsQuery->get();
 //
-//        return view('partials.showresults', compact('prices'))->render();
+//        // Transform the data to return stations with their latest approved price
+//        $data = $stations->map(function ($station) {
+//            $latestPrice = $station->prices->first(); // Get the latest price from the relationship
+//
+//            return [
+//                'id' => $station->id,
+//                'station_id' => $station->station_id,
+//                'station_name' => $station->station_name,
+//                'street_address' => $station->street_address,
+//                'geolocation' => $station->geolocation,
+//                'phone_no' => $station->phone_no,
+//                'fuel_type' => $latestPrice ? $latestPrice->fuel_type : null,
+//                'before6amprice' => $latestPrice ? $latestPrice->before6amprice : null,
+//                'after6amprice' => $latestPrice ? $latestPrice->after6amprice : null,
+//            ];
+//        });
+//
+//        return response()->json(['stations' => $data]);
 //    }
 
     public function fetchResults(Request $request)
     {
         $searchAddress = $request->input('searchadd');
 
-        // Eager load station relationship
-        $pricesQuery = Price::with('station')
-            ->whereNotIn('verified_by', ['Pending', 'Rejected']);
+        // Subquery to get the latest approved price for each station
+        $latestPricesSubquery = Price::latestApprovedPricePerStation();
 
+        // Main query: Join stations with the latest prices
+        $stationsQuery = Station::joinSub($latestPricesSubquery, 'latest_prices', function ($join) {
+            $join->on('stations.station_id', '=', 'latest_prices.station_id');
+        })
+            ->join('prices', function ($join) {
+                $join->on('stations.station_id', '=', 'prices.station_id')
+                    ->on('prices.system_date', '=', 'latest_prices.latest_price_date');
+            })
+            ->select('stations.*', 'prices.fuel_type', 'prices.price', 'prices.phone_no');
+
+        // Filter by search address if provided
         if ($searchAddress) {
-            $pricesQuery->whereHas('station', function ($query) use ($searchAddress) {
-                $query->where('street_address', 'LIKE', '%' . $searchAddress . '%');
-            });
+            $stationsQuery->where('stations.street_address', 'LIKE', '%' . $searchAddress . '%');
         }
 
-        // Exclude prices with specific verification statuses
-        $prices = $pricesQuery->get();
+        // Execute the query and get results
+        $stations = $stationsQuery->get();
 
-        // Transform the data as needed
-        $data = $prices->map(function ($price) {
+        // Transform the data to return stations with their latest approved price
+        $data = $stations->map(function ($station) {
             return [
-                'id' => $price->id,
-                'before6amprice' => $price->before6amprice,
-                'after6amprice' => $price->after6amprice,
-                'fuel_type' => $price->fuel_type,
-                'station_id' => $price->station->station_id,
-                'station_name' => $price->station->station_name,
-                'street_address' => $price->station->street_address,
-                'geolocation' => $price->station->geolocation,
-                'phone_no' => $price->phone_no,
-                // Add other fields as necessary
+                'id' => $station->id,
+                'station_id' => $station->station_id,
+                'station_name' => $station->station_name,
+                'street_address' => $station->street_address,
+                'geolocation' => $station->geolocation,
+                'phone_no' => $station->phone_no,
+                'fuel_type' => $station->fuel_type,
+                'before6amprice' => $station->price,
+                'after6amprice' => $station->price,
             ];
         });
 
-        return response()->json(['prices' => $data]);
+        return response()->json(['stations' => $data]);
     }
 
 }

@@ -10,13 +10,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Fetch prices and join with stations table manually
-        $pricesQuery = DB::table('prices')
-            ->join('stations', 'prices.station_id', '=', 'stations.station_id')
-            ->select('prices.*', 'stations.station_name', 'stations.street_address', 'stations.geolocation');
-        $prices = $pricesQuery->whereNotIn('verified_by', ['Pending', 'Rejected'])->get();
-
-        return view('index', compact('prices'));
+        return view('index');
     }
 
     // Add this method to handle AJAX requests for stations

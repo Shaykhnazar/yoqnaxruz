@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class Price extends Model
 {
@@ -52,5 +54,16 @@ class Price extends Model
         return Attribute::make(
             get: fn () => $this->price,
         );
+    }
+
+    /**
+     * Scope to get the latest approved price for each station.
+     */
+    public function scopeLatestApprovedPricePerStation(Builder $query): Builder
+    {
+        return $query->select('station_id', DB::raw('MAX(system_date) as latest_price_date'))
+            ->whereNotIn('verified_by', ['Pending', 'Rejected'])
+            ->whereNotIn('approved_by', ['Pending', 'Rejected'])
+            ->groupBy('station_id');
     }
 }

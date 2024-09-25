@@ -38,6 +38,11 @@ class Station extends Model
         return $this->belongsTo(User::class, 'added_by', 'user_id');
     }
 
+    public function prices()
+    {
+        return $this->hasMany(Price::class, 'station_id', 'station_id');
+    }
+
     public function getLatitudeAttribute($value)
     {
         if ($this->geolocation) {

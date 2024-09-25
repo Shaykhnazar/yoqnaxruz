@@ -134,12 +134,12 @@
                 return bounds.contains(position);
             });
 
-            // Render the visible markers' prices in the sidebar
+            // Render the visible markers' stations in the sidebar
             makeVisiblePricesUpdate(visibleMarkers);
         }
 
 
-        // Function to render only the visible prices
+        // Function to render only the visible stations
         function makeVisiblePricesUpdate(visibleMarkers) {
             // Create a Set of visible marker IDs for easy lookup
             var visibleMarkerIds = new Set(visibleMarkers.map(function(marker) {
@@ -215,16 +215,16 @@
         //     });
         // }
 
-        // Fetch and render prices
+        // Fetch and render stations
         function fetchPrices(searchadd = '') {
             $.ajax({
                 type: "POST",
                 url: "{{ route('fuel_prices.results') }}",
                 data: { searchadd: searchadd, _token: '{{ csrf_token() }}' },
                 success: function (response) {
-                    // console.log(response.prices);
-                    if (response.prices.length > 0) {
-                        renderPrices(response.prices);
+                    // console.log(response.stations);
+                    if (response.stations.length > 0) {
+                        renderPrices(response.stations);
                     } else {
                         $('#showresults').html('<p style="text-align:center;margin-top:200px;color:red;font-weight:900">No Data Found</p>');
                         if (map) {
@@ -238,25 +238,25 @@
             });
         }
 
-        // Render prices in the sidebar and set markers
-        function renderPrices(prices) {
+        // Render stations in the sidebar and set markers
+        function renderPrices(stations) {
             var html = '';
             markersOnMap = []; // Reset markers
 
-            prices.forEach(function(price) {
-                var geolocation = price.geolocation ? price.geolocation.split(',') : [0, 0];
+            stations.forEach(function(station) {
+                var geolocation = station.geolocation ? station.geolocation.split(',') : [0, 0];
                 var lat = parseFloat(geolocation[0]);
                 var lng = parseFloat(geolocation[1]);
 
                 // Add to markersOnMap array
                 markersOnMap.push({
-                    placeName: `<div id='markerDiv${price.id}'><div class='pumpbefore6am'>${price.before6amprice}</div><div class='pumpafter6am'>${price.after6amprice}</div><div class='pumpname'>${price.station_name}</div></div>`,
+                    placeName: `<div id='markerDiv${station.id}'><div class='pumpbefore6am'>${station.before6amprice}</div><div class='pumpafter6am'>${station.after6amprice}</div><div class='pumpname'>${station.station_name}</div></div>`,
                     LatLng: { lat: lat, lng: lng },
-                    idofmap: price.id
+                    idofmap: station.id
                 });
 
                 // Sidebar content
-                html += makePriceItem(price);
+                html += makePriceItem(station);
             });
             // Inject HTML
             $('#showresults').html(html);
@@ -268,20 +268,20 @@
             attachEventListeners();
         }
 
-        function makePriceItem(price) {
+        function makePriceItem(station) {
             return `
-                    <li class="nav-item${price.id}">
-                        <a class="nav-link active show sidebara sidebar${price.id}" data-toggle="tab" href="#tab-${price.id}">
-                        <h4 style="    margin-bottom: 0px;">${price.before6amprice}</h4>
+                    <li class="nav-item${station.id}">
+                        <a class="nav-link active show sidebara sidebar${station.id}" data-toggle="tab" href="#tab-${station.id}">
+                        <h4 style="    margin-bottom: 0px;">${station.before6amprice}</h4>
                         <small>Before 6am</small>
                         <h1></h1>
-                        <h4 style="    margin-bottom: 0px;">${price.after6amprice}</h4>
+                        <h4 style="    margin-bottom: 0px;">${station.after6amprice}</h4>
                         <small>After 6am</small>
-                            <p style="font-weight: 900;"><i class="fa fa-location"></i> ${price.station_name}</p>
-                            <p style="font-size:10px"><i class="fa fa-location"></i> ${price.street_address}</p>
+                            <p style="font-weight: 900;"><i class="fa fa-location"></i> ${station.station_name}</p>
+                            <p style="font-size:10px"><i class="fa fa-location"></i> ${station.street_address}</p>
                         </a>
                     </li>
-                    <div class="sidebarcontents sidebarcontent${price.id}" style="padding:15px; border:none; background: transparent; display:none">
+                    <div class="sidebarcontents sidebarcontent${station.id}" style="padding:15px; border:none; background: transparent; display:none">
                         <div class="row">
                             <div class="col-sm-4" style="margin-top:15px;margin-bottom:15px">
                                 <button class="btn btn-primary backbtn" style="font-size: 11px;line-height: 0.5;border:1px solid lightgrey">
@@ -289,16 +289,16 @@
                                 </button>
                             </div>
                             <div class="col-sm-8" style="margin-top:15px;margin-bottom:15px">
-                                <p>${price.station_name}</p>
+                                <p>${station.station_name}</p>
                             </div>
                             <div class="col-sm-12" style="border-top:1px solid lightgrey;border-bottom:1px solid lightgrey">
                                 <p style="margin-bottom: 0px;padding-top: 10px;padding-bottom:10px">
-                                    <i class="fa fa-location-arrow"></i> ${price.street_address}
+                                    <i class="fa fa-location-arrow"></i> ${station.street_address}
                                 </p>
                             </div>
                             <div class="col-sm-12" style="border-top:1px solid lightgrey;border-bottom:1px solid lightgrey">
                                 <p style="margin-bottom: 0px;padding-top: 10px;padding-bottom:10px">
-                                    <i class="fa fa-phone" aria-hidden="true"></i> ${price.phone_no}
+                                    <i class="fa fa-phone" aria-hidden="true"></i> ${station.phone_no}
                                 </p>
                             </div>
                         </div>
@@ -307,19 +307,19 @@
                           <div class="col-sm-12" style=""><h4 style="margin-bottom: 0px;font-family: sans-serif;font-size: 18px;font-weight: 700;padding-bottom:20px">ULP prices</h4>
 
                           </div>
-                          <div class="col-sm-6" style="text-align: center;"><h4 style="    margin-bottom: 0px;    font-family: sans-serif;">${price.before6amprice}</h4>
+                          <div class="col-sm-6" style="text-align: center;"><h4 style="    margin-bottom: 0px;    font-family: sans-serif;">${station.before6amprice}</h4>
                              <small>Before 6am</small>
                            </div>
 
 
-                          <div class="col-sm-6" style="text-align: center;"><h4 style="    margin-bottom: 0px;    font-family: sans-serif;">${price.after6amprice}</h4>
+                          <div class="col-sm-6" style="text-align: center;"><h4 style="    margin-bottom: 0px;    font-family: sans-serif;">${station.after6amprice}</h4>
                             <small>After 6am</small>
                           </div>
 
                         </div>
                         <div class="row" style="padding-top:30px;padding-bottom:30px;border-top:1px solid lightgrey;border-bottom:1px solid lightgrey;">
                             <div class="col-sm-12">
-                                <a class='btn btn-danger' style="background: rebeccapurple;width: 100%;" target="_blank" href='https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(price.geolocation)}'>
+                                <a class='btn btn-danger' style="background: rebeccapurple;width: 100%;" target="_blank" href='https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(station.geolocation)}'>
                                     Get Directions
                                 </a>
                             </div>
