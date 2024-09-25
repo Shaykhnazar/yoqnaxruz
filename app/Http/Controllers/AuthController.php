@@ -25,6 +25,12 @@ class AuthController extends Controller
             return response()->json(['status' => 0, 'errors' => $validator->errors()], 422);
         }
 
+        // If user not approved yet
+        $user = User::where('email', $request->email)->first();
+        if (in_array($user->approved_by, ['Pending', 'Rejected', null])) {
+            return response()->json(['status' => 0, 'message' => 'Your account is not approved yet.']);
+        }
+
         // Credentials
         $credentials = $request->only('email', 'password');
 
@@ -86,7 +92,8 @@ class AuthController extends Controller
             'dob'        => null, // As per your code, dob is set to null
             'category'    => $request->role,
             // Add other fields as necessary
-            'name' => $request->first_name . ' ' . $request->surname
+            'name' => $request->first_name . ' ' . $request->surname,
+            'approved_by' => 'Pending',
         ]);
 
         $roleName = $request->role ?? 'User'; // Default to 'User'
