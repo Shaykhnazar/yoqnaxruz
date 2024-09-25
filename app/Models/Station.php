@@ -33,6 +33,11 @@ class Station extends Model
     ];
 
 
+    public function addedBy()
+    {
+        return $this->belongsTo(User::class, 'added_by', 'user_id');
+    }
+
     public function getLatitudeAttribute($value)
     {
         if ($this->geolocation) {

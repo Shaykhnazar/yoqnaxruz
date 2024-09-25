@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\StationResource\Pages;
-use App\Filament\Resources\StationResource\RelationManagers;
 use App\Models\Station;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,7 +11,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StationResource extends Resource
 {
@@ -64,9 +62,19 @@ class StationResource extends Resource
                     ->disabled(),
                 Forms\Components\DateTimePicker::make('date_approved')
                     ->disabled(),
-                Forms\Components\TextInput::make('added_by')
-                    ->maxLength(255)
-                    ->disabled(), // Disable direct editing
+                Forms\Components\Select::make('added_by')
+                    ->label('Added By')
+                    ->relationship('addedBy', 'name') // Use 'user' relationship and display 'name'
+                    ->searchable()
+                    ->required()
+                    ->suffixAction(
+                        fn ($record) => $record && $record->addedBy
+                            ? Forms\Components\Actions\Action::make('View User')
+                                ->url(route('filament.admin.resources.users.view', $record->addedBy->id)) // Link to User detail page
+                                ->icon('heroicon-s-eye')
+                                ->openUrlInNewTab() // Open link in a new tab
+                            : null
+                    ),
                 Forms\Components\TextInput::make('verifier')
                     ->disabled()
                     ->maxLength(255),
@@ -129,7 +137,11 @@ class StationResource extends Resource
                 Tables\Columns\TextColumn::make('date_approved')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('added_by')
+                Tables\Columns\TextColumn::make('addedBy.name')
+                    ->label('Added By')
+                    ->formatStateUsing(fn ($state) => $state ?? 'unregistered')
+                    ->url(fn ($record) => $record->addedBy ? route('filament.admin.resources.users.view', $record->addedBy->id) : null) // Link to User detail page
+                    ->openUrlInNewTab()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('verifier')
                     ->color(fn (string $state): string => match ($state) {
