@@ -7,6 +7,7 @@ use App\Services\CsvReader;
 use App\Services\DriveService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
+use Faker\Factory;
 
 class StationsTableSeeder extends Seeder
 {
@@ -17,6 +18,8 @@ class StationsTableSeeder extends Seeder
     {
         // Read the CSV file
         $csv = CsvReader::read(Storage::drive(DriveService::PARSE)->path('stations.csv'), keysToLower: false);
+        // Create a Faker instance
+        $faker = Factory::create();
 
         foreach ($csv as $row) {
             // Map CSV columns to the database fields
@@ -35,7 +38,7 @@ class StationsTableSeeder extends Seeder
                 'opening_hours' => $row['Opening_Hours'] ?? null,
                 'closing_time' => $row['closing_time'] ?? null,
                 'added_by' => $row['Added_By'] ?? null,
-                'geolocation' => $row['geolocation'] ?? null,
+                'geolocation' => $row['geolocation'] ?? $faker->latitude . ',' . $faker->longitude,
                 'verifier' => $row['Verifier'] ?? null,
                 'date_verified' => !empty($row['Date_Verified']) ? date('Y-m-d H:i:s', strtotime($row['Date_Verified'])) : null,
                 'approver' => $row['Approver'] ?? null,
