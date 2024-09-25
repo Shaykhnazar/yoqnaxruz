@@ -4,15 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Enums\UserRatingEnum;
 use App\Filament\Resources\FeedbackResource\Pages;
-use App\Filament\Resources\FeedbackResource\RelationManagers;
 use App\Models\Feedback;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FeedbackResource extends Resource
 {
@@ -29,12 +26,35 @@ class FeedbackResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('station_id')
-                    ->maxLength(255),
+                Forms\Components\Select::make('station_id')
+                    ->label('Station')
+                    ->relationship('station', 'name') // Use 'station' relationship and display 'name'
+                    ->searchable()
+                    ->required()
+                    ->suffixAction(
+                        fn ($record) => $record && $record->station
+                            ? Forms\Components\Actions\Action::make('View Station')
+                                ->url(route('filament.admin.resources.stations.view', $record->station->id)) // Link to Station detail page
+                                ->icon('heroicon-s-eye')
+                                ->openUrlInNewTab() // Open link in a new tab
+                            : null
+                    ),
                 Forms\Components\DateTimePicker::make('date'),
                 Forms\Components\TimePicker::make('time'),
-                Forms\Components\TextInput::make('user_id')
-                    ->maxLength(255),
+                // User relationship as Select
+                Forms\Components\Select::make('user_id')
+                    ->label('User')
+                    ->relationship('user', 'name') // Use 'user' relationship and display 'name'
+                    ->searchable()
+                    ->required()
+                    ->suffixAction(
+                        fn ($record) => $record && $record->user
+                            ? Forms\Components\Actions\Action::make('View User')
+                                ->url(route('filament.admin.resources.users.view', $record->user->id)) // Link to User detail page
+                                ->icon('heroicon-s-eye')
+                                ->openUrlInNewTab() // Open link in a new tab
+                            : null
+                    ),
                 Forms\Components\Textarea::make('comment')
                     ->required()
                     ->columnSpanFull(),
@@ -62,13 +82,22 @@ class FeedbackResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('station_id')
+                // Station relation column
+                Tables\Columns\TextColumn::make('station.station_name')
+                    ->label('Station')
+                    ->url(fn ($record) => route('filament.admin.resources.stations.view', $record->station->id)) // Link to StationResource view
+                    ->openUrlInNewTab()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('time'),
-                Tables\Columns\TextColumn::make('user_id')
+                // User relation column
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('User')
+                    ->formatStateUsing(fn ($state) => $state ?? 'Anonymous')
+                    ->url(fn ($record) => $record->user ? route('filament.admin.resources.users.view', $record->user->id) : null) // Link to User detail page
+                    ->openUrlInNewTab()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user_rating')
                     ->formatStateUsing(fn ($state) => UserRatingEnum::tryFrom($state)?->label() ?? 'Unknown'),

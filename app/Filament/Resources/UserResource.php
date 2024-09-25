@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -74,8 +71,11 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('year')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('status')
-                    ->maxLength(255)
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'active' => 'Active',
+                        'inactive' => 'Inactive',
+                    ])
                     ->default('active'),
                 Forms\Components\TextInput::make('name')
                     ->required()
@@ -140,8 +140,13 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('year')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
+                Tables\Columns\SelectColumn::make('status')
+                    ->options([
+                        'active' => 'Active',
+                        'inactive' => 'Inactive',
+                    ])
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')

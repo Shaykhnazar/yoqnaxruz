@@ -18,4 +18,14 @@ class Feedback extends Model
         'user_rating',  // User rating
         'attachments',  // Attachments related to the feedback
     ];
+
+    public function station()
+    {
+        return $this->belongsTo(Station::class, 'station_id', 'station_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
 }
