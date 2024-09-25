@@ -5,12 +5,24 @@ namespace App\Filament\Resources\ComplaintResource\Pages;
 use App\Filament\Resources\ComplaintResource;
 use App\Models\ComplaintReply;
 use Filament\Forms;
+use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewComplaint extends ViewRecord
 {
 
     protected static string $resource = ComplaintResource::class;
+
+    protected function getActions(): array
+    {
+        return [
+            // Edit Button
+//            Actions\EditAction::make(),
+
+            // Delete Button
+            Actions\DeleteAction::make(),
+        ];
+    }
 
     // Define a form to submit a reply
     protected function getFormSchema(): array

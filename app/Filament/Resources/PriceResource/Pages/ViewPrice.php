@@ -16,6 +16,12 @@ class ViewPrice extends ViewRecord
     protected function getActions(): array
     {
         return [
+            // Edit Button
+            Actions\EditAction::make(),
+
+            // Delete Button
+            Actions\DeleteAction::make(),
+
             Actions\Action::make('verify')
                 ->label('Verify')
                 ->icon('heroicon-o-check')

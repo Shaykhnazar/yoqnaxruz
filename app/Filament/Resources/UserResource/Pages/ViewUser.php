@@ -17,6 +17,12 @@ class ViewUser extends ViewRecord
     protected function getActions(): array
     {
         return [
+            // Edit Button
+            Actions\EditAction::make(),
+
+            // Delete Button
+            Actions\DeleteAction::make(),
+
             Actions\Action::make('approve')
                 ->label('Approve')
                 ->icon('heroicon-o-check-circle')
