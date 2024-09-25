@@ -4,7 +4,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <section id="features" class="features" style="margin-top: 20px; padding-bottom: 0px !important;">
+    <section id="features" class="features">
         <div class="container">
             <div class="row">
 

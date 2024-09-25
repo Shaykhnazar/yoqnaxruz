@@ -3,7 +3,7 @@
 @section('title', 'Login')
 
 @section('content')
-    <section id="features" class="features" style="margin-top: 20px; padding-bottom: 0px !important;">
+    <section id="features" class="features">
         <div class="container">
             <div class="row">
                 <div class="mt-5" style="margin-left: auto; margin-right: auto; width: 500px; margin-bottom: 200px;">

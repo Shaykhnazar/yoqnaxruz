@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <section id="features" class="features" style="margin-top: 20px; padding-bottom: 0px !important;">
+    <section id="features" class="features">
         <div class="container">
             <div class="row">
                 <div class="col-md-2 col-xs-12 sidebarUSER">
