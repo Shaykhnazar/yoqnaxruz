@@ -44,6 +44,7 @@ class UsersTableSeeder extends Seeder
                 'name' => $row['First Name'] . ' ' . $row['Surname'],
                 'email' => $row['email'],
                 'password' => Hash::make(Str::random(10)), // Generating a random password
+                'approved_by' => 'Pending',
             ];
 
             // Insert or update the user record

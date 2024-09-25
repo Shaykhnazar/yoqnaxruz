@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -119,7 +120,11 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('created_by')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('approved_by')
-                    ->searchable(),
+                    ->color(fn (string $state): string => match ($state) {
+                        'Pending' => 'gray',
+                        'Rejected' => 'warning',
+                        default => 'success',
+                    }),
                 Tables\Columns\TextColumn::make('city')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('state')
@@ -167,6 +172,33 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-o-check-circle')
+                    ->requiresConfirmation()
+                    ->action(function (User $record, $data) {
+                        $user = auth()->user();
+
+                        $status = $data['status'];
+                        $record->approved_by = $status === 'Approved' ? $user->name : 'Rejected';
+                        $record->save();
+
+                        Notification::make()
+                            ->title('Success')
+                            ->success()
+                            ->body("User has been $status Successfully")
+                            ->send();
+                    })->form([
+                        Forms\Components\Radio::make('status')
+                            ->label('Approval Status')
+                            ->options([
+                                'Approved' => 'Approved',
+                                'Rejected' => 'Rejected',
+                            ])
+                            ->default('Approved')
+                            ->required(),
+                    ])
+                    ->visible(fn (User $record) => in_array($record->approved_by, ['Pending', null])),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
