@@ -34,6 +34,12 @@ class Price extends Model
         return $this->belongsTo(Station::class, 'station_id', 'station_id');
     }
 
+    // Define relationship to User
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
+    }
+
     public function before6amprice(): Attribute
     {
         return Attribute::make(

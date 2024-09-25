@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PriceResource\Pages;
-use App\Filament\Resources\PriceResource\RelationManagers;
 use App\Models\Price;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,7 +11,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PriceResource extends Resource
 {
@@ -51,11 +49,33 @@ class PriceResource extends Resource
                 Forms\Components\TextInput::make('phone_no')
                     ->tel()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('user_id')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('station_id')
+                // User relationship as Select
+                Forms\Components\Select::make('user_id')
+                    ->label('User')
+                    ->relationship('user', 'name') // Use 'user' relationship and display 'name'
+                    ->searchable()
                     ->required()
-                    ->maxLength(255),
+                    ->suffixAction(
+                        fn ($record) => $record && $record->user
+                            ? Forms\Components\Actions\Action::make('View User')
+                                ->url(route('filament.admin.resources.users.view', $record->user->id)) // Link to User detail page
+                                ->icon('heroicon-s-eye')
+                                ->openUrlInNewTab() // Open link in a new tab
+                            : null
+                    ),
+                Forms\Components\Select::make('station_id')
+                    ->label('Station')
+                    ->relationship('station', 'name') // Use 'station' relationship and display 'name'
+                    ->searchable()
+                    ->required()
+                    ->suffixAction(
+                        fn ($record) => $record && $record->station
+                            ? Forms\Components\Actions\Action::make('View Station')
+                                ->url(route('filament.admin.resources.stations.view', $record->station->id)) // Link to Station detail page
+                                ->icon('heroicon-s-eye')
+                                ->openUrlInNewTab() // Open link in a new tab
+                            : null
+                    ),
                 Forms\Components\TextInput::make('verified_by')
                     ->maxLength(255)
                     ->disabled(), // Disable direct editing
@@ -109,9 +129,18 @@ class PriceResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('phone_no')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('user_id')
+                // User relation column
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('User')
+                    ->formatStateUsing(fn ($state) => $state ?? 'Unregistered')
+                    ->url(fn ($record) => $record->user ? route('filament.admin.resources.users.view', $record->user->id) : null) // Link to User detail page
+                    ->openUrlInNewTab()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('station_id')
+                // Station relation column
+                Tables\Columns\TextColumn::make('station.station_name')
+                    ->label('Station')
+                    ->url(fn ($record) => route('filament.admin.resources.stations.view', $record->station->id)) // Link to StationResource view
+                    ->openUrlInNewTab()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('verified_by')
                     ->color(fn (string $state): string => match ($state) {
