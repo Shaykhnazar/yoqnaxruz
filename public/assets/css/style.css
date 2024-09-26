@@ -1481,3 +1481,53 @@ button.gm-ui-hover-effect {
     flex: 1;
     padding-bottom: 0;
 }
+
+.station-item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.station-prices {
+    text-align: left;
+}
+
+.price-today h4, .price-tomorrow h4 {
+    margin: 0;
+}
+
+.price-today h4 {
+    color: #e63946; /* Red color for today’s price */
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.price-tomorrow h4 {
+    font-size: 16px;
+}
+
+.station-info {
+    text-align: center;
+    flex-grow: 1;
+}
+
+.station-info p {
+    margin: 0;
+}
+
+.station-info p:first-child {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.station-info p:last-child {
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.station-logo img {
+    height: 40px;
+    width: auto;
+}

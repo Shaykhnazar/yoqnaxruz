@@ -270,17 +270,45 @@
 
         function makePriceItem(station) {
             return `
-                    <li class="nav-item${station.id}">
+                     <li class="nav-item${station.id}">
                         <a class="nav-link active show sidebara sidebar${station.id}" data-toggle="tab" href="#tab-${station.id}">
-                        <h4 style="    margin-bottom: 0px;">${station.before6amprice}</h4>
-                        <small>Before 6am</small>
-                        <h1></h1>
-                        <h4 style="    margin-bottom: 0px;">${station.after6amprice}</h4>
-                        <small>After 6am</small>
-                            <p style="font-weight: 900;"><i class="fa fa-location"></i> ${station.station_name}</p>
-                            <p style="font-size:10px"><i class="fa fa-location"></i> ${station.street_address}</p>
+                            <div class="station-item-container" style="display: flex; justify-content: space-between; align-items: center;">
+
+                                <!-- Left Section: Prices -->
+                                <div class="station-prices" style="text-align: left;">
+                                    <div class="price-today">
+                                        <h4 style="color: #e63946; font-size: 20px; margin-bottom: 5px;">
+                                            ${station.before6amprice ? station.before6amprice : 'N/A'}
+                                        </h4>
+                                        <small style="font-size: 12px; font-weight: bold;">Today</small>
+                                    </div>
+                                    <div class="price-tomorrow">
+                                        <h4 style="font-size: 16px; margin-bottom: 5px;">
+                                            ${station.after6amprice ? station.after6amprice : 'N/A'}
+                                        </h4>
+                                        <small style="font-size: 12px;">Tomorrow</small>
+                                    </div>
+                                </div>
+
+                                <!-- Center Section: Station Info -->
+                                <div class="station-info" style="text-align: center; flex-grow: 1;">
+                                    <p style="font-size: 18px; font-weight: bold;">
+                                        ${station.station_name}
+                                    </p>
+                                    <p style="font-size: 12px; margin-top: 5px;">
+                                        ${station.street_address}
+                                    </p>
+                                </div>
+
+                                <!-- Right Section: Station Logo -->
+                                <div class="station-logo" style="margin-left: 10px;">
+                                    <img src="/assets/img/fuel-logo.png" alt="${station.station_name} Logo" style="height: 50px; width: auto;" />
+                                </div>
+                            </div>
                         </a>
                     </li>
+
+
                     <div class="sidebarcontents sidebarcontent${station.id}" style="padding:15px; border:none; background: transparent; display:none">
                         <div class="row">
                             <div class="col-sm-4" style="margin-top:15px;margin-bottom:15px">
