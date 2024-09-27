@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>@yield('title', 'Fuel Prices')</title>
+    <title>@yield('title', __('site.title'))</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -38,40 +38,30 @@
     <header id="header" class="fixed-top">
         <div class="container d-flex rem">
             <div class="logo mr-auto">
-                <h1 class="text-light"><a href="{{ route('home') }}">Fuel Prices</a></h1>
+                <h1 class="text-light"><a href="{{ route('home') }}">{{ __('site.title') }}</a></h1>
             </div>
 
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
-                    <li class="{{ Route::currentRouteNamed('home') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#contact">Contact Us</a></li>
+                    <li class="{{ Route::currentRouteNamed('home') ? 'active' : '' }}"><a href="{{ route('home') }}">{{__('site.home')}}</a></li>
+                    <li><a href="#about">{{__('site.about')}}</a></li>
+                    <li><a href="#contact">{{__('site.contact')}}</a></li>
                     @auth
                         <!-- Links for authenticated users -->
-                        <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                        <li><a href="{{ route('dashboard') }}">{{__('site.dashboard')}}</a></li>
                         <li>
-                            <a href="#" class="logout">Logout</a>
+                            <a href="#" class="logout">{{__('site.logout')}}</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
                         </li>
                     @else
                         <!-- Links for guests -->
-                        <li class="{{ Route::currentRouteNamed('login') ? 'active' : '' }}"><a href="{{ route('login') }}">Login</a></li>
-                        <li class="{{ Route::currentRouteNamed('register') ? 'active' : '' }}"><a href="{{ route('register') }}">Register</a></li>
+                        <li class="{{ Route::currentRouteNamed('login') ? 'active' : '' }}"><a href="{{ route('login') }}">{{ __('site.login') }}</a></li>
+                        <li class="{{ Route::currentRouteNamed('register') ? 'active' : '' }}"><a href="{{ route('register') }}">{{__('site.register')}}</a></li>
                     @endauth
                     <!-- Language Chooser with Flags -->
                     <li class="dropdown">
-{{--                        <form id="language-switch-form" action="{{ route('language.switch') }}" method="POST">--}}
-{{--                            @csrf--}}
-{{--                            <select name="locale" id="language-switch" class="form-control" onchange="this.form.submit()">--}}
-{{--                                <option value="en" data-icon="/assets/img/svg-country-flags/en.svg" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English</option>--}}
-{{--                                <option value="ru" data-icon="/assets/img/svg-country-flags/ru.svg" {{ app()->getLocale() == 'ru' ? 'selected' : '' }}>Русский</option>--}}
-{{--                                <option value="uz_Latn" data-icon="/assets/img/svg-country-flags/uz_Latn.svg" {{ app()->getLocale() == 'uz_Latn' ? 'selected' : '' }}>O'zbek (Latin)</option>--}}
-{{--                                <option value="uz_Cryl" data-icon="/assets/img/svg-country-flags/uz_Cryl.svg" {{ app()->getLocale() == 'uz_Cryl' ? 'selected' : '' }}>Ўзбек (Кирилл)</option>--}}
-{{--                            </select>--}}
-{{--                        </form>--}}
-
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <img src="/assets/img/svg-country-flags/{{ app()->getLocale() }}.svg " alt="Language Flag" style="height: 20px; width: auto;">
                         </a>
@@ -171,7 +161,7 @@
 
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong><span>Fuel Prices</span></strong>. All Rights Reserved<!-- THE LICENCE FOR THIS TEMPLATE IS PURCASED BY MY DEVELOPER, EMAIL - saurabhmanna2010@gmail.com -->
+                &copy; {{ __('site.copyright') }} <strong><span>{{ __('site.title') }}</span></strong>. {{ __('site.all_rights_reserved') }}<!-- THE LICENCE FOR THIS TEMPLATE IS PURCASED BY MY DEVELOPER, EMAIL - saurabhmanna2010@gmail.com -->
 
             </div>
 

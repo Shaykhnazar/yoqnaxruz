@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'User Profile')
+@section('title', __('site.user_profile'))
 
 @section('content')
     <section id="features" class="features">
@@ -21,7 +21,7 @@
                         <div class="right_col" role="main">
                             <div class="clearfix"></div>
                             <div class="sidehead">
-                                <h1 class="pb-3" style="font-size:24px;">Welcome, {{ $authUser->role->name ?? 'User' }}</h1>
+                                <h1 class="pb-3" style="font-size:24px;">{{ __('site.welcome') }}, {{ $authUser->role->name ?? __('site.user') }}</h1>
                             </div>
 
                             <div class="row">
@@ -35,7 +35,7 @@
 
                                         <!-- First Name -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first_name">First Name <span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="first_name">{{ __('site.first_name') }} <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="first_name" value="{{ $authUser->first_name }}" required="required" class="form-control" placeholder="Enter First Name">
                                                 <small id="first_nameError" class="form-text text-danger"></small>
@@ -44,7 +44,7 @@
 
                                         <!-- Last Name -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="surname">Last Name <span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="surname">{{ __('site.last_name') }} <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="surname" value="{{ $authUser->surname }}" required="required" class="form-control" placeholder="Enter Last Name">
                                                 <small id="surnameError" class="form-text text-danger"></small>
@@ -53,7 +53,7 @@
 
                                         <!-- Email Address -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Email Address <span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">{{ __('site.email') }} <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="email" name="email" value="{{ $authUser->email }}" required="required" class="form-control" placeholder="Enter Email Address">
                                                 <small id="emailError" class="form-text text-danger"></small>
@@ -62,7 +62,7 @@
 
                                         <!-- Date of Birth -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="date_of_birth">Date of Birth</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="date_of_birth">{{ __('site.dob') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="date" name="date_of_birth" value="{{ $authUser->date_of_birth }}" class="form-control">
                                                 <small id="dobError" class="form-text text-danger"></small>
@@ -71,7 +71,7 @@
 
                                         <!-- Phone 1 -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="phone1">Phone Number 1</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="phone1">{{ __('site.phone1') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="phone1" value="{{ $authUser->phone1 }}" class="form-control">
                                                 <small id="phone1Error" class="form-text text-danger"></small>
@@ -80,7 +80,7 @@
 
                                         <!-- Phone 2 -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="phone2">Phone Number 2</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="phone2">{{ __('site.phone2') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="phone2" value="{{ $authUser->phone2 }}" class="form-control">
                                                 <small id="phone2Error" class="form-text text-danger"></small>
@@ -89,7 +89,7 @@
 
                                         <!-- Street Address -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="street_address">Street Address</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="street_address">{{ __('site.street_address') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="street_address" value="{{ $authUser->street_address }}" class="form-control">
                                                 <small id="street_addressError" class="form-text text-danger"></small>
@@ -98,7 +98,7 @@
 
                                         <!-- City -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="city">City</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="city">{{ __('site.city') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="city" value="{{ $authUser->city }}" class="form-control">
                                                 <small id="cityError" class="form-text text-danger"></small>
@@ -107,7 +107,7 @@
 
                                         <!-- State -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="state">State</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="state">{{ __('site.state') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="state" value="{{ $authUser->state }}" class="form-control">
                                                 <small id="stateError" class="form-text text-danger"></small>
@@ -116,7 +116,7 @@
 
                                         <!-- Country -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="country">Country</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="country">{{ __('site.country') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="country" value="{{ $authUser->country }}" class="form-control">
                                                 <small id="countryError" class="form-text text-danger"></small>
@@ -125,7 +125,7 @@
 
                                         <!-- Zip Code -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="zip">Zip Code</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="zip">{{ __('site.zip_code') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="zip" value="{{ $authUser->zip }}" class="form-control">
                                                 <small id="zipError" class="form-text text-danger"></small>
@@ -134,28 +134,28 @@
 
                                         <!-- Profile Photo -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="photo">Profile Photo</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="photo">{{ __('site.profile_photo') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="file" name="photo" class="form-control">
                                                 @if (!empty($authUser->photo))
-                                                    <img src="{{ asset($authUser->photo) }}" alt="Profile Photo" style="max-width: 100px; margin-top: 10px;">
+                                                    <img src="{{ asset($authUser->photo) }}" alt="{{ __('site.profile_photo') }}" style="max-width: 100px; margin-top: 10px;">
                                                 @endif
                                                 <small id="photoError" class="form-text text-danger"></small>
                                             </div>
                                         </div>
 
-                                        <!-- Model -->
+                                        <!-- Vehicle Model -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="model">Vehicle Model</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="model">{{ __('site.vehicle_model') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="model" value="{{ $authUser->model }}" class="form-control">
                                                 <small id="modelError" class="form-text text-danger"></small>
                                             </div>
                                         </div>
 
-                                        <!-- Registration -->
+                                        <!-- Registration Number -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="rego">Registration Number</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="rego">{{ __('site.rego') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="rego" value="{{ $authUser->rego }}" class="form-control">
                                                 <small id="regoError" class="form-text text-danger"></small>
@@ -164,7 +164,7 @@
 
                                         <!-- Make -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="make">Make</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="make">{{ __('site.make') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="make" value="{{ $authUser->make }}" class="form-control">
                                                 <small id="makeError" class="form-text text-danger"></small>
@@ -173,7 +173,7 @@
 
                                         <!-- Year -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="year">Year</label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="year">{{ __('site.year') }}</label>
                                             <div class="col-md-6 col-sm-6">
                                                 <input type="text" name="year" value="{{ $authUser->year }}" class="form-control">
                                                 <small id="yearError" class="form-text text-danger"></small>
@@ -185,7 +185,7 @@
                                         <div class="item form-group">
                                             <div class="col-md-6 col-sm-6">
                                                 <button class="btn btn-primary" type="submit" name="updateUserProfile">
-                                                    Update
+                                                    {{ __('site.update') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -198,27 +198,27 @@
                                         @csrf
                                         <!-- Old Password -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="opass">Old Password <span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="opass">{{ __('site.old_password') }} <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="password" name="opass" required="required" class="form-control" placeholder="Enter Old Password">
+                                                <input type="password" name="opass" required="required" class="form-control" placeholder="{{ __('site.old_password') }}">
                                                 <small id="opassError" class="form-text text-danger"></small>
                                             </div>
                                         </div>
 
                                         <!-- New Password -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="npass">New Password <span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="npass">{{ __('site.new_password') }} <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="password" name="npass" required="required" class="form-control" placeholder="Enter New Password">
+                                                <input type="password" name="npass" required="required" class="form-control" placeholder="{{ __('site.new_password') }}">
                                                 <small id="npassError" class="form-text text-danger"></small>
                                             </div>
                                         </div>
 
                                         <!-- Confirm New Password -->
                                         <div class="item form-group">
-                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="cpass">Re-enter New Password <span class="required">*</span></label>
+                                            <label class="col-form-label col-md-3 col-sm-3 label-align" for="cpass">{{ __('site.confirm_new_password') }} <span class="required">*</span></label>
                                             <div class="col-md-6 col-sm-6">
-                                                <input type="password" name="cpass" required="required" class="form-control" placeholder="Enter New Password Again">
+                                                <input type="password" name="cpass" required="required" class="form-control" placeholder="{{ __('site.confirm_new_password') }}">
                                                 <small id="cpassError" class="form-text text-danger"></small>
                                             </div>
                                         </div>
@@ -228,7 +228,7 @@
                                         <div class="item form-group">
                                             <div class="col-md-6 col-sm-6">
                                                 <button class="btn btn-primary" type="submit" name="userPassReset">
-                                                    Reset
+                                                    {{ __('site.reset_password') }}
                                                 </button>
                                             </div>
                                         </div>

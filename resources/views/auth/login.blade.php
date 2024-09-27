@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login')
+@section('title', __('site.login'))
 
 @section('content')
     <section id="features" class="features">
@@ -8,27 +8,27 @@
             <div class="row">
                 <div class="mt-5" style="margin-left: auto; margin-right: auto; width: 500px; margin-bottom: 200px;">
                     <div class="">
-                        <h1>Login</h1>
+                        <h1>{{ __('site.login') }}</h1>
                     </div>
                     <form method="POST" id="loginForm">
                         @csrf
                         <small id="loginError" class="form-text text-danger"></small>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
+                            <label for="email">{{ __('site.email') }}</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('site.email') }}">
                             <small id="emailError" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+                            <label for="password">{{ __('site.password') }}</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="{{ __('site.password') }}">
                             <small id="passwordError" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group">
                             <input type="hidden" value="login" name="form_type">
-                            <input type="submit" class="btn btn-primary mt-3" value="Submit">
+                            <input type="submit" class="btn btn-primary mt-3" value="{{ __('site.login.submit') }}">
                         </div>
                     </form>
-                    <p>Not an existing user? Please <a href="{{ route('register') }}">Register</a></p>
+                    <p>{{ __('site.not_existing_user') }} <a href="{{ route('register') }}">{{ __('site.register') }}</a></p>
                 </div>
             </div>
         </div>
@@ -51,14 +51,14 @@
                 // Email validation
                 const email = $('#email').val().trim();
                 if (email === '') {
-                    $('#emailError').text('Email is required');
+                    $('#emailError').text('{{ __('site.email_required') }}');
                     valid = false;
                 }
 
                 // Password validation
                 const password = $('#password').val().trim();
                 if (password === '') {
-                    $('#passwordError').text('Password is required');
+                    $('#passwordError').text('{{ __('site.password_required') }}');
                     valid = false;
                 }
 

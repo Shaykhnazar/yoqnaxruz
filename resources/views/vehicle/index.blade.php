@@ -13,8 +13,8 @@
                 </div>
                 <div class="col-md-10 col-xs-12 rightUSER">
                     <div class="mt-5 w-100 d-flex justify-content-between">
-                        <h1 class="pb-3" style="font-size:24px;">Vehicle List</h1>
-                        <a class="btn btn-primary" href="{{ route('vehicle.create') }}">Add Vehicle</a>
+                        <h1 class="pb-3" style="font-size:24px;">{{ __('site.vehicle_list') }}</h1>
+                        <a class="btn btn-primary" href="{{ route('vehicle.create') }}">{{ __('site.add_vehicle') }}</a>
                     </div>
                     <div class="col-md-12 col-sm-12">
                         <div class="x_panel">
@@ -26,23 +26,22 @@
                                                 <table id="datatable" class="table table-striped table-bordered tablewhite" style="width:100%">
                                                     <thead>
                                                     <tr>
-                                                        <th>Sl.</th>
-                                                        <th>User</th>
-                                                        <th>DOB</th>
-                                                        <th>Address</th>
-                                                        <th>Phone</th>
-                                                        <th>Make</th>
-                                                        <th>Model</th>
-                                                        <th>Year</th>
-                                                        <th>Photo</th>
-                                                        <th>Action</th>
+                                                        <th>{{ __('site.sl') }}</th>
+                                                        <th>{{ __('site.user') }}</th>
+                                                        <th>{{ __('site.dob') }}</th>
+                                                        <th>{{ __('site.address') }}</th>
+                                                        <th>{{ __('site.phone') }}</th>
+                                                        <th>{{ __('site.make') }}</th>
+                                                        <th>{{ __('site.model') }}</th>
+                                                        <th>{{ __('site.year') }}</th>
+                                                        <th>{{ __('site.photo') }}</th>
+                                                        <th>{{ __('site.action') }}</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     @foreach($vehicles as $index => $vehicle)
                                                         <tr data-toggle="modal" data-target=".vehicle-modal-{{ $vehicle->id }}" style="cursor:pointer">
                                                             <td>{{ $index + 1 }}</td>
-
                                                             <td>{{ $vehicle->user->first_name ?? 'N/A' }}</td>
                                                             <td>{{ $vehicle->dob }}</td>
                                                             <td>{{ $vehicle->street_address }}</td>
@@ -57,7 +56,7 @@
                                                                     N/A
                                                                 @endif
                                                             </td>
-                                                            <td><span class="badge badge-primary">View</span></td>
+                                                            <td><span class="badge badge-primary">{{ __('site.view') }}</span></td>
                                                         </tr>
 
                                                         <!-- Modal -->
@@ -65,7 +64,7 @@
                                                             <div class="modal-dialog modal-xl" style="max-width:650px;">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h4 class="modal-title">Vehicle Details</h4>
+                                                                        <h4 class="modal-title">{{ __('site.vehicle_details') }}</h4>
                                                                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
                                                                     </div>
                                                                     <div class="modal-body">
@@ -81,32 +80,32 @@
 
                                                                         <div class="row mb-4">
                                                                             <div class="col-lg-6">
-                                                                                <p><strong>User Name: </strong>{{ $vehicle->user->first_name ?? 'N/A' }}</p>
-                                                                                <p><strong>Date of Birth: </strong>{{ $vehicle->dob }}</p>
+                                                                                <p><strong>{{ __('site.user') }}: </strong>{{ $vehicle->user->first_name ?? 'N/A' }}</p>
+                                                                                <p><strong>{{ __('site.dob') }}: </strong>{{ $vehicle->dob }}</p>
                                                                             </div>
                                                                             <div class="col-lg-6">
-                                                                                <p><strong>Address: </strong>{{ $vehicle->street_address }}</p>
-                                                                                <p><strong>Phone: </strong>{{ $vehicle->phone1 }}</p>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row mb-4">
-                                                                            <div class="col-lg-6">
-                                                                                <p><strong>Make: </strong>{{ $vehicle->make }}</p>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <p><strong>Model: </strong>{{ $vehicle->model }}</p>
+                                                                                <p><strong>{{ __('site.address') }}: </strong>{{ $vehicle->street_address }}</p>
+                                                                                <p><strong>{{ __('site.phone') }}: </strong>{{ $vehicle->phone1 }}</p>
                                                                             </div>
                                                                         </div>
 
                                                                         <div class="row mb-4">
                                                                             <div class="col-lg-6">
-                                                                                <p><strong>Year: </strong>{{ $vehicle->year }}</p>
+                                                                                <p><strong>{{ __('site.make') }}: </strong>{{ $vehicle->make }}</p>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <p><strong>{{ __('site.model') }}: </strong>{{ $vehicle->model }}</p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row mb-4">
+                                                                            <div class="col-lg-6">
+                                                                                <p><strong>{{ __('site.year') }}: </strong>{{ $vehicle->year }}</p>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('site.close') }}</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -116,7 +115,7 @@
                                                     </tbody>
                                                 </table>
                                             @else
-                                                <p class="text-center">No vehicle to Display</p>
+                                                <p class="text-center">{{ __('site.no_vehicle') }}</p>
                                             @endif
                                         </div>
                                     </div>

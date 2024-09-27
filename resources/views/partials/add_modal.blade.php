@@ -3,8 +3,8 @@
         <div class="modal-content">
             @csrf
             <div class="modal-header">
-                <h5 class="modal-title" id="fuelPriceModalLabel">Add Fuel Price</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="fuelPriceModalLabel">{{ __('site.add_fuel_price') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('site.close') }}">
                     <span class="aria-hidden">&times;</span>
                 </button>
             </div>
@@ -17,59 +17,59 @@
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="purchase_date">Purchase Date</label>
+                            <label for="purchase_date">{{ __('site.purchase_date') }}</label>
                             <input type="date" class="form-control" name="purchase_date" id="purchase_date" max="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}">
                             <small id="purchase_dateError" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="purchase_time">Purchase Time</label>
+                            <label for="purchase_time">{{ __('site.purchase_time') }}</label>
                             <input type="time" class="form-control" name="purchase_time" id="purchase_time"  value="{{ now()->format('H:i') }}">
                             <small id="purchase_timeError" class="form-text text-danger"></small>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="litres">Litres</label>
+                            <label for="litres">{{ __('site.litres') }}</label>
                             <input type="number" step="0.01" class="form-control" name="litres" id="litres">
                             <small id="litresError" class="form-text text-danger"></small>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="price">Amount</label>
+                            <label for="price">{{ __('site.amount') }}</label>
                             <input type="number" step="0.01" class="form-control" name="price" id="price">
                             <small id="priceError" class="form-text text-danger"></small>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="fuel_type">Fuel Type</label>
+                        <label for="fuel_type">{{ __('site.fuel_type') }}</label>
                         <input type="text" class="form-control" name="fuel_type" id="fuel_type">
                         <small id="fuel_typeError" class="form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label for="phone_no">Phone Number</label>
+                        <label for="phone_no">{{ __('site.phone_number') }}</label>
                         <input type="text" class="form-control" name="phone_no" id="phone_no" placeholder="+810000000000">
                         <small id="phone_noError" class="form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label for="station_id">Select Station</label>
+                        <label for="station_id">{{ __('site.select_station') }}</label>
                         <select class="form-control" id="station_id" name="station_id" style="width: 100%;">
                             <!-- Options will be loaded via AJAX -->
                         </select>
                         <small id="station_idError" class="form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label for="comment">Comment</label>
+                        <label for="comment">{{ __('site.comment') }}</label>
                         <textarea class="form-control" name="comment" id="comment"></textarea>
                         <small id="commentError" class="form-text text-danger"></small>
                     </div>
                     <div class="custom-file mb-3">
                         <input type="file" class="custom-file-input" name="photo" id="photo">
-                        <label class="custom-file-label" for="photo">Upload Photo</label>
+                        <label class="custom-file-label" for="photo">{{ __('site.upload_photo') }}</label>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" value="fuelPrice" name="form_type">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">ADD</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('site.close') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('site.add') }}</button>
                 </div>
             </form>
         </div>
@@ -164,7 +164,7 @@
             // Initialize Select2 on the station select element
             $('#station_id').select2({
                 tags: true,
-                placeholder: 'Choose station...',
+                placeholder: '{{ __('site.choose_station') }}',
                 minimumInputLength: 2,
                 ajax: {
                     url: '{{ route('stations.find') }}',

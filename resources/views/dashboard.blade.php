@@ -22,7 +22,9 @@
                         <div class="right_col" role="main">
                             <div class="clearfix"></div>
                             <div class="sidehead">
-                                <h1 class="pb-3" style="font-size:24px;">Welcome, {{ Auth::user()->role->name ?? 'User' }}</h1>
+                                <h1 class="pb-3" style="font-size:24px;">
+                                    {{ __('site.welcome') }}, {{ Auth::user()->role->name ?? __('site.user') }}
+                                </h1>
                             </div>
                         </div> <!-- End of right_col -->
                     </div> <!-- End of section-content -->

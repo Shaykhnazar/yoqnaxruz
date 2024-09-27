@@ -1,7 +1,6 @@
-{{-- resources/views/auth/register.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Register')
+@section('title', __('site.register'))
 
 @section('content')
     <section id="features" class="features">
@@ -9,64 +8,54 @@
             <div class="row">
                 <div class="section-content" style="margin-left: auto; margin-right: auto;">
                     <div class="">
-                        <h1 class="pb-3" style="font-size:24px;">Register</h1>
+                        <h1 class="pb-3" style="font-size:24px;">{{ __('site.register') }}</h1>
                     </div>
                     <form method="POST" id="registerForm" enctype="multipart/form-data">
                         @csrf
                         <div class="form-row">
-                            {{-- Hidden input for title --}}
                             <input type="hidden" name="title" value="0">
 
                             <div class="form-group col-md-6">
-                                <label for="first_name">First Name<span class="required">*</span></label>
-                                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name">
+                                <label for="first_name">{{ __('site.first_name') }}<span class="required">*</span></label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ __('site.first_name') }}">
                                 <small id="firstNameError" class="form-text text-danger"></small>
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="surname">Last Name<span class="required">*</span></label>
-                                <input type="text" class="form-control" id="surname" name="surname" placeholder="Last Name">
+                                <label for="surname">{{ __('site.last_name') }}<span class="required">*</span></label>
+                                <input type="text" class="form-control" id="surname" name="surname" placeholder="{{ __('site.last_name') }}">
                                 <small id="lastNameError" class="form-text text-danger"></small>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="email">Email<span class="required">*</span></label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address">
+                            <label for="email">{{ __('site.email') }}<span class="required">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('site.email') }}">
                             <small id="emailError" class="form-text text-danger"></small>
                         </div>
 
                         <div class="form-group">
-                            <label for="password">Password<span class="required">*</span></label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+                            <label for="password">{{ __('site.password') }}<span class="required">*</span></label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="{{ __('site.password') }}">
                             <small id="passwordError" class="form-text text-danger"></small>
                         </div>
 
                         <div class="form-group">
-                            <label for="confirm_password">Confirm Password<span class="required">*</span></label>
-                            <input type="password" class="form-control" id="confirm_password" name="password_confirmation" placeholder="Confirm password">
+                            <label for="confirm_password">{{ __('site.confirm_password') }}<span class="required">*</span></label>
+                            <input type="password" class="form-control" id="confirm_password" name="password_confirmation" placeholder="{{ __('site.confirm_password') }}">
                             <small id="confirmPasswordError" class="form-text text-danger"></small>
                         </div>
 
-{{--                        <div class="form-group">--}}
-{{--                            <label for="role">Role<span class="required">*</span></label>--}}
-{{--                            <select class="form-control" id="role" name="role">--}}
-{{--                                <option value="">Select a role</option>--}}
-{{--                                <option value="User">User</option>--}}
-{{--                                <option value="Station Manager">Station Manager</option>--}}
-{{--                            </select>--}}
-{{--                            <small id="roleError" class="form-text text-danger"></small>--}}
-{{--                        </div>--}}
                         <div class="form-group">
-                            <label>Role<span class="required">*</span></label>
+                            <label>{{ __('site.role') }}<span class="required">*</span></label>
                             <div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="role" id="roleUser" value="User" checked {{ old('role') == 'User' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="roleUser">User</label>
+                                    <label class="form-check-label" for="roleUser">{{ __('site.user_role') }}</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="role" id="roleStationManager" value="Station Manager" {{ old('role') == 'Station Manager' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="roleStationManager">Station Manager</label>
+                                    <label class="form-check-label" for="roleStationManager">{{ __('site.station_manager_role') }}</label>
                                 </div>
                             </div>
                             <small id="roleError" class="form-text text-danger">
@@ -74,22 +63,12 @@
                             </small>
                         </div>
 
-
-                        {{-- Uncomment and include additional fields if needed --}}
-                        {{--
-                        <div class="form-group">
-                          <label for="street_address">Street Address<span class="required">*</span></label>
-                          <input type="text" class="form-control" id="street_address" name="street_address" placeholder="Enter street address">
-                          <small id="streetAddressError" class="form-text text-danger"></small>
-                        </div>
-                        --}}
-
                         <div class="form-group">
                             <input type="hidden" name="form_type" value="register">
-                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="submit" class="btn btn-primary">{{ __('site.register.submit') }}</button>
                         </div>
                     </form>
-                    <p>Already have an account? <a href="{{ route('login') }}">Login</a></p>
+                    <p>{{ __('site.already_have_account') }} <a href="{{ route('login') }}">{{ __('site.login') }}</a></p>
                 </div>
             </div>
         </div>
@@ -121,14 +100,14 @@
                 // First Name validation
                 const firstName = $('#first_name').val().trim();
                 if (firstName === '') {
-                    $('#firstNameError').text('First Name is required');
+                    $('#firstNameError').text('{{ __('site.first_name_required') }}');
                     valid = false;
                 }
 
                 // Last Name validation
                 const lastName = $('#surname').val().trim();
                 if (lastName === '') {
-                    $('#lastNameError').text('Last Name is required');
+                    $('#lastNameError').text('{{ __('site.last_name_required') }}');
                     valid = false;
                 }
 
@@ -136,30 +115,30 @@
                 const email = $('#email').val().trim();
                 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (email === '') {
-                    $('#emailError').text('Email is required');
+                    $('#emailError').text('{{ __('site.email_required') }}');
                     valid = false;
                 } else if (!emailPattern.test(email)) {
-                    $('#emailError').text('Invalid email format');
+                    $('#emailError').text('{{ __('site.email_invalid') }}');
                     valid = false;
                 }
 
                 // Password validation
                 const password = $('#password').val().trim();
                 if (password === '') {
-                    $('#passwordError').text('Password is required');
+                    $('#passwordError').text('{{ __('site.password_required') }}');
                     valid = false;
                 } else if (password.length < 6) {
-                    $('#passwordError').text('Password must be at least 6 characters long');
+                    $('#passwordError').text('{{ __('site.password_min') }}');
                     valid = false;
                 }
 
                 // Confirm Password validation
                 const confirmPassword = $('#confirm_password').val().trim();
                 if (confirmPassword === '') {
-                    $('#confirmPasswordError').text('Confirm Password is required');
+                    $('#confirmPasswordError').text('{{ __('site.confirm_password_required') }}');
                     valid = false;
                 } else if (password !== confirmPassword) {
-                    $('#confirmPasswordError').text('Passwords do not match');
+                    $('#confirmPasswordError').text('{{ __('site.password_mismatch') }}');
                     valid = false;
                 }
 
@@ -167,7 +146,7 @@
                 const role = $('input[name="role"]:checked').val();
 
                 if (!role) {
-                    $('#roleError').text('Role is required');
+                    $('#roleError').text('{{ __('site.role_required') }}');
                     valid = false;
                 } else {
                     $('#roleError').text(''); // Clear any previous error messages

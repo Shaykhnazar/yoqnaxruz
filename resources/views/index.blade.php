@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Fuel Prices')
+@section('title', __('site.title'))
 
 @section('content')
     <div class="container searchbar">
         <div class="row">
             <div class="col-lg-3 mb-3 mb-lg-0"></div>
             <div class="col-lg-6 mb-6 mb-lg-0">
-                <input type="text" class="form-control" id="searchadd" placeholder="Search By Address">
+                <input type="text" class="form-control" id="searchadd" placeholder="{{ __('site.search_by_address') }}">
             </div>
             <div class="col-lg-3 mb-3 mb-lg-0">
-                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#fuelPriceModal">Add Fuel Price</button>
+                <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#fuelPriceModal">{{ __('site.add_fuel_price') }}</button>
             </div>
         </div>
     </div>
@@ -47,6 +47,22 @@
 
 @push('scripts')
     <script>
+        // Define localized strings to use in JavaScript
+        const localizedStrings = {
+            noDataFound: @json(__('site.no_data_found')),
+            getDirections: @json(__('site.get_directions')),
+            updatePrices: @json(__('site.update_prices')),
+            loadingMapError: @json(__('site.loading_map_error')),
+            ulpPrices: @json(__('site.ulp_prices')),
+            today: @json(__('site.today')),
+            tomorrow: @json(__('site.tomorrow')),
+            back: @json(__('site.back')),
+            fuelPrice: @json(__('site.fuel_price')),
+            fuelType: @json(__('site.fuel_type')),
+            address: @json(__('site.address')),
+            addFuelPrice: @json(__('site.add_fuel_price')),
+        };
+
         console.log('ready');
 
         var map;
@@ -59,7 +75,7 @@
             // Ensure the #map element exists before initializing the map
             var mapElement = document.getElementById('map');
             if (!mapElement) {
-                console.log('Map element not found');
+                console.log(localizedStrings.loadingMapError);
                 return;
             }
 
@@ -226,14 +242,14 @@
                     if (response.stations.length > 0) {
                         renderPrices(response.stations);
                     } else {
-                        $('#showresults').html('<p style="text-align:center;margin-top:200px;color:red;font-weight:900">No Data Found</p>');
+                        $('#showresults').html('<p style="text-align:center;margin-top:200px;color:red;font-weight:900">' + localizedStrings.noDataFound + '</p>');
                         if (map) {
                             map.setCenter({ lat: 0, lng: 0 });
                         }
                     }
                 },
                 error: function () {
-                    alert('An error occurred while fetching data.');
+                    alert(localizedStrings.loadingMapError);
                 }
             });
         }
@@ -280,13 +296,13 @@
                                         <h4 style="color: #e63946; font-size: 20px; margin-bottom: 5px;">
                                             ${station.before6amprice ? station.before6amprice : 'N/A'}
                                         </h4>
-                                        <small style="font-size: 12px; font-weight: bold;">Today</small>
+                                        <small style="font-size: 12px; font-weight: bold;">${localizedStrings.today}</small>
                                     </div>
                                     <div class="price-tomorrow">
                                         <h4 style="font-size: 16px; margin-bottom: 5px;">
                                             ${station.after6amprice ? station.after6amprice : 'N/A'}
                                         </h4>
-                                        <small style="font-size: 12px;">Tomorrow</small>
+                                        <small style="font-size: 12px;">${localizedStrings.tomorrow}</small>
                                     </div>
                                 </div>
 
@@ -313,7 +329,7 @@
                         <div class="row">
                             <div class="col-sm-4" style="margin-top:15px;margin-bottom:15px">
                                 <button class="btn btn-primary backbtn" style="font-size: 11px;line-height: 0.5;border:1px solid lightgrey">
-                                    <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+                                    <i class="fa fa-arrow-left" aria-hidden="true"></i> ${localizedStrings.back }
                                 </button>
                             </div>
                             <div class="col-sm-8" style="margin-top:15px;margin-bottom:15px">
@@ -332,28 +348,28 @@
                         </div>
 
                        <div class="row" style="margin-top:15px;margin-bottom:15px;">
-                          <div class="col-sm-12" style=""><h4 style="margin-bottom: 0px;font-family: sans-serif;font-size: 18px;font-weight: 700;padding-bottom:20px">ULP prices</h4>
+                          <div class="col-sm-12" style=""><h4 style="margin-bottom: 0px;font-family: sans-serif;font-size: 18px;font-weight: 700;padding-bottom:20px">${localizedStrings.ulpPrices}</h4>
 
                           </div>
                           <div class="col-sm-6" style="text-align: center;"><h4 style="    margin-bottom: 0px;    font-family: sans-serif;">${station.before6amprice}</h4>
-                             <small>Before 6am</small>
+                            <small>${localizedStrings.today}</small>
                            </div>
 
 
                           <div class="col-sm-6" style="text-align: center;"><h4 style="    margin-bottom: 0px;    font-family: sans-serif;">${station.after6amprice}</h4>
-                            <small>After 6am</small>
+                            <small>${localizedStrings.tomorrow}</small>
                           </div>
 
                         </div>
                         <div class="row" style="padding-top:30px;padding-bottom:30px;border-top:1px solid lightgrey;border-bottom:1px solid lightgrey;">
                             <div class="col-sm-12">
                                 <a class='btn btn-danger' style="background: rebeccapurple;width: 100%;" target="_blank" href='https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(station.geolocation)}'>
-                                    Get Directions
+                                    ${localizedStrings.getDirections}
                                 </a>
                             </div>
                             <div class="col-sm-12 mt-2">
                                 <a class='btn btn-danger' style="background: #299ef4;width: 100%;" href='#'>
-                                    Update Prices
+                                    ${localizedStrings.updatePrices}
                                 </a>
                             </div>
                         </div>
@@ -475,7 +491,7 @@
 
     <script>
         function handleMapError() {
-            alert('Failed to load Google Maps. Please try again later.');
+            alert(localizedStrings.loadingMapError);
         }
     </script>
 @endpush

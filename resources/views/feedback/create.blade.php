@@ -201,7 +201,7 @@
         $(document).ready(function() {
             // Initialize Select2 on the station select element
             $('#station_id').select2({
-                placeholder: 'Choose station...',
+                placeholder: '{{ __('site.choose_station') }}',
                 minimumInputLength: 2,
                 ajax: {
                     url: '{{ route('stations.find') }}',

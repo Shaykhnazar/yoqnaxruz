@@ -14,20 +14,21 @@
                 <div class="col-md-10 col-xs-12 rightUSER">
                     <div class="section-content">
                         <div class="col-12">
-                            <h1 class="pb-3" style="font-size:24px;">Tickets</h1>
+                            <h1 class="pb-3" style="font-size:24px;">{{ __('site.tickets') }}</h1>
                         </div>
+
                         @if($complaints->isNotEmpty())
                             <table class="table table-responsive table-striped table-bordered tablewhite" style="max-height: 400px; overflow-y: auto;">
                                 <thead>
                                 <tr>
                                     <th>Sr.</th>
-                                    <th>Complaint ID</th>
-                                    <th>Station ID</th>
-                                    <th>Description</th>
-                                    <th>Date Logged</th>
-                                    <th>Time</th>
-                                    <th>Image</th>
-                                    <th>Action</th>
+                                    <th>{{ __('site.complaint_id') }}</th>
+                                    <th>{{ __('site.station_id') }}</th>
+                                    <th>{{ __('site.description') }}</th>
+                                    <th>{{ __('site.date_logged') }}</th>
+                                    <th>{{ __('site.time') }}</th>
+                                    <th>{{ __('site.image') }}</th>
+                                    <th>{{ __('site.action') }}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -46,7 +47,7 @@
                                                 N/A
                                             @endif
                                         </td>
-                                        <td><span class="badge badge-primary">View</span></td>
+                                        <td><span class="badge badge-primary">{{ __('site.view') }}</span></td>
                                     </tr>
 
                                     <!-- Modal -->
@@ -54,61 +55,44 @@
                                         <div class="modal-dialog modal-xl" style="max-width:650px;">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Help Desk Comments</h4>
-                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                                                    </button>
+                                                    <h4 class="modal-title">{{ __('site.comment') }}</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="row mb-4">
-                                                        <div class="col-lg-12">
-                                                            @if($complaint->attachments)
-                                                                <img src="{{ asset('storage/'.$complaint->attachments) }}"  width="400px" />
-                                                            @endif
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row mb-4">
-                                                        <p><strong>User Name: </strong>{{ $complaint->user->name ?? 'N/A' }}</p>
-                                                        <p><strong>Date: </strong>{{ \Carbon\Carbon::parse($complaint->date_logged)->format('d-m-Y h:i A') }}</p>
+                                                        <p><strong>{{ __('site.user_name') }}: </strong>{{ $complaint->user->name ?? 'N/A' }}</p>
+                                                        <p><strong>{{ __('site.date') }}: </strong>{{ \Carbon\Carbon::parse($complaint->date_logged)->format('d-m-Y h:i A') }}</p>
                                                         <div class="col-lg-12 comentSection">
-                                                            <h5>Title: {{ $complaint->title }}</h5>
-                                                            <p class="Usercoment">Comment: {{ $complaint->complainant }}</p>
+                                                            <h5>{{ __('site.title') }}: {{ $complaint->title }}</h5>
+                                                            <p class="Usercoment">{{ __('site.comment') }}: {{ $complaint->complainant }}</p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="row mb-4">
-                                                        <div class="col-lg-12">
-                                                            @foreach($complaint->replies as $reply)
-                                                                <div class="{{ $reply->reply_by }}reply_admin">
-                                                                    <p class="{{ $reply->reply_by }}Comment adminreplywrap">
-                                                                        {{ $reply->reply_by }}: {{ $reply->comment }}
-                                                                    </p>
-                                                                </div>
-                                                            @endforeach
+                                                    @foreach($complaint->replies as $reply)
+                                                        <div class="{{ $reply->reply_by }}reply_admin">
+                                                            <p class="{{ $reply->reply_by }}Comment adminreplywrap">
+                                                                {{ $reply->reply_by }}: {{ $reply->comment }}
+                                                            </p>
                                                         </div>
-                                                    </div>
+                                                    @endforeach
 
-                                                    <div class="row mb-4">
-                                                        <div class="col-lg-12">
-                                                            @if($complaint->status == 'pending')
-                                                                <form method="POST" action="{{ route('complaints.reply', $complaint->id) }}">
-                                                                    @csrf
-                                                                    <div class="form-group">
-                                                                        <textarea class="form-control" name="comment" rows="5" required placeholder="Write your reply here"></textarea>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
-                                                                    </div>
-                                                                </form>
-                                                            @endif
-                                                        </div>
-                                                    </div>
+                                                    @if($complaint->status == 'pending')
+                                                        <form method="POST" action="{{ route('complaints.reply', $complaint->id) }}">
+                                                            @csrf
+                                                            <div class="form-group">
+                                                                <textarea class="form-control" name="comment" rows="5" required placeholder="{{ __('site.write_reply') }}"></textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <button type="submit" class="btn btn-primary mt-3">{{ __('site.submit') }}</button>
+                                                            </div>
+                                                        </form>
+                                                    @endif
                                                 </div>
                                                 <div class="modal-footer">
                                                     <p>
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('site.cancel') }}</button>
                                                         @if($complaint->status == 'closed')
-                                                            <button type="button" class="btn btn-danger">Closed</button>
+                                                            <button type="button" class="btn btn-danger">{{ __('site.closed') }}</button>
                                                         @endif
                                                     </p>
                                                 </div>
@@ -120,7 +104,7 @@
                                 </tbody>
                             </table>
                         @else
-                            <p class="text-center">No complaints to display</p>
+                            <p class="text-center">{{ __('site.no_complaints') }}</p>
                         @endif
                     </div>
                 </div>
