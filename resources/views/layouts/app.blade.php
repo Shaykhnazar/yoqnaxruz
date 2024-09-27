@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
     <meta charset="utf-8">
@@ -38,17 +38,17 @@
     <header id="header" class="fixed-top">
         <div class="container d-flex rem">
             <div class="logo mr-auto">
-                <h1 class="text-light"><a href="{{ url('/') }}">Fuel Prices</a></h1>
+                <h1 class="text-light"><a href="{{ route('home') }}">Fuel Prices</a></h1>
             </div>
 
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
-                    <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="{{ url('/') }}">Home</a></li>
+                    <li class="{{ Route::currentRouteNamed('home') ? 'active' : '' }}"><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="#about">About Us</a></li>
                     <li><a href="#contact">Contact Us</a></li>
                     @auth
                         <!-- Links for authenticated users -->
-                        <li><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                        <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li>
                             <a href="#" class="logout">Logout</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -57,10 +57,47 @@
                         </li>
                     @else
                         <!-- Links for guests -->
-                        <li class="{{ Request::is('login') ? 'active' : '' }}"><a href="{{ route('login') }}">Login</a></li>
-                        <li class="{{ Request::is('register') ? 'active' : '' }}"><a href="{{ route('register') }}">Register</a></li>
+                        <li class="{{ Route::currentRouteNamed('login') ? 'active' : '' }}"><a href="{{ route('login') }}">Login</a></li>
+                        <li class="{{ Route::currentRouteNamed('register') ? 'active' : '' }}"><a href="{{ route('register') }}">Register</a></li>
                     @endauth
-                    <!-- Other links -->
+                    <!-- Language Chooser with Flags -->
+                    <li class="dropdown">
+{{--                        <form id="language-switch-form" action="{{ route('language.switch') }}" method="POST">--}}
+{{--                            @csrf--}}
+{{--                            <select name="locale" id="language-switch" class="form-control" onchange="this.form.submit()">--}}
+{{--                                <option value="en" data-icon="/assets/img/svg-country-flags/en.svg" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English</option>--}}
+{{--                                <option value="ru" data-icon="/assets/img/svg-country-flags/ru.svg" {{ app()->getLocale() == 'ru' ? 'selected' : '' }}>Русский</option>--}}
+{{--                                <option value="uz_Latn" data-icon="/assets/img/svg-country-flags/uz_Latn.svg" {{ app()->getLocale() == 'uz_Latn' ? 'selected' : '' }}>O'zbek (Latin)</option>--}}
+{{--                                <option value="uz_Cryl" data-icon="/assets/img/svg-country-flags/uz_Cryl.svg" {{ app()->getLocale() == 'uz_Cryl' ? 'selected' : '' }}>Ўзбек (Кирилл)</option>--}}
+{{--                            </select>--}}
+{{--                        </form>--}}
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <img src="/assets/img/svg-country-flags/{{ app()->getLocale() }}.svg " alt="Language Flag" style="height: 20px; width: auto;">
+                        </a>
+                        <ul class="dropdown-menu" id="language-dropdown">
+                            <li class="{{ app()->getLocale() == 'en' ? 'active' : '' }}">
+                                <a href="#" data-locale="en">
+                                    <img src="/assets/img/svg-country-flags/en.svg " alt="English" style="height: 20px; width: auto;"> English
+                                </a>
+                            </li>
+                            <li class="{{ app()->getLocale() == 'ru' ? 'active' : '' }}">
+                                <a href="#" data-locale="ru">
+                                    <img src="/assets/img/svg-country-flags/ru.svg " alt="Русский" style="height: 20px; width: auto;"> Русский
+                                </a>
+                            </li>
+                            <li class="{{ app()->getLocale() == 'uz_Latn' ? 'active' : '' }}">
+                                <a href="#" data-locale="uz_Latn">
+                                    <img src="/assets/img/svg-country-flags/uz_Latn.svg " alt="O'zbek (Latin)" style="height: 20px; width: auto;"> O'zbek (Latin)
+                                </a>
+                            </li>
+                            <li class="{{ app()->getLocale() == 'uz_Cryl' ? 'active' : '' }}">
+                                <a href="#" data-locale="uz_Cryl">
+                                    <img src="/assets/img/svg-country-flags/uz_Cryl.svg " alt="Ўзбек (Кирилл)" style="height: 20px; width: auto;"> Ўзбек (Кирилл)
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
 
@@ -164,15 +201,41 @@
     $(document).ready(function () {
         $(".logout").click(function () {
             $.ajax({
-                url: '{{ url('logout') }}',
+                url: '{{ route('logout') }}',
                 type: 'POST',
                 data: { "form_type": "logout", _token: '{{ csrf_token() }}' },
                 success: function (response) {
-                    window.location.href = '{{ url('/') }}';
+                    window.location.href = '{{ route('home') }}';
+                }
+            });
+        });
+
+        // Handle language dropdown selection
+        $('#language-dropdown a').on('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+
+            var selectedLocale = $(this).data('locale'); // Get the locale from data-locale attribute
+
+            // Send the selected language using AJAX
+            $.ajax({
+                url: '{{ route("language.switch") }}', // Your route for language switch
+                type: 'POST',
+                data: {
+                    locale: selectedLocale,
+                    _token: '{{ csrf_token() }}' // CSRF token for security
+                },
+                success: function(response) {
+                    // On success, reload the page to apply the language change
+                    window.location.reload();
+                },
+                error: function(xhr) {
+                    // Handle error if any
+                    alert('An error occurred while switching the language.');
                 }
             });
         });
     });
+
 </script>
 </body>
 
