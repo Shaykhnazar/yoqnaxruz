@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
 use App\Services\IDGeneratorService;
 use Illuminate\Http\Request;
 use App\Models\Station;
@@ -116,4 +117,13 @@ class StationController extends Controller
 
         return redirect()->route('stations')->with('success', 'Station added successfully.');
     }
+
+    public function getFeedbacks($stationId)
+    {
+        $feedbacks = Feedback::where('station_id', $stationId)->get(); // Fetch feedbacks for the station
+        return response()->json([
+            'feedbacks' => $feedbacks
+        ]);
+    }
+
 }

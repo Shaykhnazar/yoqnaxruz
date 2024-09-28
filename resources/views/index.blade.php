@@ -257,7 +257,10 @@
 
                 // Sidebar content
                 html += makePriceItem(station);
+
+                // colorStars(station.averageRating); // Dynamically color the stars based on the average rating
             });
+
             // Inject HTML
             $('#showresults').html(html);
 
@@ -355,6 +358,33 @@
                                 <a class='btn btn-danger' style="background: #299ef4;width: 100%;" href='#'>
                                     Update Prices
                                 </a>
+                            </div>
+                            <div class="col-sm-12 mt-2">
+                                 ${getStarsHtml(station.averageRating)}  <!-- Display stars dynamically -->
+                                <span class="ml-2 feedback-count" style="cursor: pointer;" data-station-id="${station.station_id}" onclick="showFeedbacks(${station.id})">
+                                    (${station.feedbackCount} reviews)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Modal for Feedback -->
+                    <div class="modal fade" id="feedbackModal${station.id}"  tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel${station.id}" aria-hidden="true" data-station-id="${station.station_id}">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="feedbackModalLabel${station.id}">Feedback for ${station.station_name}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Feedback list will be loaded here dynamically -->
+                                    <ul id="feedbackList${station.id}">
+                                        <!-- Feedback items will be inserted here -->
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -461,6 +491,24 @@
             fetchPrices();
         }
 
+        // Function to generate stars based on rating
+        function getStarsHtml(rating) {
+            let starsHtml = '';
+            for (let i = 1; i <= 5; i++) {
+                // Check rating and apply appropriate class to color stars
+                let cls = "star";
+                if (i === 1) cls = "one";
+                else if (i === 2) cls = "two";
+                else if (i === 3) cls = "three";
+                else if (i === 4) cls = "four";
+                else if (i === 5) cls = "five";
+
+                // Apply class only if the star index is less than or equal to the rating
+                starsHtml += `<span class="star ${i <= rating ? cls : ''}">★</span>`;
+            }
+            return starsHtml;
+        }
+
         $(document).ready(function(){
             // Search by address
             $("#searchadd").keyup(function(){
@@ -468,6 +516,38 @@
                 fetchPrices(searchadd);
             });
         });
+
+        // Function to show feedbacks in a modal
+        function showFeedbacks(stationId) {
+            // Open the modal
+            $('#feedbackModal' + stationId).modal('show');
+
+            var stationIdOfStation = $('#feedbackModal' + stationId).data('station-id');
+
+            // Make an AJAX call to fetch the feedbacks for the station
+            $.ajax({
+                url: `/feedbacks/${stationIdOfStation}`, // Replace with the actual route
+                method: 'GET',
+                success: function(data) {
+                    // Clear the previous feedbacks
+                    $('#feedbackList' + stationId).empty();
+
+                    // Append each feedback to the list
+                    data.feedbacks.forEach(function(feedback) {
+                        $('#feedbackList' + stationId).append(`
+                            <li>
+                                ${feedback.comment}
+                                <span style="float: right;">${getStarsHtml(feedback.user_rating)}</span>
+                            </li>
+                        `);
+                    });
+                },
+                error: function() {
+                    $('#feedbackList' + stationId).html('<li>No feedbacks available.</li>');
+                }
+            });
+        }
+
     </script>
         <!-- Google Maps and Places API -->
     {{--<script src="https://maps.googleapis.com/maps/api/js?key={{ $GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initAutocomplete" async defer></script>--}}

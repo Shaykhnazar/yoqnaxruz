@@ -177,10 +177,11 @@ class FuelPriceController extends Controller
         // Subquery to get the latest approved price for each station
         $latestPricesSubquery = Price::latestApprovedPricePerStation();
 
-        // Main query: Join stations with the latest prices
-        $stationsQuery = Station::joinSub($latestPricesSubquery, 'latest_prices', function ($join) {
-            $join->on('stations.station_id', '=', 'latest_prices.station_id');
-        })
+        // Main query: Join stations with the latest prices and eager load feedbacks
+        $stationsQuery = Station::with('feedbacks') // Eager load feedbacks for optimization
+            ->joinSub($latestPricesSubquery, 'latest_prices', function ($join) {
+                $join->on('stations.station_id', '=', 'latest_prices.station_id');
+            })
             ->join('prices', function ($join) {
                 $join->on('stations.station_id', '=', 'prices.station_id')
                     ->on('prices.system_date', '=', 'latest_prices.latest_price_date');
@@ -207,6 +208,8 @@ class FuelPriceController extends Controller
                 'fuel_type' => $station->fuel_type,
                 'before6amprice' => $station->price,
                 'after6amprice' => $station->price,
+                'feedbackCount' => $station->feedback_count ?? 0, // Using the accessor method from the Station model
+                'averageRating' => $station->average_rating ?? 0, // Using the accessor method from the Station model
             ];
         });
 

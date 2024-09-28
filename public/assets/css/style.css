@@ -1531,3 +1531,25 @@ button.gm-ui-hover-effect {
     height: 40px;
     width: auto;
 }
+
+
+.star {
+    font-size: 3rem;
+    cursor: default;
+    display: inline-block;
+}
+.one {
+    color: rgb(255, 0, 0);   /* 1-star */
+}
+.two {
+    color: rgb(255, 106, 0); /* 2-stars */
+}
+.three {
+    color: rgb(251, 255, 120); /* 3-stars */
+}
+.four {
+    color: rgb(255, 255, 0); /* 4-stars */
+}
+.five {
+    color: rgb(24, 159, 14); /* 5-stars */
+}

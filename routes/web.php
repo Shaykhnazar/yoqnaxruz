@@ -14,6 +14,7 @@ Route::get('/', [HomeController::class, 'index'])->name('index');
 
 // AJAX endpoint for fetching stations
 Route::get('/stations/find', [HomeController::class, 'findStations'])->name('stations.find');
+Route::get('/feedbacks/{stationId}', [StationController::class, 'getFeedbacks']);
 
 // Fuel Price Routes
 Route::post('/fuel-prices', [FuelPriceController::class, 'store'])->name('fuel_prices.store');

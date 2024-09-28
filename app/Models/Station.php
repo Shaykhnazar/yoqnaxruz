@@ -60,4 +60,24 @@ class Station extends Model
         }
         return null;
     }
+
+    // Add a new relationship to Feedback in your Station model
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class, 'station_id', 'station_id');
+    }
+
+// Add a method to get the average rating
+    public function getAverageRatingAttribute()
+    {
+        return $this->feedbacks()->avg('user_rating'); // Assuming 'rating' is a field in the Feedback model
+    }
+
+// Add a method to get the count of feedbacks
+    public function getFeedbackCountAttribute()
+    {
+        return $this->feedbacks()->count();
+    }
+
 }
