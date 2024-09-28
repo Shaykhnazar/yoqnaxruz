@@ -56,6 +56,20 @@
                         </select>
                         <small id="station_idError" class="form-text text-danger"></small>
                     </div>
+                    <div id="new_station_fields" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="new_station_address">New Station Address</label>
+                                <input type="text" class="form-control" id="new_station_address" name="new_station_address">
+                                <small id="new_station_addressError" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="new_station_phone">New Station Phone Number</label>
+                                <input type="text" class="form-control" id="new_station_phone" name="new_station_phone">
+                                <small id="new_station_phoneError" class="form-text text-danger"></small>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="comment">Comment</label>
                         <textarea class="form-control" name="comment" id="comment"></textarea>
@@ -185,6 +199,35 @@
                 // Optional: Set initial value if editing a record
                 // templateResult: formatStation,
                 // templateSelection: formatStationSelection,
+            });
+
+            // Handle the event when a station is selected or typed in
+            $('#station_id').on('select2:select', function() {
+                let selectedStationId = $(this).val();
+
+                // console.log(selectedStation)
+
+                // Check if the selected station is from the database or a new entry (custom tag)
+                $.ajax({
+                    url: "{{ route('stations.check') }}", // Route to check if station exists
+                    type: 'GET',
+                    data: {
+                        station_id: selectedStationId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.exists == true) {
+                            // If the station exists, hide the additional fields
+                            $('#new_station_fields').hide();
+                        } else {
+                            // If the station doesn't exist, show the additional fields
+                            $('#new_station_fields').show();
+                        }
+                    },
+                    error: function() {
+                        console.error('Error checking station existence');
+                    }
+                });
             });
         });
 

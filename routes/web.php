@@ -19,6 +19,7 @@ Route::get('/feedbacks/{stationId}', [StationController::class, 'getFeedbacks'])
 // Fuel Price Routes
 Route::post('/fuel-prices', [FuelPriceController::class, 'store'])->name('fuel_prices.store');
 Route::post('/fuel-prices/results', [FuelPriceController::class, 'fetchResults'])->name('fuel_prices.results');
+Route::get('/stations/check', [FuelPriceController::class, 'checkStationExists'])->name('stations.check');
 
 
 // Login Routes

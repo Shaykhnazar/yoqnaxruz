@@ -61,6 +61,8 @@ class FuelPriceController extends Controller
             'price' => 'required|numeric|min:0|max:99999.99',
             'phone_no' => 'required|string|max:15',
             'station_id' => 'required|string|max:255',
+            'new_station_address' => 'nullable|required_if:station_id,new',
+            'new_station_phone' => 'nullable|required_if:station_id,new',
             'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'comment' => 'nullable|string|max:255',
             'fuel_type' => 'required|string|max:255',
@@ -91,6 +93,8 @@ class FuelPriceController extends Controller
                 Station::create([
                     'station_id' => IDGeneratorService::generateId(Station::max('id'), 'ST-'),
                     'station_name' => $stationId, // As per your requirement
+                    'street_address' => $request->input('new_station_address') ?? '',
+                    'station_phone1' => $request->input('new_station_phone') ?? '',
                     'date_created' => now(),
                     'added_by' => Auth::check() ? Auth::user()->user_id ?? 'unregistered' : 'unregistered',
                     'comment' => 'Not verified',
@@ -214,6 +218,16 @@ class FuelPriceController extends Controller
         });
 
         return response()->json(['stations' => $data]);
+    }
+
+    public function checkStationExists(Request $request)
+    {
+        $stationId = $request->input('station_id');
+
+        // Check if the station exists
+        $stationExists = Station::where('station_id', $stationId)->exists();
+
+        return response()->json(['exists' => $stationExists]);
     }
 
 }
