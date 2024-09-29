@@ -55,6 +55,7 @@
                             <!-- Options will be loaded via AJAX -->
                         </select>
                         <small id="station_idError" class="form-text text-danger"></small>
+                        <small id="station_NotVerifiedError" class="form-text text-danger" style="display: none;"> Station not verified. Add an Address and Phone Number</small>
                     </div>
                     <div id="new_station_fields" style="display: none;">
                         <div class="form-row">
@@ -219,9 +220,11 @@
                         if (response.exists == true) {
                             // If the station exists, hide the additional fields
                             $('#new_station_fields').hide();
+                            $('#station_NotVerifiedError').hide();
                         } else {
                             // If the station doesn't exist, show the additional fields
                             $('#new_station_fields').show();
+                            $('#station_NotVerifiedError').show();
                         }
                     },
                     error: function() {
