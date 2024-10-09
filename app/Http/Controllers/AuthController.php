@@ -27,7 +27,7 @@ class AuthController extends Controller
 
         // If user not approved yet
         $user = User::where('email', $request->email)->first();
-        if (in_array($user->approved_by, ['Pending', 'Rejected', null])) {
+        if (in_array($user->approved_by, ['Pending', 'Rejected', null, 'Admin'])) {
             return response()->json(['status' => 0, 'message' => 'Your account is not approved yet.']);
         }
 

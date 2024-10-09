@@ -10,6 +10,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
@@ -95,6 +96,18 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = auth()->user();
+
+                if ($user->hasRole('Super Admin')) {
+                    // Super Admin sees only approved by Admin and not rejected
+                    $query->whereNotNull('approved_by')
+                        ->whereNotIn('approved_by', ['Pending']);
+                }
+                // Admins see all records
+                // You can add additional role-based queries here if needed
+                return $query;
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('user_id')
                     ->searchable(),
@@ -198,7 +211,7 @@ class UserResource extends Resource
                             ->default('Approved')
                             ->required(),
                     ])
-                    ->visible(fn (User $record) => in_array($record->approved_by, ['Pending', null])),
+                    ->visible(fn (User $record) => (auth()->user()->hasRole('Admin') && in_array($record->approved_by, ['Pending', null])) || (auth()->user()->hasRole('Super Admin') && $record->approved_by == 'Admin')),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),

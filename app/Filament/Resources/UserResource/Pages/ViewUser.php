@@ -56,7 +56,7 @@ class ViewUser extends ViewRecord
                         ->body("User has been $status Successfully")
                         ->send();
                 })
-                ->visible(fn (User $record) => in_array($record->approved_by, ['Pending', null])),
+                ->visible(fn (User $record) => in_array($record->approved_by, ['Pending', null, 'Admin'])),
         ];
     }
 }
